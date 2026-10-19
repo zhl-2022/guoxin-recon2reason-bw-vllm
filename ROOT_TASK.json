@@ -7,7 +7,7 @@
   "track": "T02",
   "framework": "vllm",
   "precision": "bf16",
-  "source_task_status": "functional_verified",
+  "source_task_status": "functional_verified_with_partial_development_matrix",
   "formal_ready": false,
   "submitted": false,
   "repository_url": null,

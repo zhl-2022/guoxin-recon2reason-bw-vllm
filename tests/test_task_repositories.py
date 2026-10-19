@@ -1,6 +1,7 @@
 """Independent repository snapshots preserve evidence and reject unsafe inputs."""
 from contextlib import redirect_stdout, redirect_stderr
 import hashlib
+import base64
 import importlib.util
 import io
 import json
@@ -36,6 +37,27 @@ def source_fixture(root):
         (directory / "README.md").write_text("# " + task + "\n\n[Observed](../../evidence/observed.json)\n\n```bash\n# [Keep](../../evidence/observed.json)\nbash run.sh --dry-run\n```\n\n[Notes](../../docs/notes.md)\n", encoding="utf-8")
         (directory / "run.sh").write_text("#!/usr/bin/env bash\nprintf '%s\\n' 'fixture dry run'\n", encoding="utf-8")
         (directory / "env.sh").write_text("export MODEL_ID=fixture\n", encoding="utf-8")
+        community = directory / "community"
+        community.mkdir()
+        project_id, category = repositories.MODELZOO_PROJECTS[task]
+        contents = {
+            "model.properties": (f"modelCode={project_id}\nmodelName={task}\nmodelDescription=Fixture\n"
+                                 f"processType=推理\nappCategory={category}\nframeType=pytorch,vllm\naccelerateType=BW\n").encode(),
+            "LICENSE": b"No repository-wide license selected in this fixture.\n",
+            "icon.png": base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+cGZkAAAAASUVORK5CYII="),
+            "README_origin.md": b"# Original publisher fixture README\n",
+            "requirements.txt": b"# Preserve the native Torch/vLLM environment; no installation targets.\n"}
+        for name, raw in contents.items():
+            (community / name).write_bytes(raw)
+        metadata = {"schema_version": 1, "task": task, "sourcefind_project_id": project_id,
+                    "model_id": config["model"]["id"], "app_category": category,
+                    "observed_accelerator": "BW", "formal_ready": False, "submitted": False,
+                    "promoted_files": {name: {"source": name, "bytes": len(raw),
+                                               "sha256": hashlib.sha256(raw).hexdigest()} for name, raw in contents.items()},
+                    "upstream_sources": [{"path": name, "url": "https://example.test/fixed/" + name,
+                                          "bytes": len(contents[name]), "sha256": hashlib.sha256(contents[name]).hexdigest()}
+                                         for name in ("README_origin.md", "icon.png")]}
+        (community / "metadata.json").write_text(json.dumps(metadata), encoding="utf-8")
 
 
 class TaskRepositoryTests(unittest.TestCase):
@@ -78,6 +100,53 @@ class TaskRepositoryTests(unittest.TestCase):
                     self.assertEqual(len(raw), entry["bytes"])
                     self.assertEqual(hashlib.sha256(raw).hexdigest(), entry["sha256"])
                 self.assertEqual((destination / "evidence/observed.json").read_bytes(), (root / "evidence/observed.json").read_bytes())
+                for name in repositories.COMMUNITY_ROOT_FILES:
+                    self.assertEqual((destination / name).read_bytes(), (root / "tasks" / task / "community" / name).read_bytes())
+
+    def test_community_required_files_cannot_be_missing_empty_or_hash_mismatched(self):
+        for mutation in ("missing", "empty", "sha"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                root, output = Path(temporary) / "source", Path(temporary) / "output"
+                source_fixture(root)
+                target = root / "tasks" / repositories.TASKS[0] / "community/LICENSE"
+                if mutation == "missing":
+                    target.unlink()
+                elif mutation == "empty":
+                    target.write_bytes(b"")
+                else:
+                    target.write_bytes(b"unreviewed different license scope\n")
+                with self.assertRaisesRegex(ValueError, "Missing/empty|SHA mismatch"):
+                    repositories.plan(root, output)
+                self.assertFalse(output.exists())
+
+    def test_community_project_id_provenance_and_promotion_allowlist_are_checked(self):
+        for mutation in ("project_id", "property_id", "upstream_sha", "extra_promotion", "renamed_source", "install_torch"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                root, output = Path(temporary) / "source", Path(temporary) / "output"
+                source_fixture(root)
+                community = root / "tasks" / repositories.TASKS[0] / "community"
+                meta_path = community / "metadata.json"
+                data = json.loads(meta_path.read_text())
+                if mutation == "project_id":
+                    data["sourcefind_project_id"] += 1
+                elif mutation == "property_id":
+                    path = community / "model.properties"
+                    path.write_bytes(path.read_bytes().replace(b"modelCode=15915", b"modelCode=15916"))
+                    data["promoted_files"]["model.properties"].update(bytes=path.stat().st_size, sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                elif mutation == "upstream_sha":
+                    data["upstream_sources"][0]["sha256"] = "0" * 64
+                elif mutation == "extra_promotion":
+                    data["promoted_files"]["run.sh"] = {"source": "run.sh", "bytes": 1, "sha256": "0" * 64}
+                elif mutation == "renamed_source":
+                    data["promoted_files"]["LICENSE"]["source"] = "../LICENSE"
+                else:
+                    path = community / "requirements.txt"
+                    path.write_bytes(b"torch==2.9.0\n")
+                    data["promoted_files"]["requirements.txt"].update(bytes=path.stat().st_size, sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                meta_path.write_text(json.dumps(data), encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    repositories.plan(root, output)
+                self.assertFalse(output.exists())
 
     def test_destinations_are_checked_together_and_existing_tree_is_untouched(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -152,6 +221,44 @@ class TaskRepositoryTests(unittest.TestCase):
             payload = b"# Report\n[obs]: ../../evidence/data.json\nNext paragraph.\n"
             readme = repositories.root_readme(root, repositories.TASKS[0], payload).decode()
             self.assertIn("[obs]: evidence/data.json\nNext paragraph.", readme)
+
+    def test_explicit_lf_normalization_records_both_hashes_without_changing_source_or_binary(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, output = Path(temporary) / "source", Path(temporary) / "output"
+            source_fixture(root)
+            original = b"\xef\xbb\xbfOne\r\nTwo\rThree\n"
+            binary = b"binary-file-even-if-valid-utf8\r\n"
+            (root / "docs/notes.md").write_bytes(original)
+            (root / "fixtures/sample.wav").write_bytes(binary)
+            _sources, raw = repositories.plan(root, output, tasks=(repositories.TASKS[0],))
+            self.assertEqual(raw[repositories.TASKS[0]]["docs/notes.md"], original)
+            self.assertNotIn("repository-normalization.json", raw[repositories.TASKS[0]])
+            sources, prepared = repositories.plan(root, output, tasks=(repositories.TASKS[0],), normalize_text_lf=True)
+            files = prepared[repositories.TASKS[0]]
+            self.assertEqual(files["docs/notes.md"], original.replace(b"\r\n", b"\n"))
+            self.assertEqual(files["fixtures/sample.wav"], binary)
+            self.assertEqual((root / "docs/notes.md").read_bytes(), original)
+            report = json.loads(files["repository-normalization.json"])
+            entries = {item["path"]: item for item in report["files"]}
+            entry = entries["docs/notes.md"]
+            self.assertEqual(entry["original_sha256"], hashlib.sha256(original).hexdigest())
+            self.assertEqual(entry["normalized_sha256"], hashlib.sha256(files["docs/notes.md"]).hexdigest())
+            self.assertEqual(entry["original_bytes"], len(original))
+            self.assertEqual(entry["normalized_bytes"], len(files["docs/notes.md"]))
+            self.assertTrue(entry["changed"])
+            self.assertEqual(entries["fixtures/sample.wav"]["kind"], "binary_preserved")
+            self.assertFalse(entries["fixtures/sample.wav"]["changed"])
+            self.assertIn(b"* -text\n", files[".gitattributes"])
+            repositories.build(output, prepared, sources.missing)
+            destination = output / repositories.TASKS[0]
+            manifest = json.loads((destination / "repository-manifest.json").read_text(encoding="utf-8"))
+            for item in manifest["files"]:
+                self.assertEqual(hashlib.sha256((destination / item["path"]).read_bytes()).hexdigest(), item["sha256"])
+
+    def test_lf_normalization_rejects_invalid_utf8_and_nul_in_declared_text(self):
+        for raw in (b"invalid\xff\r\n", b"text\0with\r\nNUL"):
+            with self.subTest(raw=raw), self.assertRaisesRegex(ValueError, "normalization"):
+                repositories.normalize_payloads_text_lf({"evidence/log.txt": raw})
 
     def test_real_independent_tree_runs_python_checks_and_shell_argument_preview(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import struct
 import sys
 from urllib.parse import unquote, urlsplit
 
@@ -15,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TASKS = ("recon2reason-bw-vllm", "robobrain-bw-vllm", "qwen3-asr-bw-vllm")
 MAX_BYTES = 50 * 1024 * 1024
 EXCLUDED_DIRS = {".git", "dist", "build", "runtime", "venv", "venvs", ".venv", "__pycache__", "node_modules", "models", "weights", ".pytest_cache"}
-TEXT_SUFFIXES = {".py", ".sh", ".ps1", ".json", ".jsonl", ".md", ".txt", ".toml", ".yaml", ".yml", ".log", ".csv", ".tsv"}
+TEXT_SUFFIXES = {".py", ".sh", ".ps1", ".json", ".jsonl", ".md", ".txt", ".toml", ".yaml", ".yml", ".log", ".csv", ".tsv", ".properties"}
 SOURCE_SUFFIXES = TEXT_SUFFIXES - {".log"} | {".png", ".jpg", ".jpeg", ".svg"}
 ASSET_SUFFIXES = SOURCE_SUFFIXES | {".log", ".wav", ".pdf", ".gif", ".webp"}
 SECRET_SUFFIXES = {".key", ".pem", ".secret", ".token", ".pfx", ".p12", ".safetensors", ".bin", ".pt", ".pth", ".ckpt", ".gguf", ".onnx"}
@@ -23,6 +24,19 @@ SECRET_NAMES = {"credentials.json", "secrets.json", "passwords.txt", ".netrc", "
 LINK = re.compile(r"\]\((?:<([^>]+)>|([^\s)]+))(?:\s+[\"'][^\n]*?[\"'])?\)")
 REFERENCE_LINK = re.compile(r"^( {0,3}\[[^\]]+\]:\s*)(?:<([^>]+)>|(\S+))(.*)$")
 CREDENTIAL_LITERAL = re.compile(rb"(?i)(?:[\"']?)(?:api[_-]?key|access[_-]?token|refresh[_-]?token|password|passwd|client[_-]?secret)(?:[\"']?)\s*[:=]\s*[\"']([A-Za-z0-9_./+!@#$%^&*=-]{8,})[\"']")
+NORMALIZATION_REPORT = "repository-normalization.json"
+TEXT_NAMES = {".gitignore", ".gitattributes", "METADATA", "LICENSE"}
+COMMUNITY_ROOT_FILES = ("model.properties", "LICENSE", "icon.png", "README_origin.md", "requirements.txt")
+# These are the actual private Sourcefind project IDs supplied by the root's UI observation.
+MODELZOO_PROJECTS = {"recon2reason-bw-vllm": (15915, "多模态"),
+                    "robobrain-bw-vllm": (15916, "多模态"),
+                    "qwen3-asr-bw-vllm": (15917, "语音识别")}
+
+
+def community_named_file(name):
+    parts = PurePosixPath(name).parts
+    return (len(parts) == 4 and parts[0] == "tasks" and parts[1] in TASKS
+            and parts[2] == "community" and parts[3] in COMMUNITY_ROOT_FILES)
 
 
 def sha256(payload):
@@ -65,7 +79,7 @@ def scan_payload(name, payload):
         raise ValueError("Excluded runtime, credentials or weights source: " + name)
     if len(payload) > MAX_BYTES:
         raise ValueError("Single source exceeds 50 MiB: " + name)
-    if PurePosixPath(name).suffix.lower() in TEXT_SUFFIXES or PurePosixPath(name).name == "METADATA":
+    if PurePosixPath(name).suffix.lower() in TEXT_SUFFIXES or PurePosixPath(name).name in {"METADATA", "LICENSE"}:
         if re.search(rb"-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----", payload) or CREDENTIAL_LITERAL.search(payload):
             raise ValueError("Possible embedded credential/private key; review before packaging: " + name)
 
@@ -171,7 +185,8 @@ class Sources:
         if not path.is_file():
             self.missing.add(name)
             return
-        if path.suffix.lower() not in (ASSET_SUFFIXES if allow_asset else SOURCE_SUFFIXES) and path.name not in {".gitignore", "METADATA"}:
+        if (path.suffix.lower() not in (ASSET_SUFFIXES if allow_asset else SOURCE_SUFFIXES)
+                and path.name not in {".gitignore", "METADATA"} and not community_named_file(name)):
             raise ValueError("Unapproved source file type: " + name)
         with path.open("rb") as source:
             payload = source.read(MAX_BYTES + 1)
@@ -239,7 +254,40 @@ def common_sources(root):
     return sources
 
 
-def task_payloads(sources, task):
+def normalize_payloads_text_lf(payloads):
+    """Explicit transport policy, with original/normalized hashes for every file."""
+    normalized = {}
+    entries = []
+    for name, original in sorted(payloads.items()):
+        if name == NORMALIZATION_REPORT:
+            continue  # The new report describes payload files, not its own bytes.
+        path = PurePosixPath(name)
+        is_text = path.suffix.lower() in TEXT_SUFFIXES | {".svg"} or path.name in TEXT_NAMES
+        if is_text:
+            try:
+                original.decode("utf-8", errors="strict")
+            except UnicodeError as exc:
+                raise ValueError("LF normalization requires strict UTF-8 text: " + name) from exc
+            if b"\0" in original:
+                raise ValueError("LF normalization refuses NUL in declared text: " + name)
+            converted = original.replace(b"\r\n", b"\n")
+        else:
+            converted = original
+        normalized[name] = converted
+        entries.append({"path": name, "kind": "utf8_text" if is_text else "binary_preserved",
+                        "original_sha256": sha256(original), "original_bytes": len(original),
+                        "normalized_sha256": sha256(converted), "normalized_bytes": len(converted),
+                        "changed": converted != original})
+    report = {"schema_version": 1, "scope": "sourcefind_transport_explicit_utf8_crlf_to_lf",
+              "enabled_by": "--normalize-text-lf", "workspace_source_bytes_modified": False,
+              "policy": "Declared UTF-8 text without NUL: CRLF -> LF only; lone CR/BOM/other content retained; binary bytes unchanged",
+              "report_scope": "Every payload file before this report is added; report itself excluded to avoid self-hash recursion",
+              "changed_text_files": sum(item["changed"] for item in entries), "files": entries}
+    normalized[NORMALIZATION_REPORT] = (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    return normalized
+
+
+def task_payloads(sources, task, normalize_text_lf=False):
     files = dict(sources.payloads)
     # Keep evidence hashes and LF shell bytes stable even with core.autocrlf=true.
     files[".gitattributes"] = b"# Preserve source/evidence bytes across Git checkouts.\n* -text\n"
@@ -248,6 +296,7 @@ def task_payloads(sources, task):
     if readme not in files or config not in files:
         raise ValueError("Missing canonical target README/task.json: " + task)
     task_config = json.loads(files[config])
+    files.update(community_payloads(sources, task, task_config))
     files["README.md"] = root_readme(sources.root, task, files[readme])
     status = {"schema_version": 1, "primary_task": task, "canonical_task": config,
               "canonical_report": readme, "model": task_config.get("model", {}).get("id"),
@@ -272,13 +321,92 @@ def task_payloads(sources, task):
                         "REPOSITORY_ROOT=\"$(cd -- \"$(dirname -- \"${BASH_SOURCE[0]}\")\" && pwd)\"\n"
                         f"exec bash \"$REPOSITORY_ROOT/tasks/{task}/{entry}\" \"$@\"\n")
             files[entry] = body.encode("utf-8")
+    if normalize_text_lf:
+        files = normalize_payloads_text_lf(files)
     total = sum(map(len, files.values()))
     if total > MAX_BYTES:
         raise ValueError(f"Repository source exceeds 50 MiB: {task} ({total} bytes)")
     return files, status
 
 
-def plan(root, output, tasks=TASKS):
+def community_payloads(sources, task, task_config):
+    """Promote only audited ModelZoo root metadata, never arbitrary task files."""
+    prefix = f"tasks/{task}/community/"
+    metadata_name = prefix + "metadata.json"
+    if metadata_name not in sources.payloads:
+        raise ValueError("Missing required community metadata: " + metadata_name)
+    metadata = json.loads(sources.payloads[metadata_name])
+    project_id, category = MODELZOO_PROJECTS[task]
+    model_id = task_config.get("model", {}).get("id")
+    if (metadata.get("schema_version") != 1 or metadata.get("task") != task
+            or type(metadata.get("sourcefind_project_id")) is not int
+            or metadata["sourcefind_project_id"] != project_id or metadata.get("model_id") != model_id):
+        raise ValueError("Community task/model/Project ID mismatch: " + task)
+    promoted = metadata.get("promoted_files")
+    if not isinstance(promoted, dict) or set(promoted) != set(COMMUNITY_ROOT_FILES):
+        raise ValueError("Community promotion must use the exact root-file allowlist: " + task)
+    result = {}
+    for name in COMMUNITY_ROOT_FILES:
+        item = promoted[name]
+        if not isinstance(item, dict) or item.get("source") != name:
+            raise ValueError("Community promotion cannot rename or traverse source paths: " + name)
+        raw = sources.payloads.get(prefix + name)
+        if not isinstance(raw, bytes) or not raw.strip():
+            raise ValueError("Missing/empty required community source: " + prefix + name)
+        if type(item.get("bytes")) is not int or item["bytes"] != len(raw) or item.get("sha256") != sha256(raw):
+            raise ValueError("Community source bytes/SHA mismatch: " + name)
+        if name != "icon.png":
+            text = raw.decode("utf-8", errors="strict")
+            if "\0" in text:
+                raise ValueError("NUL in community text source: " + name)
+        scan_payload(name, raw)
+        result[name] = raw
+    icon = result["icon.png"]
+    if (len(icon) < 33 or icon[:8] != b"\x89PNG\r\n\x1a\n" or icon[12:16] != b"IHDR"
+            or any(value == 0 for value in struct.unpack(">II", icon[16:24]))):
+        raise ValueError("Community icon is not a nonempty PNG with dimensions")
+    properties = {}
+    for line in result["model.properties"].decode("utf-8").splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        key, separator, value = line.partition("=")
+        if not separator or key.strip() in properties:
+            raise ValueError("Malformed/duplicate community property")
+        properties[key.strip()] = value.strip()
+    expected = {"modelCode": str(project_id), "modelName": model_id.split("/", 1)[-1],
+                "processType": "推理", "appCategory": category, "frameType": "pytorch,vllm",
+                "accelerateType": task_config.get("platform", {}).get("card", "BW")}
+    if any(properties.get(key) != value for key, value in expected.items()):
+        raise ValueError("Community properties identity/category/framework/device mismatch: " + task)
+    if not 1 <= len(properties.get("modelDescription", "")) <= 50:
+        raise ValueError("Community modelDescription must contain1..50 characters")
+    if (metadata.get("app_category") != category or metadata.get("observed_accelerator") != expected["accelerateType"]
+            or metadata.get("submitted") is not False or metadata.get("formal_ready") is not False):
+        raise ValueError("Community category/device/formal status mismatch: " + task)
+    # The native DTK stack and task venv preparation own installation. This root
+    # declaration cannot silently install upstream CUDA/Torch dependencies.
+    if any(line.strip() and not line.lstrip().startswith("#")
+           for line in result["requirements.txt"].decode("utf-8").splitlines()):
+        raise ValueError("Root requirements must remain a comment-only native environment declaration")
+    upstream = metadata.get("upstream_sources")
+    if not isinstance(upstream, list) or not upstream:
+        raise ValueError("Community upstream provenance is required")
+    for item in upstream:
+        name = relative_name(item["path"])
+        if name not in {"README_origin.md", "icon.png"} and not name.startswith("upstream/"):
+            raise ValueError("Unapproved upstream provenance path: " + name)
+        raw = sources.payloads.get(prefix + name)
+        if not isinstance(raw, bytes) or not raw or item.get("sha256") != sha256(raw) or item.get("bytes") != len(raw):
+            raise ValueError("Community upstream source bytes/SHA mismatch: " + name)
+        parsed = urlsplit(item.get("url", ""))
+        if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+            raise ValueError("Community source requires a public HTTPS provenance URL")
+    if {"README_origin.md", "icon.png"} - {item["path"] for item in upstream}:
+        raise ValueError("Original README/icon source provenance is incomplete")
+    return result
+
+
+def plan(root, output, tasks=TASKS, normalize_text_lf=False):
     for parent in (root, *root.parents):
         if parent.is_symlink() or (parent.exists() and getattr(parent.lstat(), "st_file_attributes", 0) & 0x400):
             raise ValueError("Source root cannot traverse a symlink/reparse path")
@@ -292,7 +420,7 @@ def plan(root, output, tasks=TASKS):
     for task in tasks:
         if task not in TASKS:
             raise ValueError("Unknown task slug: " + task)
-        prepared[task] = task_payloads(sources, task)[0]
+        prepared[task] = task_payloads(sources, task, normalize_text_lf=normalize_text_lf)[0]
     return sources, prepared
 
 
@@ -347,15 +475,17 @@ def main(argv=None):
     parser.add_argument("--output-root", type=Path, help="absolute parent; default SOURCE/dist/repositories")
     parser.add_argument("--task", choices=TASKS, action="append", help="select one or more; default all three")
     parser.add_argument("--build", action="store_true", help="explicitly write new independent source trees")
+    parser.add_argument("--normalize-text-lf", action="store_true", help="explicit Sourcefind transport: strict UTF-8 text CRLF->LF; binary unchanged; record both hashes")
     args = parser.parse_args(argv)
     try:
         root = args.source_root.absolute()
         output = args.output_root or root / "dist/repositories"
-        sources, prepared = plan(root, output, tuple(dict.fromkeys(args.task or TASKS)))
+        sources, prepared = plan(root, output, tuple(dict.fromkeys(args.task or TASKS)), normalize_text_lf=args.normalize_text_lf)
         report = {"mode": "build" if args.build else "plan_only", "source_root": str(root),
                   "output_root": str(output), "missing_required_files": sorted(sources.missing),
                   "formal_ready": False, "submitted": False, "git_commands_run": False,
-                  "network_requests": 0, "model_loaded": False, "gpu_used": False}
+                  "network_requests": 0, "model_loaded": False, "gpu_used": False,
+                  "normalize_text_lf": args.normalize_text_lf}
         if args.build:
             report["repositories"] = build(output, prepared, sources.missing)
         else:

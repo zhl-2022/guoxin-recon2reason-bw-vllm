@@ -2,11 +2,11 @@
 
 ## 1. 简介
 
-本目录是 `BAAI/RoboBrain2.5-8B-NV` 的独立 T02 开发任务。默认 `run.sh` 启用受源码哈希约束的 head72 分块 Math 兼容候选，`run_compat.sh` 只是同一入口的别名；`run_baseline.sh` 保留显式原生框架对照。当前状态为 `updated_head72_compat_cpu_verified_gpu_revalidation_pending`，`adaptation_ready=false`。baseline001 将红方块回答为人群、坐标不符及多图截断的历史失败完整保留。
+本目录是 `BAAI/RoboBrain2.5-8B-NV` 的独立 T02 开发任务。默认 `run.sh` 启用受源码哈希约束的 head72 分块 Math 兼容候选，`run_compat.sh` 只是同一入口的别名；`run_baseline.sh` 保留显式原生框架对照。当前状态为 `head72_compat_gpu_numerical_and_functional_revalidated_official_pending`，`adaptation_ready=false`。baseline001 将红方块回答为人群、坐标不符及多图截断的历史失败完整保留。
 
 历史版本 `cc6591b5c99bf3cef5090e88d8893e83e6db77e8cbc6bf97c24d42380a92c3af` 已通过 18 项 BW 数值对照；`robobrain-heldout-004.jsonl` 保存 640×448 红方块、512×512 蓝圆的七个新图片功能请求。实际 vision 长度 1120/1024，合成框 IoU 为 0.88396594/0.90244166，点选均在框内；81 次 Math 调用全部完成，服务已停止。该次启动显式使用 1024×1024 dummy profiling，默认 65536-patch profiling 的 Run003 因计算开销主动停止并保留日志。历史结果只绑定历史源码哈希。
 
-2026-10-20 的当前版本修复了 `Hq=1 / Hkv>1` 头维广播时 score 预算低估的问题：按实际广播后的 batch/head 上界分块，并在不支持的几何关系下明确拒绝。当前源码 SHA256 记录于 [task.json](task.json) 的 `compatibility_candidate` 和[新 CPU 验证记录](../../evidence/rules/robobrain-vision-math-compat-cpu-002.json)。6 项真实 CPU 数值与行为测试通过；本轮没有开卡，当前版本尚未进行 GPU 数值和图片请求复验。正式大图、精度、性能和干净环境复跑也尚未完成。
+2026-10-20 的当前版本修复了 `Hq=1 / Hkv>1` 头维广播时 score 预算低估的问题：按实际广播后的 batch/head 上界分块，并在不支持的几何关系下明确拒绝。当前源码 SHA256 记录于 [task.json](task.json) 的 `compatibility_candidate` 和[新 CPU 验证记录](../../evidence/rules/robobrain-vision-math-compat-cpu-002.json)。6 项真实 CPU 数值与行为测试通过。随后在第二个 BW Notebook 完成当前 SHA 的 24 项 GPU 数值对照（含 6 项广播预算检查），并完成七个新尺寸图片功能请求；两轮相同数值集的重复检查均通过，不能计作 48 个不同 case。最大绝对误差为 0.0009765625。服务 ready/stopped 的 run ID 一致，监督器确认清理完成。详见 [session003 实测与源码审计](../../docs/session003-robobrain-results.md)。正式大图、精度、性能和干净环境复跑尚未完成。
 
 SCNet 模型静态预检已完成：750 个 BF16 张量、2 个分片，payload 为 17,534,247,392 字节；这不是实际服务显存。两分片的全文件 SHA256 及字节数已与固定 revision 的上游 LFS 元数据一致。原生 Transformers 5.5 + SDPA Math GPU 参考已保存；固定图对照将问题定位到视觉 SDPA 后端分派路径，尚未确认具体 fused kernel 根因，官方精度、性能或正式认领也未确认。
 
@@ -16,7 +16,7 @@ SCNet 模型静态预检已完成：750 个 BF16 张量、2 个分片，payload 
 
 ## 2. 验证环境
 
-下表来自同实例的实际原生 probe、模型静态报告和历史服务快照。基础服务、固定图 Math 诊断及历史通用兼容版本已有实际响应；当前版本需要重新进行 GPU 验证。
+下表综合实际原生 probe、模型静态报告、历史服务快照与第二实例 session003 的环境输出。当前版本在第二实例完成 GPU 数值与图片功能复验；完整环境字段分别保留各自采集时间，不能把历史 probe 伪装为本轮重新采集。
 
 | 项目 | 当前证据 |
 |---|---|
@@ -32,7 +32,8 @@ SCNet 模型静态预检已完成：750 个 BF16 张量、2 个分片，payload 
 | 实际模型目录 | `/root/private_data/SothisAI/model/Aihub/RoboBrain2.5-8B-NV/main/RoboBrain2.5-8B-NV` |
 | 模型 config SHA256 | `5cd452860dc1e9c29dd71cc3cef7f39b338b7a40793f7a260655c2d3568f3661` |
 | 实测服务地址 | `127.0.0.1:30001`，served name 为 `robobrain2-5-8b-nv` |
-| 服务历史快照 | 2026-10-19 22:40:34 创建，22:42:24 ready（UTC+8），约 109.9 秒；仅健康就绪间隔，不是模型性能成绩 |
+| session003 服务快照 | 2026-10-20 01:52:23 创建，01:56:24 ready，01:56:49 stopped（UTC+8）；创建到 ready 约 240.5 秒，仅初始化/健康就绪间隔 |
+| session003 设备环境 | 实例 `2112237945233408001`，Torch 模块版本 `2.10.0`、HIP `6.3.26093`、vLLM `0.18.1+das.fa71803.dtk2604`；实际数值设备 `BW` |
 
 静态证据位于根目录 `evidence/robobrain-preflight-001.json`、`evidence/robobrain-preflight-hashed-001.json`、`evidence/robobrain-model-config.json`。初次报告未 hash 权重，后续 hashed 报告为 `weights_hashed=true`；不能覆盖两轮的历史含义。第一/第二分片 SHA256 分别为 `ddcbb8b2c0edd0f7707b5c459c9981ef9c842293e5d520324dddc8c66996fba9`、`374a816964fc361fece15f7f8f661521a367181bdd3a5d6f75f59fa0b0c328b5`，大小分别为 9,914,019,048 和 7,620,320,504 字节，均与 [BAAI 发布的 LFS 元数据](https://huggingface.co/api/models/BAAI/RoboBrain2.5-8B-NV?blobs=true) revision `7ae187cc62e45cfa1c5904903a8f017f11b2037b` 完全一致。它们证明分片文件身份，不证明推理语义正确。默认卡型写实际 `BW`，不补造型号后缀。
 
@@ -44,7 +45,7 @@ SCNet 模型静态预检已完成：750 个 BF16 张量、2 个分片，payload 
 
 随后仅对匹配的 head72、序列长度 384/768 调用强制 Math 的[固定形状诊断](../../scripts/robobrain_vision_math_diagnostic.py)恢复了同图同 prompt 的红方块与蓝圆识别，见[实际服务日志](../../evidence/robobrain-vllm-server-full-math-002.log)；worker PID 7046 共 54 次 eligible Math 调用完成。由此将异常定位到视觉 SDPA 后端分派路径，尚不能确认具体 fused kernel 根因。[实际平台与源码证据](../../evidence/robobrain-runtime-source-002.json)显示 HCU 的 `_enum=PlatformEnum.ROCM`、`is_rocm=true`、`is_out_of_tree=false`，原 wrapper 会执行 contiguous；“平台判断导致跳过 contiguous”的假设已排除。
 
-当前[通用 head72 兼容候选](../../scripts/robobrain_vision_math_compat.py)包装实际 `vit_attn_wrappers.apply_sdpa`，每块 Q 保留当前图完整 K/V，原 `torch_sdpa_wrapper` 保持 `cu_seqlens` 分图及 ROCm contiguous。默认 query chunk 上限 128、单个 score 张量上限 16,777,216 元素；这不是总显存峰值限制。预算使用广播后的 batch/head 上界，覆盖 `Hq=1 / Hkv>1`，并拒绝不兼容的 head、batch、Q/K 特征维和 K/V 长度。候选在 Torch `2.10.0+cpu` 上的 [6 项真实测试](../../tests/test_robobrain_vision_math_compat.py)通过，覆盖 float32/BF16、GQA、头与 batch 广播、不同 Q/K 长度、`Vdim=40`、逐块预算和分图隔离。历史版本已完成 [18 项 GPU 数值比较](../../evidence/robobrain-math-compat-numerical-001.json)和[新图片请求](../../evidence/robobrain-heldout-004.jsonl)，当前版本必须重新运行这些检查，不能沿用旧哈希的通过状态。
+当前[通用 head72 兼容候选](../../scripts/robobrain_vision_math_compat.py)包装实际 `vit_attn_wrappers.apply_sdpa`，每块 Q 保留当前图完整 K/V，原 `torch_sdpa_wrapper` 保持 `cu_seqlens` 分图及 ROCm contiguous。默认 query chunk 上限 128、单个 score 张量上限 16,777,216 元素；这不是总显存峰值限制。预算使用广播后的 batch/head 上界，覆盖 `Hq=1 / Hkv>1`，并拒绝不兼容的 head、batch、Q/K 特征维和 K/V 长度。候选在 Torch `2.10.0+cpu` 上的 [6 项真实测试](../../tests/test_robobrain_vision_math_compat.py)通过，覆盖 float32/BF16、GQA、头与 batch 广播、不同 Q/K 长度、`Vdim=40`、逐块预算和分图隔离。历史版本已完成 [18 项 GPU 数值比较](../../evidence/robobrain-math-compat-numerical-001.json)和[新图片请求](../../evidence/robobrain-heldout-004.jsonl)，当前版本以独立 [24 项 GPU 数值报告](../../evidence/robobrain-numerical-003.json)和[七次新图请求原文](../../evidence/robobrain-heldout-003.jsonl)完成复验，不沿用旧哈希的通过状态。六项新增广播检查逐块满足 score 元素预算；服务的 81 次 eligible Math 调用全部完成，1323 个块，日志最大单块 score 为 8,388,608 元素。
 
 本目录 `env.sh` 使用 `ROBOBRAIN_*` 变量覆盖候选参数，并固定模型 ID；官方材料默认空，避免继承 Recon baseline。共享 `scripts/recon2reason_runtime.py` 虽保留旧文件名，其模型、served name、端口与任务路径可配置；本目录不会复制该实现。所有 runtime 文件、PID、锁、`env.log` 和 `smoke.log` 都属于本任务。
 
@@ -56,14 +57,14 @@ SCNet 模型静态预检已完成：750 个 BF16 张量、2 个分片，payload 
 cd tasks/robobrain-bw-vllm
 bash run.sh --dry-run
 bash env_check.sh
-# 未来获准使用算力并核验资源后，才执行以下真实服务步骤：
+# 核验当前资源与预算后，执行真实服务步骤：
 bash run.sh
 bash env_check.sh
 # 结束本轮：
 bash stop.sh
 ```
 
-`run.sh --dry-run` 只打印配置，不加载模型、不启动服务。默认真实启动会启用通用兼容候选；`run_compat.sh` 与 `run.sh` 等价，不重写用户覆盖变量。模型路径如有变化，设置 `ROBOBRAIN_MODEL_PATH`；其他覆盖变量见 `env.sh`。默认 1024×1024 仅是历史实测的初始化 dummy profiling bound，不能据此保证更大真实图片的显存或性能；它也不是强制将真实输入缩放为 1024×1024 的图像处理策略。
+`run.sh --dry-run` 只打印配置，不加载模型、不启动服务。默认真实启动会启用通用兼容候选；`run_compat.sh` 与 `run.sh` 等价，不重写用户覆盖变量。模型路径如有变化，设置 `ROBOBRAIN_MODEL_PATH`；其他覆盖变量见 `env.sh`。默认 1024×1024 是历史及当前 session003 已实测的初始化 dummy profiling bound，不能据此保证更大真实图片的显存或性能；它也不是强制将真实输入缩放为 1024×1024 的图像处理策略。
 
 如需开发其他 profiling bound，可显式设置以下变量；这些替代配置没有 BW 实测记录：
 
@@ -85,7 +86,7 @@ python -m vllm.entrypoints.openai.api_server \
   --max-num-seqs 4 --limit-mm-per-prompt '{"image":2,"video":0}'
 ```
 
-`env.sh` 默认加载上限 1800 秒、总时限 7200 秒；baseline001 的实际总时限为 3600 秒，包含加载，不能把默认值写成实际值。监督器保存 `runtime/config-*.json`、`state.json`、`supervisor.log`、`server.log`；该机制不会关闭 SCNet Notebook 或停止卡时计费。不同端口不保证单卡可以同时容纳两个模型，切换前应确认资源释放。本次本地整理仅运行 `--dry-run`、语法检查和 CPU 测试，没有运行 `env_check.sh` 或 GPU。
+`env.sh` 默认加载上限 1800 秒、总时限 7200 秒；baseline001 的实际总时限为 3600 秒，包含加载，不能把默认值写成实际值。监督器保存 `runtime/config-*.json`、`state.json`、`supervisor.log`、`server.log`；该机制不会关闭 SCNet Notebook 或停止卡时计费。不同端口不保证单卡可以同时容纳两个模型，切换前应确认资源释放。session003 在实际 BW 环境执行 `env_check.sh`、24 项数值检查、默认 `run.sh`、七次新图请求和 `stop.sh`；本轮实际加载上限 600 秒、总时限 1800 秒。此次结果登记只审计已下载证据，不重新开卡。第二个 Notebook 保存环境并关机的事实来自根代理实际平台 UI 观察；服务停止记录本身不等于平台关机证明。
 
 ## 5. Smoke 测试
 
@@ -131,7 +132,7 @@ Math002 对照结果另存于[通用 smoke](../../evidence/robobrain-vllm-smoke-
 | grounding / pointing | `[60, 233, 350, 780]` / `[(237, 516)]`，均 `stop` | 对比 baseline001 的错误输出已明显恢复；未计算官方坐标指标 |
 | trajectory | `[(225, 10, 0.439), (230, 200, 0.529), (250, 250, 0.610)]` | 仅保留原始格式结果；没有参考轨迹或深度真值 |
 
-固定形状 Math002 的 54 次匹配调用、历史通用分块 Math004 的 81 次调用及当前 CPU 修改版必须使用各自证据与源码身份。Math004 的新图片描述、定位和点选已通过合成真值检查，但没有机器人轨迹或深度真值，也不是正式语义验收。
+固定形状 Math002、历史通用分块 Math004 与当前 session003 使用各自证据及源码身份。session003 的七次请求均非空、`finish_reason=stop`、无截断；红/蓝图 grounding 的合成框 IoU 分别为 0.88396594 / 0.90244166，两次点选均在已知框内，双图回答识别红方块与蓝圆。没有机器人轨迹或深度真值，也不是正式语义验收。[图片 manifest](../../evidence/robobrain-heldout-manifest-003.json) 的 `processor_grid_actually_verified=false` 保留原样；1120/1024 是独立从服务 Math 日志观察到的实际 vision 长度，不能改写为 processor grid 已直接验证。
 
 ## 6. 精度测评
 
@@ -146,7 +147,7 @@ export ROBOBRAIN_OFFICIAL_DATA_DIR=/本模型官方数据目录
 bash verify.sh
 ```
 
-包装器会校验 baseline 模型身份并记录哈希，缺材料时拒绝启动。正式验收仍需官方脚本自检与完整输出。当前 baseline 为 null、metric 待确认、`max_drop=0` 为禁用阶段脚手架。baseline 失败、原生参考片段、Math002 恢复和历史通用候选的合成图检查都不是官方分数。当前源码还需 GPU 数值与图片复验，以及正式材料验证；`adaptation_ready=false`，官方精度与性能状态保持 false。
+包装器会校验 baseline 模型身份并记录哈希，缺材料时拒绝启动。正式验收仍需官方脚本自检与完整输出。当前 baseline 为 null、metric 待确认、`max_drop=0` 为禁用阶段脚手架。baseline 失败、原生参考片段、Math002 恢复和历史通用候选的合成图检查都不是官方分数。当前源码的 GPU 数值和七次合成图片功能复验已完成，仍需正式材料验证；`adaptation_ready=false`，官方精度与性能状态保持 false。
 
 ## 7. 性能参考
 
@@ -166,14 +167,14 @@ bash bench.sh
 
 ## 8. 注意事项
 
-- 当前为 `updated_head72_compat_cpu_verified_gpu_revalidation_pending`，`adaptation_ready=false`；默认入口已统一，官方精度与性能均未验证。
+- 当前为 `head72_compat_gpu_numerical_and_functional_revalidated_official_pending`，`adaptation_ready=false`；当前源码已完成 BW 数值与合成图功能验证，官方精度与性能均未验证。
 - 本模型静态/文件 hash、基础服务、原生参考和固定图 Math002 已有独立证据；baseline001 历史错误仍保留，不能被后续成功覆盖。
 - 原生 Transformers 5.5 + BF16 Math 的正常 AutoProcessor 参考已保存，三次均达到 64 token 上限；不能当完整生成或官方通过。
 - 异常已定位到视觉 SDPA 后端分派路径，尚未确认具体 fused kernel 根因；HCU 具有 ROCm 身份，跳过 contiguous 的假设已排除。
-- 历史 `cc6591...` 版本已通过 18 项 BW 数值与七个新图请求；修复广播预算的新版本已通过 6 项 Torch `2.10.0+cpu` 测试，尚需 GPU 复验。
-- 默认 1024×1024 profiling 只绑定历史实测；更大输入、其他 profiling bound、正式精度和性能不能由此推断。
+- 历史 `cc6591...` 版本保留原 18 项 BW 数值与七个新图请求；修复广播预算的当前 `083dc53...` 版本已通过 6 项 CPU 测试、24 项 BW 数值及七个图片请求，证据分开登记。
+- 默认 1024×1024 profiling 已由当前源码复验；更大输入、其他 profiling bound、正式精度和性能不能由此推断。
 - 分题材料、完整镜像地址及 tag、正式结果尚缺；可记录 digest 增强复现，但不能自加为赛事强制项，也不等待独立认领回执才能开发。
-- 本任务预算余额来自历史 checkpoint；Recon 后续会话继续消耗，启动前刷新实时余额和平台到期停止。
+- 本任务预算字段来自历史 checkpoint，不是 session003 后的实时余额；第二实例已由根代理保存环境并关机，再次启动前应核对实时余额。
 - source 中 x/y 绘图尺度为 0–1000，深度 d 的单位未在包装器规定；不要补造真实机械臂坐标、深度单位或动作正确性。
 - 保留失败与截断日志，不修剪成通过；不修改官方 baseline、数据或模型输出以规避检查。
 - 本目录没有账号、密码、key 或 cookie，不自动执行 upstream 代码或提交成果。

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "slug": "robobrain-bw-vllm",
   "track": "T02",
-  "status": "updated_head72_compat_cpu_verified_gpu_revalidation_pending",
+  "status": "head72_compat_gpu_numerical_and_functional_revalidated_official_pending",
   "platform": {
     "provider": "SCNet",
     "region": "华中一区【A区】",
@@ -12,7 +12,13 @@
     "precision": "bf16",
     "cards": 1,
     "instance_final_state": "stopped",
-    "checkpoint": "evidence/platform-checkpoint-20261019-002.json"
+    "checkpoint": "evidence/platform-checkpoint-20261020-003.json",
+    "latest_instance_id": "2112237945233408001",
+    "latest_instance_final_state": "stopped",
+    "latest_instance_environment_saved": true,
+    "latest_state_source": "evidence/platform-checkpoint-20261020-003.json",
+    "historical_checkpoint": "evidence/platform-checkpoint-20261019-002.json",
+    "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery"
   },
   "model": {
     "id": "BAAI/RoboBrain2.5-8B-NV",
@@ -149,12 +155,13 @@
       "architecture": "gfx936:sramecc+:xnack-",
       "card_suffix_verified": false
     },
-    "actual_run_verification_scope": "Historical cc6591: BF16 BW service, 18 numerical comparisons, seven heldout-size requests; current source only CPU-verified",
+    "actual_run_verification_scope": "Current083dc53: BW24 numerical cases (two repeats), seven synthetic heldout requests, ready/stopped identity and cleanup verified; no official accuracy or performance",
     "adaptation_ready": false,
     "semantic_acceptance_verified": false,
-    "current_source_gpu_verified": false,
+    "current_source_gpu_verified": true,
     "default_entrypoint": "tasks/robobrain-bw-vllm/run.sh",
-    "native_comparison_entrypoint": "tasks/robobrain-bw-vllm/run_baseline.sh"
+    "native_comparison_entrypoint": "tasks/robobrain-bw-vllm/run_baseline.sh",
+    "current_source_gpu_evidence": "evidence/robobrain-source-audit-003.json"
   },
   "official": {
     "claim": {
@@ -228,12 +235,38 @@
     "evidence/robobrain-vllm-profile-stopped-003.json",
     "evidence/robobrain-vllm-profile-server-003.log",
     "evidence/platform-checkpoint-20261019-002.json",
-    "evidence/rules/robobrain-vision-math-compat-cpu-002.json"
+    "evidence/rules/robobrain-vision-math-compat-cpu-002.json",
+    "evidence/robobrain-session-report-003.json",
+    "evidence/robobrain-numerical-003.json",
+    "evidence/robobrain-numerical-initial-003.json",
+    "evidence/robobrain-heldout-003.jsonl",
+    "evidence/robobrain-heldout-manifest-003.json",
+    "evidence/robobrain-heldout-red-003.png",
+    "evidence/robobrain-heldout-blue-003.png",
+    "evidence/robobrain-env-003.json",
+    "evidence/robobrain-instance-env-003.json",
+    "evidence/robobrain-ready-state-003.json",
+    "evidence/robobrain-stopped-state-003.json",
+    "evidence/robobrain-run-config-003.json",
+    "evidence/robobrain-server-full-003.log",
+    "evidence/robobrain-supervisor-full-003.log",
+    "evidence/robobrain-stop-003.log",
+    "evidence/robobrain-source-audit-003.json",
+    "docs/session003-robobrain-results.md",
+    "evidence/rules/session003-run-identity-cpu-004.json",
+    "evidence/local-tests-session003-final-001.log",
+    "evidence/local-validation-session003-final-001.json",
+    "evidence/local-tests-session003-final-002.log",
+    "evidence/local-validation-session003-final-002.json",
+    "evidence/community-metadata-003.json",
+    "evidence/platform-checkpoint-20261020-003.json",
+    "evidence/screenshots/notebooks-stopped-final-003.png",
+    "evidence/screenshots/balance-after-stop-003.png"
   ],
   "required_metrics": [
     "official-task-specific-metrics-pending"
   ],
-  "notes": "baseline001 errors, Math002 and historical cc6591 GPU numerical18/heldout7 evidence retained. Current source fixes head-broadcast budgeting and passes6 CPU tests. Default run.sh enables compatibility; run_baseline.sh is native comparison. New SHA not GPU-revalidated. Official evaluation/performance, full image reference/tag and clean replay remain pending; digest/claim receipt are not extra development prerequisites.",
+  "notes": "baseline001 errors, Math002 and historical cc6591 GPU numerical18/heldout7 evidence retained. Current083dc53 fixes head-broadcast budgeting, passes6 CPU tests and independently passes24 BW GPU numerical cases including6 broadcast-budget cases plus7 synthetic image requests in session003. Default run.sh enables compatibility; run_baseline.sh is native comparison. Service stopped with matching run_id and cleanup_verified. Official evaluation/performance, full image reference/tag and clean replay remain pending; digest/claim receipt are not extra development prerequisites.",
   "adaptation_ready": false,
   "semantic_acceptance_verified": false,
   "official_accuracy": false,
@@ -389,7 +422,7 @@
     "scope": "fixed synthetic fixtures only; changed only matching vision SDPA calls to Math; other shapes remained unchanged"
   },
   "compatibility_candidate": {
-    "status": "cpu_verified_gpu_revalidation_pending",
+    "status": "gpu_numerical_and_heldout_functional_verified_official_pending",
     "script": "scripts/robobrain_vision_math_compat.py",
     "script_sha256": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f",
     "worker_extension_cls": "robobrain_vision_math_compat.VisionMathCompat",
@@ -403,9 +436,9 @@
     "cpu_torch_version": "2.10.0+cpu",
     "cpu_evidence": "evidence/rules/robobrain-vision-math-compat-cpu-002.json",
     "gpu_validator": "scripts/validate_robobrain_vision_math_compat.py",
-    "gpu_numerical_verified": false,
-    "heldout_shapes_verified": false,
-    "heldout_functional_verified": false,
+    "gpu_numerical_verified": true,
+    "heldout_shapes_verified": true,
+    "heldout_functional_verified": true,
     "official_accuracy": false,
     "official_performance": false,
     "adaptation_ready": false,
@@ -415,7 +448,7 @@
       1024,
       1024
     ],
-    "profile_scope_note": "1024x1024 was historically tested only; current source needs GPU revalidation. Alternate bounds are developer candidates, not validated input limits.",
+    "profile_scope_note": "1024x1024 initialization profiling was revalidated for current083dc53 source in session003; alternative bounds and larger real inputs remain unvalidated. This is not a processor resize policy.",
     "profile_overrides": [
       "ROBOBRAIN_PROFILE_WIDTH",
       "ROBOBRAIN_PROFILE_HEIGHT",
@@ -425,10 +458,31 @@
     "compatibility_alias": "tasks/robobrain-bw-vllm/run_compat.sh",
     "native_comparison": "tasks/robobrain-bw-vllm/run_baseline.sh",
     "limitations": [
-      "new source is CPU-verified only; rerun GPU numerical and heldout image checks",
       "exact fused-kernel fault and performance impact remain unproven",
-      "official accuracy/large-image policy/performance/clean-image replay pending"
-    ]
+      "official accuracy/image-size policy/performance/clean-image replay pending; seven synthetic requests are not model-wide semantic acceptance"
+    ],
+    "gpu_numerical_report": "evidence/robobrain-numerical-003.json",
+    "gpu_numerical_initial_report": "evidence/robobrain-numerical-initial-003.json",
+    "gpu_numerical_case_count": 24,
+    "gpu_broadcast_budget_cases": 6,
+    "gpu_broadcast_budget_verified": true,
+    "max_absolute_error_observed": 0.0009765625,
+    "heldout_report": "evidence/robobrain-heldout-003.jsonl",
+    "heldout_manifest": "evidence/robobrain-heldout-manifest-003.json",
+    "actual_vision_lengths": [
+      1120,
+      1024
+    ],
+    "successful_math_calls": 81,
+    "all_math_calls_completed": true,
+    "math_chunk_count": 1323,
+    "largest_score_elements_observed": 8388608,
+    "synthetic_bbox_iou": [
+      0.8839659402511187,
+      0.9024416623854203
+    ],
+    "both_points_inside_synthetic_bbox": true,
+    "source_audit": "evidence/robobrain-source-audit-003.json"
   },
   "heldout_candidate": {
     "script": "scripts/robobrain_heldout_fixtures.py",
@@ -460,7 +514,22 @@
     "semantic_acceptance_verified": false,
     "official_accuracy": false,
     "scope": "new synthetic sizes and coordinates; seven optional loopback requests, not official evaluation",
-    "source_version_scope": "Historical cc6591 run004 only; not proof for current updated source"
+    "source_version_scope": "Historical cc6591 run004 only; not proof for current updated source",
+    "session003_observation": {
+      "source_version_scope": "Current083dc53 in independent session003; historical run004 records retained above",
+      "report": "evidence/robobrain-heldout-003.jsonl",
+      "manifest": "evidence/robobrain-heldout-manifest-003.json",
+      "current_source_gpu_verified": true,
+      "requests_sent": 7,
+      "all_functional_protocol_checks_passed": true,
+      "all_answers_finished_stop": true,
+      "actual_vision_lengths_from_server_log": [
+        1120,
+        1024
+      ],
+      "processor_grid_actually_verified_in_this_manifest": false,
+      "official_accuracy": false
+    }
   },
   "historical_compatibility_candidate": {
     "status": "gpu_numerical_and_heldout_functional_verified_official_pending",
@@ -512,5 +581,27 @@
     "official_performance_verified": false,
     "reproduce": "Historical run004 command and source hash in evidence; current entrypoint uses updated source",
     "source_version_scope": "Historical cc6591 only; not current source"
-  }
+  },
+  "session003_observation": {
+    "summary": "docs/session003-robobrain-results.md",
+    "audit": "evidence/robobrain-source-audit-003.json",
+    "run_id": "c43dadd550fb44dabd84f52df49711d5",
+    "instance_id": "2112237945233408001",
+    "ready_state": "evidence/robobrain-ready-state-003.json",
+    "stopped_state": "evidence/robobrain-stopped-state-003.json",
+    "created_utc": "2026-10-19T17:52:23.996595+00:00",
+    "ready_utc": "2026-10-19T17:56:24.539129+00:00",
+    "ended_utc": "2026-10-19T17:56:49.631522+00:00",
+    "status_at_final_snapshot": "stopped",
+    "reason": "stop requested",
+    "cleanup_verified": true,
+    "max_runtime_seconds_actual": 1800,
+    "load_timeout_seconds_actual": 600,
+    "task_sha256_at_run": "ec35ac53f1b74d75f1fc4524f7076de956d3d3e1b60e9aceecec872624e7e09b",
+    "task_metadata_updated_after_run": true,
+    "official_accuracy": false,
+    "official_performance": false,
+    "official_acceptance": false
+  },
+  "official_acceptance": false
 }

@@ -60,7 +60,9 @@ RoboBrain 可改为对应模型路径、服务名与端口 30001。实际运行�
 - `round1.jsonl`、`round2.jsonl`：每档状态和提取的原生指标，失败行不删除。
 - `summary.md`：两轮全部档位的状态、请求完成数、原生 duration、吞吐、TTFT、TPOT、E2EL 和客户端 wall time；完整细节保存在原生 JSON 与两轮 JSONL 中。
 
-只有命令退出 0、原生 JSON 显示 completed 等于目标请求数且 failed=0，单档才标为 `complete`。缺结果、部分失败、无效 JSON、超时、启动失败分别记录；单档失败默认继续后续档位。总时限或中断后未尝试的档位仍列出，不删掉。Linux 清理独立客户端进程组；它不停止另行启动的模型服务。
+单档 `complete` 还必须满足逐请求完整性，不能只凭 HTTP 200、CLI 退出 0 或 completed 计数判断：completed 必须等于目标请求数、failed=0；`output_lens/generated_texts/errors` 必须各有 N 项；每条输出长度必须恰为 1024、正文非空、错误为空字符串；`total_output_tokens` 必须同时等于逐项长度之和及 N×1024。缺少这些原生字段时明确记 `unverified_output_integrity`；空流、短输出、数组条数或总量不符、错误流记不完整，不伪造缺失字段。
+
+驱动在两轮 JSONL 与 `run.json` 保存 `output_integrity`，逐请求记录实际 token 长度、正文字符数与异常；完整正文仍只保留在原生 JSON，避免复制大段输出到汇总。缺结果、部分失败、无效 JSON、超时、启动失败分别记录；单档失败默认继续后续档位。总时限或中断后未尝试的档位仍列出，不删掉。Linux 清理独立客户端进程组；它不停止另行启动的模型服务。
 
 `official_acceptance` 始终为 false；`full_matrix=false` 明确标识校准子集。工具不会从成功运行推导正式成绩、精度或可提交状态。
 
@@ -70,6 +72,6 @@ RoboBrain 可改为对应模型路径、服务名与端口 30001。实际运行�
 python3 -B -m unittest discover -s tests -p test_t02_development_bench.py -v
 ```
 
-测试使用临时 mock CLI，覆盖 12 档计数、608 请求、纯计划无副作用、loopback 限制、不覆盖旧目录、失败保留、部分请求失败、超时与总时限和显式校准子集。正式 GPU 负载需另行保存真实环境与运行证据。
+测试使用临时 mock CLI，覆盖 12 档计数、608 请求、纯计划无副作用、loopback 限制、不覆盖旧目录、失败保留、部分请求失败、超时与总时限、显式校准子集，以及空流、截断、缺失原生明细、长度数组／总量不符和逐请求错误。正式 GPU 负载需另行保存真实环境与运行证据。
 
-本轮 Windows 与 WSL 各实际执行 8 项 CPU 测试，均通过；未调用实际 vLLM、未启动模型或 GPU。
+逐请求完整性修复后，Windows 与 WSL 各实际执行 13 项本驱动 CPU 测试，均通过；未调用实际 vLLM、未启动模型或 GPU。完整 Windows CPU 套件执行 127 项，122 项通过、5 项按平台跳过。WSL 全套执行 122 项，其中 121 项通过、RoboBrain 数值测试模块因 WSL 未安装 Torch 导入失败；本轮未为此安装包，单独的本驱动 13 项仍全部通过。

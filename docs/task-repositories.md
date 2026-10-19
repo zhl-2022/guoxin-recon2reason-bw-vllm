@@ -64,3 +64,57 @@ bash run.sh --dry-run
 ASR 的根 `prepare.sh --dry-run` 仍是纯本地计划。不要把 `env_check.sh` 当作无 GPU 的参数检查，它会检查目标运行环境；实际服务、环境准备、GPU 验证和最终提交应遵循另行授权与预算。
 
 新增测试覆盖默认无写入、真实独立树中的 Python 检查与 Bash 参数展开、逐文件 SHA256、正文链接重定位且代码 fence 不变、输出不可覆盖、缺文件、路径穿越、symlink、敏感文件和大小拒绝。根代理负责在所有开发与运行结果更新后构建最终快照，并另行处理三个实际远端代码仓库；赛事提交等待用户通知。
+
+## 更新已有仓库，保留 Git 历史
+
+已初始化或 push 的仓库不能再次使用 `prepare_task_repositories.py --build` 覆盖。若希望完整保留一个新的离线快照，可先向新 stage004 父目录构建，然后人工审阅差异；若只需安全更新已有工作区，使用 `scripts/update_task_repositories.py`，它复用同一个源码/evidence allowlist，在内存生成新快照：
+
+```bash
+# 默认只打印逐文件 add/replace/remove 计划，不写工作区、不调用 Git。
+python scripts/update_task_repositories.py \
+  --repository-root E:/hg20261019/dist/repositories-stage003
+
+# session003 GPU 记录尚未纳入 task.evidence_files 时，可显式追加实际已有文件。
+# 示例文件名需换成真实存在路径；不存在会整体拒绝，不能跳过。
+python scripts/update_task_repositories.py \
+  --repository-root E:/hg20261019/dist/repositories-stage003 \
+  --extra-evidence evidence/真实的session003记录.json
+
+# 审阅计划后才显式更新；后续 git diff/add/commit/push 另行安排。
+python scripts/update_task_repositories.py \
+  --repository-root E:/hg20261019/dist/repositories-stage003 --apply
+```
+
+`--task` 可以只选择一题；`--extra-evidence` 可重复使用，路径只能位于当前源树的 evidence/docs/fixtures。它不是自动收集整个 evidence 目录，新的 GPU 材料应加入 task 的 `evidence_files` 或显式列出，防止混入无关记录。
+
+同步前校验唯一目标、`formal_ready=false`、`submitted=false` 和旧 manifest。已有文件必须仍匹配旧 manifest，或已与本次新来源字节完全一致，否则拒绝覆盖；新文件与本地未知文件冲突也拒绝。旧 manifest 已管理、而新快照不再需要的文件才可精确删除，其他未管理文件保留。`.git` 完全不读取/写入其内部内容，不运行 Git 命令、不 commit、不 push；只确认它是普通目录，拒绝 linked worktree 或 symlink。
+
+所有选中仓库和文件先统一预检，实际写入前再检查并发改动。每个文件通过同目录临时文件原子替换，最后重算并写 manifest，随后逐字节校验。若跨多个文件的更新被中断，保留现场；同一来源的完整匹配可重新计划继续，不自动回滚或清空目录。它不是跨三个仓库的文件系统事务。
+
+同步保留已有明确 `repository_url`、`image_reference`，当根源树仍未知时不会把真实值冲成空。仍不生成或猜测地址。单份 `.log` 默认不得超过 8 MiB，超出就要求先审阅归档，不自动截断或跳过；整件仍受 50 MiB 上限、敏感后缀、硬编码凭据、symlink 和 runtime/venv 排除规则保护。
+
+临时真实 Git 仓库测试覆盖 `.git` 字节不变、未管理文件保留、增删改与 manifest 更新、并发与手工编辑拒绝、额外证据缺失/敏感/大型日志拒绝，以及真实本地元数据保留。该同步工具未对 stage003 实仓库执行更新；最终 GPU 材料下载后，由根代理审阅计划并决定应用与二次提交。
+
+## Sourcefind 传输使用显式 LF 快照
+
+WebIDE 下载核对已发现部分 UTF-8 文本的 CRLF 被转为 LF，音频字节不变。为了让 GitHub、光合和下载校验使用同一份明确源快照，两工具都支持可选 `--normalize-text-lf`；默认不改变旧行为：
+
+```bash
+# 新目录：默认只做计划；明确 --build 才生成 LF 快照。
+python scripts/prepare_task_repositories.py \
+  --output-root E:/hg20261019/dist/repositories-stage004 --normalize-text-lf
+python scripts/prepare_task_repositories.py \
+  --output-root E:/hg20261019/dist/repositories-stage004 --normalize-text-lf --build
+
+# 已有仓库：先计划，再由操作者决定是否 --apply。
+python scripts/update_task_repositories.py \
+  --repository-root E:/hg20261019/dist/repositories-stage003 --normalize-text-lf
+python scripts/update_task_repositories.py \
+  --repository-root E:/hg20261019/dist/repositories-stage003 --normalize-text-lf --apply
+```
+
+只对明确文本后缀及 `.gitignore`、`.gitattributes`、`METADATA` 做严格 UTF-8 解码和无 NUL 校验，然后仅替换 CRLF 为 LF；单独 CR、BOM、其他正文不变。声明为文本但校验不通过则拒绝，不能静默转码。WAV、图片等二进制不因恰好可解码就变成文本，也不改字节。`.gitattributes` 仍保留 `* -text`，避免 Git 做额外转换。
+
+生成 `repository-normalization.json`，逐文件记录原始 SHA256、原始 bytes、归一化 SHA256、归一化 bytes、text/binary 类别和 changed；报告本身不自哈希，最终 manifest 会覆盖它及实际归一化后的所有 payload 字节。workspace 里的历史证据完全不改。增量器仍先用旧 manifest 校验旧工作区，再规划目标 LF 字节；不把任意本地修改当作换行变化放行。
+
+上传、下载核对必须对照这一显式 LF 快照及其新 manifest。原始来源哈希差异应由 normalization 报告解释，不能忽略下载差异或将原始 CRLF 哈希假装成 LF 哈希。后续同步继续使用同一 flag；去掉 flag 将按原始字节重新生成计划，不能误当作继续 LF 策略。

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import datetime as dt
 import hashlib
 import importlib.metadata
@@ -115,30 +116,55 @@ def configuration(task: Path) -> dict:
     return values
 
 
-def launch(task: Path, dry_run: bool) -> int:
+def checked_run_id(value: str | None) -> str | None:
+    if value is not None and (len(value) != 32 or any(char not in "0123456789abcdef" for char in value)):
+        raise ValueError("--run-id must contain exactly32 lowercase hexadecimal characters")
+    return value
+
+
+@contextmanager
+def control_lock(runtime: Path):
+    """Serialize launcher/stop state decisions separately from the service lifetime lock."""
+    import fcntl
+
+    runtime.mkdir(parents=True, exist_ok=True)
+    with (runtime / "control.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+
+
+def launch(task: Path, dry_run: bool, run_id: str | None = None) -> int:
+    run_id = checked_run_id(run_id)
     config = configuration(task)
     if dry_run:
+        if run_id is not None:
+            config["run_id"] = run_id
         print(json.dumps({"dry_run": True, **config}, ensure_ascii=False, indent=2))
         return 0
     if sys.platform != "linux":
         return fail("actual serving requires the Linux SCNet container; use --dry-run locally")
     if not Path(config["model_path"]).is_dir():
         return fail(f"model directory does not exist: {config['model_path']}")
-    if healthy(config["url"]):
-        return fail("the chosen port already has a healthy service; refusing to reuse or stop it")
     runtime = task / "runtime"
-    runtime.mkdir(parents=True, exist_ok=True)
     state_path = runtime / "state.json"
-    if state_path.exists():
-        previous = read(state_path)
-        if matches(previous.get("supervisor_pid", 0), previous.get("supervisor_token")):
-            return fail("this task already has a live supervisor; use stop.sh first")
-    config["run_id"] = uuid.uuid4().hex
-    config_path = runtime / f"config-{config['run_id']}.json"
-    dump(config_path, config)
-    with (runtime / "supervisor.log").open("a", encoding="utf-8") as log:
-        worker = subprocess.Popen([sys.executable, str(SCRIPT), "supervise", "--config", str(config_path)],
-            stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+    with control_lock(runtime):
+        if healthy(config["url"]):
+            return fail("the chosen port already has a healthy service; refusing to reuse or stop it")
+        if state_path.exists():
+            previous = read(state_path)
+            if matches(previous.get("supervisor_pid", 0), previous.get("supervisor_token")):
+                return fail("this task already has a live supervisor; use stop.sh first")
+            if matches(previous.get("server_pid", 0), previous.get("server_token")):
+                return fail("the recorded server is still alive; inspect state before launching")
+        config["run_id"] = run_id or uuid.uuid4().hex
+        config_path = runtime / f"config-{config['run_id']}.json"
+        # Caller identities are immutable; never replace an earlier run's configuration.
+        with config_path.open("x", encoding="utf-8") as handle:
+            json.dump(config, handle, ensure_ascii=False, indent=2)
+            handle.write("\n")
+        with (runtime / "supervisor.log").open("a", encoding="utf-8") as log:
+            worker = subprocess.Popen([sys.executable, str(SCRIPT), "supervise", "--config", str(config_path)],
+                stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
     ready = False
     previous_term_handler = signal.getsignal(signal.SIGTERM)
 
@@ -270,25 +296,29 @@ def supervise(config_path: Path) -> int:
     return exit_code
 
 
-def stop(task: Path) -> int:
+def stop(task: Path, run_id: str | None = None) -> int:
+    run_id = checked_run_id(run_id)
     path = task / "runtime" / "state.json"
     if not path.exists():
         print("No state file; no process was signaled.")
         return 0
-    state = read(path)
-    pid = state.get("supervisor_pid", 0)
-    if not matches(pid, state.get("supervisor_token")):
-        if matches(state.get("server_pid", 0), state.get("server_token")):
-            return fail("supervisor identity is gone but its recorded server is alive; inspect state before cleanup")
-        print("The recorded supervisor is no longer running; no process was signaled.")
-        return 0
-    command = Path(f"/proc/{pid}/cmdline").read_bytes().split(b"\0")
-    if str(SCRIPT).encode() not in command or b"supervise" not in command or str(state["config_path"]).encode() not in command:
-        return fail("supervisor command does not match this script and run config; refusing to signal")
-    config = read(Path(state["config_path"]))
-    if config["run_id"] != state["run_id"] or Path(config["task"]).resolve() != task:
-        return fail("run config does not belong to this task")
-    os.kill(pid, signal.SIGTERM)
+    with control_lock(path.parent):
+        state = read(path)
+        if run_id is not None and state.get("run_id") != run_id:
+            return fail("runtime run_id differs from --run-id; refusing to stop another run")
+        pid = state.get("supervisor_pid", 0)
+        if not matches(pid, state.get("supervisor_token")):
+            if matches(state.get("server_pid", 0), state.get("server_token")):
+                return fail("supervisor identity is gone but its recorded server is alive; inspect state before cleanup")
+            print("The recorded supervisor is no longer running; no process was signaled.")
+            return 0
+        command = Path(f"/proc/{pid}/cmdline").read_bytes().split(b"\0")
+        if str(SCRIPT).encode() not in command or b"supervise" not in command or str(state["config_path"]).encode() not in command:
+            return fail("supervisor command does not match this script and run config; refusing to signal")
+        config = read(Path(state["config_path"]))
+        if config["run_id"] != state["run_id"] or Path(config["task"]).resolve() != task:
+            return fail("run config does not belong to this task")
+        os.kill(pid, signal.SIGTERM)
     deadline = time.monotonic() + config["stop_grace"] + 10
     while matches(pid, state["supervisor_token"]) and time.monotonic() < deadline:
         time.sleep(0.1)
@@ -463,26 +493,42 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
             try:
                 code = process.wait(timeout=seconds)
             except subprocess.TimeoutExpired:
-                if sys.platform == "linux":
-                    try:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    except ProcessLookupError:
-                        pass
-                else:
-                    process.kill()
-                process.wait()
                 code = 124
                 entry["timed_out"] = True
+            except KeyboardInterrupt:
+                code = 130
+                entry["interrupted"] = True
             finally:
-                # A local evaluator must not leave worker descendants after exit.
+                # Reap the direct child even when wait() was interrupted. Also
+                # remove descendants left behind by an exited Linux evaluator.
                 if sys.platform == "linux":
                     try:
                         os.killpg(process.pid, signal.SIGKILL)
                     except ProcessLookupError:
                         pass
+                elif process.poll() is None:
+                    process.kill()
+                process.wait()
         entry.update(exit_code=code, ended_utc=stamp(), log_sha256=hashlib.sha256(log.read_bytes()).hexdigest())
         dump(record_path, record)
         return code
+
+    def snapshot_outputs(skip_unchanged_previous: bool = False) -> bool:
+        previous = {item["path"]: item["sha256"] for item in record["previous_outputs"]}
+        for path in output_files:
+            if path.is_file():
+                if path.is_symlink() or not path.resolve().is_relative_to(task):
+                    return False
+                raw = path.read_bytes()
+                digest = hashlib.sha256(raw).hexdigest()
+                if skip_unchanged_previous and previous.get(str(path)) == digest:
+                    continue
+                saved = run_dir / "outputs" / path.relative_to(task)
+                saved.parent.mkdir(parents=True, exist_ok=True)
+                saved.write_bytes(raw)
+                record["outputs"].append({"path": str(path), "snapshot": str(saved),
+                                          "bytes": len(raw), "sha256": digest})
+        return True
 
     # Preserve pre-existing results before selfcheck could write any output.
     archive = run_dir / "previous-outputs"
@@ -496,6 +542,10 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
     dump(record_path, record)
     if kind == "verify":
         code = step("selfcheck", plan["selfcheck_command"], selfcheck_timeout)
+        if record["steps"][-1].get("interrupted"):
+            safe = snapshot_outputs(skip_unchanged_previous=True)
+            record["partial_outputs_safe"] = safe
+            return finish("interrupted", "selfcheck interrupted; partial new outputs and previous outputs preserved separately", 130)
         if not unchanged():
             return finish("materials_changed", "script or baseline changed during selfcheck; evaluation not started", 2)
         if code:
@@ -508,16 +558,12 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
             path.unlink()
     dump(record_path, record)
     code = step("evaluation" if kind == "verify" else "benchmark", command, timeout)
-    for path in output_files:
-        if path.is_file():
-            if path.is_symlink() or not path.resolve().is_relative_to(task):
-                return finish("unsafe_output", "script produced an output outside the task directory", 2)
-            raw = path.read_bytes()
-            saved = run_dir / "outputs" / path.relative_to(task)
-            saved.parent.mkdir(parents=True, exist_ok=True)
-            saved.write_bytes(raw)
-            record["outputs"].append({"path": str(path), "snapshot": str(saved), "bytes": len(raw),
-                                      "sha256": hashlib.sha256(raw).hexdigest()})
+    safe = snapshot_outputs()
+    if record["steps"][-1].get("interrupted"):
+        record["partial_outputs_safe"] = safe
+        return finish("interrupted", "external execution interrupted; partial new outputs and previous outputs preserved separately", 130)
+    if not safe:
+        return finish("unsafe_output", "script produced an output outside the task directory", 2)
     if not unchanged():
         return finish("materials_changed", "script or baseline changed during execution", 2)
     if code:
@@ -549,8 +595,11 @@ def main() -> int:
     parser.add_argument("--task-dir", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--run-id", help="optional exact caller identity for launch/stop;32 lowercase hex characters")
     args = parser.parse_args()
     try:
+        if args.run_id is not None and args.action not in {"launch", "stop"}:
+            return fail("--run-id is only supported for launch/stop")
         if args.action == "supervise":
             if not args.config:
                 return fail("--config is required for the internal supervisor")
@@ -559,9 +608,9 @@ def main() -> int:
             return fail("--task-dir is required")
         task = args.task_dir.resolve()
         if args.action == "launch":
-            return launch(task, args.dry_run)
+            return launch(task, args.dry_run, args.run_id)
         if args.action == "stop":
-            return stop(task)
+            return stop(task, args.run_id)
         if args.action == "env":
             return environment(task)
         return official(task, args.action, args.dry_run)

@@ -113,6 +113,50 @@ def build_plan(args):
             "filesystem_mutated": False, "client_started": False, "rows": rows}
 
 
+def output_integrity(data, expected_requests, target_output_tokens):
+    """Check save-detailed evidence; HTTP/client success alone is insufficient."""
+    required = ("output_lens", "generated_texts", "errors", "total_output_tokens")
+    missing = [key for key in required if key not in data]
+    issues = []
+    arrays = {}
+    for key in required[:3]:
+        value = data.get(key)
+        arrays[key] = value if isinstance(value, list) else None
+        if key in data and (not isinstance(value, list) or len(value) != expected_requests):
+            issues.append({"field": key, "reason": "requires one list entry per request",
+                           "actual_entries": len(value) if isinstance(value, list) else None})
+    requests = []
+    for index in range(expected_requests):
+        item = {"index": index}
+        for field in required[:3]:
+            values = arrays[field]
+            value = values[index] if values is not None and index < len(values) else None
+            if field == "output_lens":
+                item["output_tokens"] = value
+                if type(value) is not int or value != target_output_tokens:
+                    issues.append({"request": index, "field": field, "reason": "output length differs from target", "actual": value})
+            elif field == "generated_texts":
+                item["generated_text_characters"] = len(value) if isinstance(value, str) else None
+                if not isinstance(value, str) or not value.strip():
+                    issues.append({"request": index, "field": field, "reason": "missing or empty generated text"})
+            else:
+                item["error"] = value[:1000] if isinstance(value, str) else value
+                if not isinstance(value, str) or value != "":
+                    issues.append({"request": index, "field": field, "reason": "request error is not an empty string"})
+        requests.append(item)
+    lengths = arrays["output_lens"]
+    actual_total = sum(lengths) if lengths is not None and all(type(value) is int for value in lengths) else None
+    reported = data.get("total_output_tokens")
+    expected_total = expected_requests * target_output_tokens
+    if "total_output_tokens" in data and (type(reported) is not int or reported != actual_total or reported != expected_total):
+        issues.append({"field": "total_output_tokens", "reason": "reported, per-request and target totals must match",
+                       "reported": reported, "sum_output_lens": actual_total, "expected": expected_total})
+    return {"verified": not missing and not issues, "status": "unverified" if missing else "failed" if issues else "verified",
+            "missing_fields": missing, "issues": issues, "requests": requests,
+            "reported_total_output_tokens": reported, "sum_output_lens": actual_total,
+            "expected_total_output_tokens": expected_total}
+
+
 def summarize(output, report):
     for round_ in (1, 2):
         rows = [row for row in report["rows"] if row["round"] == round_]
@@ -202,9 +246,16 @@ def execute(plan):
                 if not isinstance(data, dict):
                     raise ValueError("native result is not a JSON object")
                 row["metrics"] = {key: data[key] for key in METRICS if key in data}
+                integrity = output_integrity(data, row["expected_requests"], row["target_output_tokens"])
+                row["output_integrity"] = integrity
                 if row["status"] == "running":
-                    row["status"] = ("complete" if row["exit_code"] == 0 and data.get("completed") == row["expected_requests"]
-                                     and data.get("failed") == 0 else "incomplete_or_failed")
+                    if (row["exit_code"] != 0 or type(data.get("completed")) is not int
+                            or data["completed"] != row["expected_requests"] or type(data.get("failed")) is not int or data["failed"] != 0):
+                        row["status"] = "incomplete_or_failed"
+                    elif integrity["status"] == "unverified":
+                        row["status"] = "unverified_output_integrity"
+                    else:
+                        row["status"] = "complete" if integrity["verified"] else "incomplete_output_integrity"
             except (ValueError, UnicodeError) as exc:
                 row.update(status="invalid_native_json", error=str(exc))
         elif row["status"] == "running":

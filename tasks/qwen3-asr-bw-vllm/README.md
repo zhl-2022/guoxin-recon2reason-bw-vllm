@@ -2,7 +2,9 @@
 
 ## 1. 简介
 
-本目录适配原始 `Qwen/Qwen3-ASR-1.7B` checkpoint，属于 T04。2026-10-19 已在 BW 单卡完成 BF16 引擎启动、中文 8.395 秒和英文 6.17 秒的两条自有文本合成音转写；两条返回与本地原稿一致，参考原稿没有发送给模型。当前为功能验证完成，正式精度、性能和干净环境复跑尚未完成，不能据此声明可验收。
+本目录适配原始 `Qwen/Qwen3-ASR-1.7B` checkpoint，属于 T04。2026-10-20 的 session003 已在另一 BW 单卡实例新建任务隔离 venv、安装锁定依赖，并完成发布方中英示例派生的三条 WAV 转写和整文件上传后的 SSE 输出；任务服务随后停止并通过进程/端口清理核验。长样本为 39.260375 秒人工中英拼接，不能称自然连续长语音。正式 WER/CER、性能、最终交付镜像的干净环境验收仍未完成，`formal_ready=false`。完整结果见 [session003 ASR 实证报告](../../docs/session003-asr-results.md)。
+
+2026-10-19 的两条自有文本合成音转写历史仍保留：中文 8.395 秒、英文 6.17 秒，返回与本地原稿一致，参考原稿没有发送给模型。本轮发布方音频没有已核验人工参考，未沿用模型返回作为答案或计算 WER/CER。
 
 原始 `asr-preflight-001.json` 的 tokenizer.json 缺失失败原样保留；后续 `asr-preflight-002.json` 已按实际 legacy BPE 布局校验通过：vocab.json、merges.txt、tokenizer_config.json，无需伪造 tokenizer.json。两权重分片的 SHA256 与发布方 revision `7278e1e70fe206f11671096ffdd38061171dd6e5` 一致，共 708 个 BF16 张量、4,698,434,816 字节 payload。模型名称中的 1.7B 不代表全模型参数数，API 统计为 2,349,217,408 个 BF16 参数。
 
@@ -22,7 +24,7 @@
 | 实际服务 | `127.0.0.1:30002`，`qwen3-asr-1.7b`，BF16、TP=1、MAX_LEN=32768、显存比例 0.85、eager、max-num-seqs=4 |
 | 静态文本位置上限 | 嵌套 `thinker_config.text_config.max_position_embeddings=65536`；32768 已初始化，长音频尚未验证 |
 
-当前 native ASR 路径使用 librosa + soundfile，不要求为短 PCM WAV 安装 torchaudio / ffmpeg / PyAV。上一次实际补齐了 7 个缺失 CPU 包，原生受保护包的版本与路径保持一致，WAV 解码、重采样和音频依赖闭包检查通过，见 `evidence/asr-audio-validation-002.json`。
+当前 native ASR 路径使用 librosa + soundfile，不要求为短 PCM WAV 安装 torchaudio / ffmpeg / PyAV。session003 的新任务 venv 实际安装了 7 个锁定 CPU 包，12 个受保护原生包的版本与路径与 native-before 完全一致，WAV 解码、重采样和音频依赖闭包检查通过，见 [prepare 结果](../../evidence/asr-clean-prepare-003.json)、[安装记录](../../evidence/asr-audio-pip-install-003.log)和[原生前状态](../../evidence/asr-native-before-003.json)。历史 002 的准备记录没有改写。
 
 `native-stack.json` 固定实际原生版本；`requirements-extra.txt` 固定审核过的 7 个官方 PyPI wheel URL 与 SHA256。不安装 `qwen-asr[vllm]`，其 extra 会引入另一套框架版本，也不切换到 `-hf` 模型变体。
 
@@ -30,7 +32,7 @@
 
 当前 Transformers 5.5 在父类初始化期间提前读取 thinker 子配置，原生 ASR 类在之后才设置该字段，因此原始启动失败。项目局部 `vllm.general_plugins` 插件仅提前构造同值 child，再执行完整原生构造函数；不会关闭 token-ID 校验、替换权重、改 tokenizer 或改 site-packages。插件同时校验 Transformers 版本和原生 ASR 配置源码 SHA256；发生漂移时停止并要求复核。父进程及 EngineCore 的实际安装事件保存在第二轮服务日志。
 
-`run.sh` 现在统一启用已验证插件；`run_compat.sh` 为兼容别名。第一轮默认入口的失败日志仍保留，入口改变不表示旧失败已经通过。共享监督器与进程身份保护保持原样。后续若官方镜像修复原生类，需要复核并更新配置，不自动绕过源码保护。
+`run.sh` 现在统一启用已验证插件；`run_compat.sh` 为兼容别名。第一轮默认入口的失败日志仍保留，入口改变不表示旧失败已经通过。003 实际执行的监督器身份与原始快照已保留；后续增加显式 run ID 和清理校验的控制补丁仅完成 CPU 回归，见 [控制补丁记录](../../evidence/rules/session003-run-identity-cpu-004.json)。后续若官方镜像修复原生类，需要复核并更新配置，不自动绕过源码保护。
 
 ## 4. 环境准备与显式启动
 
@@ -55,7 +57,7 @@ bash smoke.sh --audio /实际短语音.wav
 bash stop.sh
 ```
 
-准备时仅在新建 `--system-site-packages` venv 内以 `--no-deps --require-hashes --only-binary=:all:` 安装缺失的锁定 wheel；不会动态解析或升级原生包。已存在的音频包如版本不符，或原生栈版本不同，将在安装前拒绝。安装后检查包版本与路径、依赖闭包、WAV 解码和重采样，以及兼容插件所需配置源码身份。原始记录写入 venv 的 `asr-prepare-evidence/`；失败目录保留供检查，不自动覆盖、删除或重试。新增准备入口目前只经过本地测试，尚未在新原生镜像执行。
+准备时仅在新建 `--system-site-packages` venv 内以 `--no-deps --require-hashes --only-binary=:all:` 安装缺失的锁定 wheel；不会动态解析或升级原生包。已存在的音频包如版本不符，或原生栈版本不同，将在安装前拒绝。安装后检查包版本与路径、依赖闭包、WAV 解码和重采样，以及兼容插件所需配置源码身份。原始记录写入 venv 的 `asr-prepare-evidence/`；失败目录保留供检查，不自动覆盖、删除或重试。session003 已在另一实例的同一原生栈实际执行新增准备流程并用新 venv 完成服务请求；这不是最终交付镜像的从零验收。
 
 已有历史 venv 可先做 CPU 验证，再显式使用；不要求重新安装：
 
@@ -71,18 +73,22 @@ bash run.sh
 
 ## 5. Smoke 测试
 
-独立标准库客户端上传本地 WAV 到 `/v1/audio/transcriptions`。输入要求单声道、16 kHz、PCM16、时长大于 0 且不超过 30 秒，不自动裁剪或重采样。
+独立标准库客户端上传本地 WAV 到 `/v1/audio/transcriptions`。默认输入要求单声道、16 kHz、PCM16、时长大于 0 且不超过 30 秒、文件最多 2 MiB；显式 `--long-audio` 开发模式放宽至 120 秒 / 4 MiB，编码要求不变，不自动裁剪或重采样。
 
 ```bash
 bash smoke.sh --audio /实际短语音.wav --dry-run
 bash smoke.sh --audio /实际短语音.wav
 # 仅在本地比较，参考文本不会放进请求。
 bash smoke.sh --audio /实际短语音.wav --expected-text "人工核对的文本"
+# 明确标记长音频开发模式，不能将拼接样本称为自然连续录音。
+bash smoke.sh --audio /已准备的长语音.wav --long-audio
 ```
 
 multipart 只有 `model`、`file`、`response_format=json`、`temperature=0`，不发送语言、prompt 或参考答案。先确认 `/v1/models`，仅向 loopback 请求，不跟随重定向或重试。JSONL 使用新文件名，拒绝覆盖；日志保存 SHA256 和音频元数据，不保存 WAV payload。非空转写只是接口功能证据，精确文本比较不等于 WER/CER；API 未提供 finish reason，不能据此保证没有截断。
 
-实际两条合成音结果见 `evidence/asr-vllm-smoke-zh-002.jsonl` 和 `asr-vllm-smoke-en-002.jsonl`。自然语音、长音频、噪声、多语种、流式协议与截断行为仍待验证。
+session003 的三条样本时长为 4.2039375、15.05125、39.260375 秒，均返回非空转写，见[中文](../../evidence/asr-vllm-smoke-zh-003.jsonl)、[英文](../../evidence/asr-vllm-smoke-en-003.jsonl)、[拼接长输入](../../evidence/asr-vllm-smoke-long-003.jsonl)。样本来源及 PCM24/48k→PCM16/16k、拼接过程见[fixture manifest](../../evidence/asr-fixture-manifest-003.json)。没有人工参考，响应未提供 finish reason，日志未截断不等于已证明模型没有截断。
+
+独立 `scripts/qwen3_asr_stream_smoke.py` 的默认模式只做计划，显式 `--run --log 新文件` 才向 loopback 上传完整 WAV 并读取 SSE。实际中文请求收到 12 个事件、`finish_reason=stop`、`[DONE]` 和 usage（65 prompt + 11 completion），原文保留 `language Chinese<asr_text>` 前缀，见[SSE 原始记录](../../evidence/asr-vllm-sse-zh-003.jsonl)。这是整文件音频上传后的输出流式，不是分块实时音频输入；自然连续长语音、噪声、多语种和实时输入仍待验证。
 
 ## 6. 精度测评
 
@@ -96,15 +102,19 @@ multipart 只有 `model`、`file`、`response_format=json`、`temperature=0`，�
 
 历史两次 HTTP 往返约 5.13 秒、0.82 秒，未预热，缓存和初始化条件不同，不能据此报告吞吐或 RTF。`bench.sh` 目前返回 2，不会将 ASR 送进 T02 图像六档压测。正式音频时长、batch、并发、流式延迟、预热和计分方式仍需完整 T04 方法。
 
+session003 中文、英文和拼接长音频 HTTP 往返分别约 4.889、1.807、4.204 秒；SSE 第一非空 delta 约 0.074 秒、输出流用时约 0.424 秒。它们是单次开发观测，未构成正式延迟、RTF 或吞吐评测。ASR 监督器实际从创建到停止约 168.077 秒；合并 RoboBrain+ASR 开发驱动的 547.572 秒不能全部算作 ASR 推理或卡时。
+
 ## 8. 待完成交付
 
 - [x] 原始权重、legacy BPE、BF16 加载和两条短 WAV 转写证据。
 - [x] 审核的 CPU wheel 锁、默认纯本地准备计划、显式 prepare + run 入口。
 - [x] 纯离线 development_only WER/CER 工具与短 WAV manifest 计划/检查；不是正式精度结果。
-- [ ] 新原生镜像中执行新增准备流程并完成干净环境复跑。
-- [ ] 自然语音、长音频与流式功能验证。
+- [x] 在另一实例同原生栈新建隔离 venv，执行新增准备流程并完成服务请求。
+- [x] 三条发布方派生 WAV（含人工拼接长输入）及完整 WAV SSE 输出验证。
+- [ ] 最终交付镜像的干净环境从零复跑。
+- [ ] 自然连续长语音、噪声、多语种和实时音频输入验证。
 - [ ] 正式 WER/CER、性能原始记录与适用门槛判定。
-- [ ] 保存最终镜像，取得完整 registry/repo:tag，整理依赖锁、报告和公开代码仓库。
+- [ ] 保存最终镜像，取得完整 registry/repo:tag，整理依赖锁、报告和代码仓库，核对评审访问权限；当前仓库保持 private。
 - [ ] 核对提交表材料并按用户最终提交安排完成提交。
 
-本目录仍标记 `adaptation_ready=false` 和 `official_accuracy=false`。准备脚本不会替代缺失的官方数据、baseline 和评测器，也不会自动发布或提交。
+本目录仍标记 `adaptation_ready=false`、`formal_ready=false` 和 `official_accuracy=false`。准备脚本不会替代缺失的官方数据、baseline 和评测器，也不会自动发布或提交。原始 runtime 快照已逐字节复制为扁平 evidence 文件，来源/目标 SHA256 与核查记录见 [copy provenance](../../evidence/asr-copy-provenance-003.json)，原件没有修改。仓库更新是否落库与赛事提交状态另行核对，不用本地报告推定提交成功。

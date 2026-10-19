@@ -32,7 +32,8 @@ class T02DevelopmentBenchTests(unittest.TestCase):
                              "name=get('--result-filename')\n"
                              "n=int(get('--num-prompts'))\n"
                              "p=Path(get('--result-dir'))/name\n"
-                             "p.write_text(json.dumps({'completed':n,'failed':0,'duration':0.01,'request_throughput':100,'output_throughput':1000}))\n"
+                             "p.write_text(json.dumps({'completed':n,'failed':0,'duration':0.01,'request_throughput':100,'output_throughput':1000,"
+                             "'output_lens':[1024]*n,'generated_texts':['mock output']*n,'errors':['']*n,'total_output_tokens':1024*n}))\n"
                              "print('native mock',name)\n", encoding="utf-8")
         self.base = ["--model-path", str(self.model), "--served-model-name", "test-recon",
                      "--output-dir", str(self.output), "--vllm-command-json", json.dumps([sys.executable, str(self.mock)])]
@@ -124,6 +125,49 @@ class T02DevelopmentBenchTests(unittest.TestCase):
         self.assertEqual(plan["requests_planned"], 8)
         self.assertFalse(plan["full_matrix"])
         self.assertEqual(plan["image_size"], [512, 512])
+
+    def altered_result(self, replacement):
+        source = self.mock.read_text()
+        self.mock.write_text(source.replace("p.write_text(json.dumps(", "data=")
+                            .replace("1024*n}))", "1024*n}\n" + replacement + "\np.write_text(json.dumps(data))"))
+
+    def test_empty_stream_is_rejected_even_if_native_success_counts_match(self):
+        self.altered_result("data['generated_texts'][0]=''\ndata['output_lens'][0]=0\ndata['total_output_tokens']-=1024")
+        self.assertEqual(self.run_driver("--run", "--load", "4096:1", "--round", "1"), 1)
+        row = json.loads((self.output / "run.json").read_text())["rows"][0]
+        self.assertEqual(row["status"], "incomplete_output_integrity")
+        self.assertEqual(row["output_integrity"]["requests"][0]["output_tokens"], 0)
+        self.assertEqual(row["output_integrity"]["requests"][0]["generated_text_characters"], 0)
+
+    def test_truncated_stream_is_rejected_with_actual_lengths_preserved(self):
+        self.altered_result("data['output_lens'][3]=31\ndata['total_output_tokens']-=993")
+        self.assertEqual(self.run_driver("--run", "--load", "4096:1", "--round", "1"), 1)
+        row = json.loads((self.output / "run.json").read_text())["rows"][0]
+        self.assertEqual(row["status"], "incomplete_output_integrity")
+        self.assertEqual(row["output_integrity"]["requests"][3]["output_tokens"], 31)
+
+    def test_missing_details_cannot_be_verified(self):
+        self.altered_result("del data['errors']")
+        self.assertEqual(self.run_driver("--run", "--load", "4096:1", "--round", "1"), 1)
+        row = json.loads((self.output / "run.json").read_text())["rows"][0]
+        self.assertEqual(row["status"], "unverified_output_integrity")
+        self.assertEqual(row["output_integrity"]["missing_fields"], ["errors"])
+
+    def test_wrong_list_count_and_total_are_rejected(self):
+        data = {"output_lens": [1024] * 7, "generated_texts": ["text"] * 8, "errors": [""] * 8, "total_output_tokens": 8192}
+        result = bench.output_integrity(data, 8, 1024)
+        self.assertFalse(result["verified"])
+        self.assertTrue(any(issue["field"] == "output_lens" and "actual_entries" in issue for issue in result["issues"]))
+        self.assertTrue(any(issue["field"] == "total_output_tokens" for issue in result["issues"]))
+
+    def test_request_errors_are_preserved_and_not_counted_complete(self):
+        self.altered_result("data['errors'][2]='SSE upstream error'")
+        self.assertEqual(self.run_driver("--run", "--load", "4096:1", "--round", "1"), 1)
+        row = json.loads((self.output / "run.json").read_text())["rows"][0]
+        self.assertEqual(row["status"], "incomplete_output_integrity")
+        self.assertEqual(row["output_integrity"]["requests"][2]["error"], "SSE upstream error")
+        original = json.loads(Path(row["native_result"]).read_text())
+        self.assertEqual(original["errors"][2], "SSE upstream error")
 
 
 if __name__ == "__main__":

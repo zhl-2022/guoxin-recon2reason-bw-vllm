@@ -2,7 +2,7 @@
   "schema_version": 1,
   "slug": "qwen3-asr-bw-vllm",
   "track": "T04",
-  "status": "short_wav_transcription_verified_with_explicit_tf55_config_compat",
+  "status": "isolated_prepare_publisher_wav_long_and_fullfile_sse_verified_formal_pending",
   "platform": {
     "provider": "SCNet",
     "region": "华中一区【A区】",
@@ -11,9 +11,14 @@
     "framework": "vllm",
     "precision": "bf16",
     "cards": 1,
-    "execution_policy": "20261019 historical single-card sequential run; future allocation requires explicit session authorization",
+    "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery",
     "instance_final_state": "stopped",
-    "checkpoint": "evidence/platform-checkpoint-20261019-002.json"
+    "checkpoint": "evidence/platform-checkpoint-20261020-003.json",
+    "historical_checkpoint": "evidence/platform-checkpoint-20261019-002.json",
+    "latest_instance_id": "2112237945233408001",
+    "latest_instance_final_state": "stopped",
+    "latest_instance_environment_saved": true,
+    "latest_state_source": "evidence/platform-checkpoint-20261020-003.json"
   },
   "model": {
     "id": "Qwen/Qwen3-ASR-1.7B",
@@ -90,7 +95,7 @@
     "source_notes": "docs/asr-preparation.md; original checkpoint, not -hf; do not install qwen-asr[vllm] into the current stack",
     "native_fork_asr_source_present": true,
     "native_fork_asr_source_evidence": "evidence/asr-probe-001.json",
-    "native_fork_asr_verification_scope": "actual BF16 engine and Chinese/English PCM WAV transcription; official accuracy not verified"
+    "native_fork_asr_verification_scope": "actual BF16 engine, isolated task venv prepare, publisher-derived zh/en/artificial39s PCM WAV and full-file SSE; no official accuracy or realtime input proof"
   },
   "service_candidate": {
     "served_name": "qwen3-asr-1.7b",
@@ -126,11 +131,13 @@
       "ffmpeg_required_for_initial_pcm_wav": false
     },
     "audio_environment": {
-      "python": "/root/private_data/venvs/qwen3-asr-audio-001/bin/python",
-      "report": "evidence/asr-audio-validation-002.json",
+      "python": "/root/private_data/guoxin-hackathon-20261020-session003/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python",
+      "report": "evidence/asr-clean-prepare-003.json",
       "protected_native_unchanged": true,
-      "installation_script_sha256_used": "5ea10013a1d31ffeef8d6ef8e15a7bc106b9e6975d5e19ac1febcadd210d7ed8",
-      "current_script_has_metadata_visibility_refinement": true
+      "protected_native_packages": 12,
+      "pip_install_log": "evidence/asr-audio-pip-install-003.log",
+      "locked_missing_wheels": "evidence/asr-audio-missing-wheels-003.txt",
+      "scope": "latest session003; new task-owned isolated venv on second Notebook same native stack"
     },
     "compatibility": {
       "opt_in": true,
@@ -147,6 +154,147 @@
       "reproduce": "tasks/qwen3-asr-bw-vllm/run.sh"
     },
     "functional_run": {
+      "ready": "evidence/asr-vllm-state-003.json",
+      "stopped": "evidence/asr-vllm-stopped-state-003.json",
+      "server_log": "evidence/asr-vllm-server-full-003.log",
+      "samples": [
+        "evidence/asr-vllm-smoke-zh-003.jsonl",
+        "evidence/asr-vllm-smoke-en-003.jsonl",
+        "evidence/asr-vllm-smoke-long-003.jsonl"
+      ],
+      "sample_scope": "three publisher-derived WAVs; 39.260375s is artificial concatenation, not natural continuous speech; no known independent references",
+      "exact_text_observed_by_local_comparison": null,
+      "finish_reason_available": false,
+      "sse_report": "evidence/asr-vllm-sse-zh-003.jsonl",
+      "sse_finish_reason_stop_observed": true,
+      "sse_audio_uploaded_as_one_file": true,
+      "realtime_audio_input_verified": false,
+      "cleanup_verified": true,
+      "official_accuracy": false,
+      "official_performance": false
+    },
+    "preparation": {
+      "entrypoint": "tasks/qwen3-asr-bw-vllm/prepare.sh",
+      "default_mode": "local_plan_only_no_downloads_or_writes",
+      "apply_mode": "new_isolated_system_site_packages_venv_locked_cpu_wheels",
+      "requirements": "tasks/qwen3-asr-bw-vllm/requirements-extra.txt",
+      "native_stack": "tasks/qwen3-asr-bw-vllm/native-stack.json",
+      "validated_on_new_native_image": true,
+      "no_automatic_service_start": true,
+      "validation_scope": "new task-owned isolated venv on another Notebook using the same observed native image stack; not final submission-image clean-room acceptance",
+      "validation_report": "evidence/asr-clean-prepare-003.json",
+      "installation_log": "evidence/asr-audio-pip-install-003.log",
+      "native_before": "evidence/asr-native-before-003.json",
+      "native_versions_and_roots_unchanged": true,
+      "protected_packages": 12,
+      "locked_wheels_installed": 7
+    },
+    "extra_args": [
+      "--enforce-eager",
+      "--max-num-seqs",
+      "4"
+    ],
+    "extra_args_source": "evidence/asr-vllm-state-002.json actual successful command",
+    "session003": {
+      "report": "docs/session003-asr-results.md",
+      "audit_and_copy_provenance": "evidence/asr-copy-provenance-003.json",
+      "archive_sha256": "61dae05b974e3b0151e90885818493bfe27f461c58125f529eae1c79cbcba9fd",
+      "run_id": "6b00889feafc4ea1af2133b5c4a3317a",
+      "venv": "/root/private_data/guoxin-hackathon-20261020-session003/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python",
+      "ready": "evidence/asr-vllm-state-003.json",
+      "stopped": "evidence/asr-vllm-stopped-state-003.json",
+      "server_log": "evidence/asr-vllm-server-full-003.log",
+      "config": "evidence/asr-vllm-config-003.json",
+      "env_report": "evidence/asr-vllm-env-003.log",
+      "max_runtime_override_seconds": 1800,
+      "runtime_seconds": 168.077,
+      "cleanup_verified": true,
+      "functional_samples": [
+        {
+          "id": "zh_16000_pcm16",
+          "path": "fixtures/asr/development-20261020/zh_16000_pcm16.wav",
+          "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+          "bytes": 134570,
+          "frames": 67263,
+          "duration_seconds": 4.2039375,
+          "http_round_trip_seconds": 4.889441492035985,
+          "returned_characters": 14,
+          "response_text_log_truncated": false,
+          "finish_reason_available": false,
+          "transcription_nonempty": true,
+          "reference_text": null,
+          "wer_cer_computed": false,
+          "official_accuracy": false
+        },
+        {
+          "id": "en_16000_pcm16",
+          "path": "fixtures/asr/development-20261020/en_16000_pcm16.wav",
+          "sha256": "64e219123047e533c1c1dbb446cb04873ff8c72a2ff20e24ae9d84664d9b455f",
+          "bytes": 481684,
+          "frames": 240820,
+          "duration_seconds": 15.05125,
+          "http_round_trip_seconds": 1.8073552479036152,
+          "returned_characters": 188,
+          "response_text_log_truncated": false,
+          "finish_reason_available": false,
+          "transcription_nonempty": true,
+          "reference_text": null,
+          "wer_cer_computed": false,
+          "official_accuracy": false
+        },
+        {
+          "id": "zh_en_repeated_39s",
+          "path": "fixtures/asr/development-20261020/zh_en_repeated_39s.wav",
+          "sha256": "b403449966b68821ea1f43d01d1399733f622201cdb57bfe3e43a98343b339c1",
+          "bytes": 1256376,
+          "frames": 628166,
+          "duration_seconds": 39.260375,
+          "http_round_trip_seconds": 4.204147764015943,
+          "returned_characters": 393,
+          "response_text_log_truncated": false,
+          "finish_reason_available": false,
+          "transcription_nonempty": true,
+          "reference_text": null,
+          "wer_cer_computed": false,
+          "official_accuracy": false
+        }
+      ],
+      "fullfile_sse": {
+        "report": "evidence/asr-vllm-sse-zh-003.jsonl",
+        "audio_uploaded_as_one_file": true,
+        "events": 12,
+        "done_marker_received": true,
+        "finish_reasons": [
+          "stop"
+        ],
+        "usage": {
+          "prompt_tokens": 65,
+          "completion_tokens": 11,
+          "total_tokens": 76
+        },
+        "first_nonempty_delta_seconds": 0.07438341015949845,
+        "stream_duration_seconds": 0.42363550001755357,
+        "raw_prefix_stripped": false,
+        "raw_prefix_present": true,
+        "realtime_audio_input_verified": false,
+        "official_latency": false
+      },
+      "combined_robo_asr_driver_wall_seconds": 547.5722765130922,
+      "combined_wall_is_asr_inference_or_billing_time": false,
+      "platform_shutdown_reported_by_root": true,
+      "platform_ui_proof_in_this_asr_audit": false,
+      "official_accuracy": false,
+      "official_performance": false,
+      "formal_ready": false
+    },
+    "historical_audio_environment_002": {
+      "python": "/root/private_data/venvs/qwen3-asr-audio-001/bin/python",
+      "report": "evidence/asr-audio-validation-002.json",
+      "protected_native_unchanged": true,
+      "installation_script_sha256_used": "5ea10013a1d31ffeef8d6ef8e15a7bc106b9e6975d5e19ac1febcadd210d7ed8",
+      "current_script_has_metadata_visibility_refinement": true
+    },
+    "historical_functional_run_002": {
       "ready": "evidence/asr-vllm-state-002.json",
       "stopped": "evidence/asr-vllm-stopped-state-002.json",
       "server_log": "evidence/asr-vllm-server-full-002.log",
@@ -157,22 +305,7 @@
       "sample_scope": "two own-text synthetic Windows TTS WAVs; no WER/CER; references not sent",
       "exact_text_observed_by_local_comparison": true,
       "finish_reason_available": false
-    },
-    "preparation": {
-      "entrypoint": "tasks/qwen3-asr-bw-vllm/prepare.sh",
-      "default_mode": "local_plan_only_no_downloads_or_writes",
-      "apply_mode": "new_isolated_system_site_packages_venv_locked_cpu_wheels",
-      "requirements": "tasks/qwen3-asr-bw-vllm/requirements-extra.txt",
-      "native_stack": "tasks/qwen3-asr-bw-vllm/native-stack.json",
-      "validated_on_new_native_image": false,
-      "no_automatic_service_start": true
-    },
-    "extra_args": [
-      "--enforce-eager",
-      "--max-num-seqs",
-      "4"
-    ],
-    "extra_args_source": "evidence/asr-vllm-state-002.json actual successful command"
+    }
   },
   "audio_protocol": {
     "endpoint": "/v1/audio/transcriptions",
@@ -192,7 +325,27 @@
       "automatic_conversion": false
     },
     "expected_text": "optional local diagnostic only; never included in request",
-    "official_metric_verified": false
+    "official_metric_verified": false,
+    "fullfile_sse_output": {
+      "verified": true,
+      "report": "evidence/asr-vllm-sse-zh-003.jsonl",
+      "whole_audio_file_uploaded_first": true,
+      "events": 12,
+      "finish_reasons": [
+        "stop"
+      ],
+      "done_marker_received": true,
+      "raw_asr_prefix_stripped": false,
+      "realtime_audio_input_verified": false
+    },
+    "long_audio_development_input": {
+      "explicit_flag": "--long-audio",
+      "client_max_seconds": 120,
+      "client_max_bytes": 4194304,
+      "actual_verified_seconds": 39.260375,
+      "actual_scope": "artificial zh,en,zh,en concatenation with 0.25s gaps; not natural continuous recording",
+      "official_model_maximum_claimed": false
+    }
   },
   "official": {
     "claim": {
@@ -247,12 +400,63 @@
     "evidence/asr-vllm-smoke-zh-002.jsonl",
     "evidence/asr-vllm-smoke-en-002.jsonl",
     "evidence/asr-vllm-server-full-002.log",
-    "evidence/platform-checkpoint-20261019-002.json"
+    "evidence/platform-checkpoint-20261019-002.json",
+    "docs/session003-asr-results.md",
+    "evidence/asr-copy-provenance-003.json",
+    "evidence/asr-clean-prepare-003.json",
+    "evidence/asr-native-before-003.json",
+    "evidence/asr-audio-pip-install-003.log",
+    "evidence/asr-audio-missing-wheels-003.txt",
+    "evidence/asr-vllm-env-003.log",
+    "evidence/asr-vllm-state-003.json",
+    "evidence/asr-vllm-stopped-state-003.json",
+    "evidence/asr-vllm-config-003.json",
+    "evidence/asr-vllm-server-full-003.log",
+    "evidence/asr-vllm-supervisor-003.log",
+    "evidence/asr-vllm-smoke-zh-003.jsonl",
+    "evidence/asr-vllm-smoke-en-003.jsonl",
+    "evidence/asr-vllm-smoke-long-003.jsonl",
+    "evidence/asr-vllm-sse-zh-003.jsonl",
+    "evidence/asr-session-driver-report-003.json",
+    "evidence/asr-fixture-manifest-003.json",
+    "evidence/session003/robo-asr/sources/scripts/session003_robo_asr_checks.py",
+    "evidence/session003/robo-asr/sources/scripts/recon2reason_runtime.py",
+    "evidence/session003/robo-asr/sources/scripts/qwen3_asr_smoke.py",
+    "evidence/session003/robo-asr/sources/scripts/qwen3_asr_stream_smoke.py",
+    "evidence/session003/robo-asr/sources/scripts/qwen_asr_tf55_compat.py",
+    "evidence/session003/robo-asr/sources/scripts/prepare_qwen_asr_task.py",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/bench.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/env.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/prepare.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/verify.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/env_check.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/run.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/run_compat.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/smoke.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/stop.sh",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/task.json",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/requirements-extra.txt",
+    "evidence/session003/robo-asr/sources/tasks/qwen3-asr-bw-vllm/native-stack.json",
+    "evidence/session003/robo-asr/sources/fixtures/asr/development-20261020/manifest.json",
+    "fixtures/asr/development-20261020/manifest.json",
+    "fixtures/asr/development-20261020/zh_16000_pcm16.wav",
+    "fixtures/asr/development-20261020/en_16000_pcm16.wav",
+    "fixtures/asr/development-20261020/zh_en_repeated_39s.wav",
+    "evidence/rules/session003-run-identity-cpu-004.json",
+    "evidence/local-tests-session003-final-001.log",
+    "evidence/local-validation-session003-final-001.json",
+    "evidence/rules/asr-sse-integrity-cpu-004.json",
+    "evidence/local-tests-session003-final-002.log",
+    "evidence/local-validation-session003-final-002.json",
+    "evidence/community-metadata-003.json",
+    "evidence/platform-checkpoint-20261020-003.json",
+    "evidence/screenshots/notebooks-stopped-final-003.png",
+    "evidence/screenshots/balance-after-stop-003.png"
   ],
   "required_metrics": [
     "official-T04-asr-metric-and-normalization-pending"
   ],
-  "notes": "708 BF16 tensors and two upstream-identical weight hashes verified. Original preflight001 failure preserved; 002 validates real legacy BPE. Seven missing CPU audio packages installed in isolated venv; native package versions/paths unchanged. Baseline service001 failed at TF5.5 child initialization. Explicit guarded project-local plugin preinitializes thinker, observed in API and EngineCore; run002 loaded BF16 and returned matching Chinese/English own synthetic transcripts, then stopped. No official accuracy/performance/acceptance claim.",
+  "notes": "708 BF16 tensors and two upstream-identical weight hashes verified. Original preflight001 failure preserved; 002 validates real legacy BPE. Seven missing CPU audio packages installed in isolated venv; native package versions/paths unchanged. Baseline service001 failed at TF5.5 child initialization. Explicit guarded project-local plugin preinitializes thinker, observed in API and EngineCore; run002 loaded BF16 and returned matching Chinese/English own synthetic transcripts, then stopped. No official accuracy/performance/acceptance claim. Session003 rebuilt a new isolated venv on a second Notebook, verified all 12 native version/path identities and seven locked wheels, completed three publisher-derived WAVs including artificial 39.260375s concatenation and full-file SSE output. No publisher reference invented or WER/CER computed; current run stopped with owned process/port cleanup verified. Raw runtime evidence copied byte-identically to flat names with provenance; original session snapshots untouched. No repository commit/push or contest submission claimed by this audit.",
   "adaptation_ready": false,
   "official_accuracy": false,
   "development_tools": {
@@ -271,5 +475,8 @@
       "baseline_generated": false,
       "threshold_or_pass_generated": false
     }
-  }
+  },
+  "formal_ready": false,
+  "official_performance": false,
+  "submitted": false
 }

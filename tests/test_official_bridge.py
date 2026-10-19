@@ -65,6 +65,37 @@ class OfficialBridgeTests(unittest.TestCase):
     def events(self):
         return (self.task / "events.txt").read_text().splitlines()
 
+    def interrupt_wait_for_phase(self, phase):
+        """Interrupt a real CPU child after its deterministic output marker."""
+        popen = runtime.subprocess.Popen
+        self.interrupted_processes = []
+
+        def start(argv, *args, **kwargs):
+            process = popen(argv, *args, **kwargs)
+            actual_phase = "selfcheck" if "--selfcheck" in argv else "evaluation"
+            if actual_phase != phase:
+                return process
+            self.interrupted_processes.append(process)
+            original_wait = process.wait
+            interrupted = False
+
+            def wait(*wait_args, **wait_kwargs):
+                nonlocal interrupted
+                if not interrupted:
+                    marker = self.task / "interrupt.ready"
+                    deadline = time.monotonic() + 5
+                    while not marker.is_file() and process.poll() is None and time.monotonic() < deadline:
+                        time.sleep(0.01)
+                    self.assertTrue(marker.is_file(), "CPU fixture did not reach interruption marker")
+                    interrupted = True
+                    raise KeyboardInterrupt
+                return original_wait(*wait_args, **wait_kwargs)
+
+            process.wait = wait
+            return process
+
+        return patch.object(runtime.subprocess, "Popen", side_effect=start)
+
     def test_selfcheck_first_opaque_baseline_and_unknown_result_never_become_pass(self):
         self.assertEqual(self.execute(), 0)
         self.assertEqual(self.events(), ["selfcheck", "evaluation"])
@@ -167,6 +198,72 @@ class OfficialBridgeTests(unittest.TestCase):
         self.assertEqual(record["status"], "execution_failed")
         self.assertTrue(record["steps"][-1]["timed_out"])
         self.assertIn("partial stdout", Path(record["steps"][-1]["log"]).read_text())
+
+    def test_evaluation_interrupt_is_terminal_reaps_child_and_preserves_partial_and_old_results(self):
+        old = self.task / "verify_result.json"
+        old.write_bytes(b"previous report bytes")
+        self.make_script(evaluation=
+                         "Path('verify_result.json').write_text(json.dumps({'partial':True}))\n"
+                         "if os.name=='posix':\n"
+                         "    child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'])\n"
+                         "    Path('child.pid').write_text(str(child.pid))\n"
+                         "print('partial interrupted stdout',flush=True)\n"
+                         "Path('interrupt.ready').write_text('ready')\ntime.sleep(60)")
+        with self.interrupt_wait_for_phase("evaluation"):
+            self.assertEqual(self.execute(), 130)
+        record = self.record()
+        self.assertEqual(record["status"], "interrupted")
+        self.assertFalse(record["official_acceptance"])
+        self.assertTrue(record["ended_utc"])
+        self.assertEqual(self.events(), ["selfcheck", "evaluation"])
+        stage = record["steps"][-1]
+        self.assertEqual(stage["exit_code"], 130)
+        self.assertTrue(stage["interrupted"])
+        self.assertTrue(stage["ended_utc"])
+        self.assertTrue(stage["log_sha256"])
+        self.assertTrue(record["partial_outputs_safe"])
+        self.assertIn("partial interrupted stdout", Path(stage["log"]).read_text())
+        self.assertEqual(Path(record["previous_outputs"][0]["archive"]).read_bytes(), b"previous report bytes")
+        self.assertEqual(json.loads(Path(record["outputs"][0]["snapshot"]).read_text()), {"partial": True})
+        self.assertEqual(json.loads(old.read_text()), {"partial": True})
+        self.assertTrue(all(process.returncode is not None for process in self.interrupted_processes))
+        if sys.platform == "linux":
+            child_pid = int((self.task / "child.pid").read_text())
+            for _ in range(20):
+                if runtime.process_token(child_pid) is None:
+                    break
+                time.sleep(0.05)
+            self.assertIsNone(runtime.process_token(child_pid), "interrupted evaluator descendant remains live")
+
+    def test_selfcheck_interrupt_preserves_old_report_without_relabeling_it_as_new(self):
+        old = self.task / "verify_result.json"
+        old.write_bytes(b"previous untouched report")
+        self.make_script(selfcheck="Path('interrupt.ready').write_text('ready')\ntime.sleep(60)")
+        with self.interrupt_wait_for_phase("selfcheck"):
+            self.assertEqual(self.execute(), 130)
+        record = self.record()
+        self.assertEqual(record["status"], "interrupted")
+        self.assertEqual(self.events(), ["selfcheck"])
+        self.assertEqual(record["steps"][0]["exit_code"], 130)
+        self.assertTrue(record["steps"][0]["ended_utc"])
+        self.assertEqual(record["outputs"], [])
+        self.assertEqual(old.read_bytes(), b"previous untouched report")
+        self.assertEqual(Path(record["previous_outputs"][0]["archive"]).read_bytes(), b"previous untouched report")
+        self.assertTrue(all(process.returncode is not None for process in self.interrupted_processes))
+
+    def test_selfcheck_interrupt_snapshots_changed_partial_report_separately(self):
+        old = self.task / "verify_result.json"
+        old.write_bytes(b"previous selfcheck report")
+        self.make_script(selfcheck="Path('verify_result.json').write_text('{\"partial_selfcheck\":true}')\n"
+                                  "Path('interrupt.ready').write_text('ready')\ntime.sleep(60)")
+        with self.interrupt_wait_for_phase("selfcheck"):
+            self.assertEqual(self.execute(), 130)
+        record = self.record()
+        self.assertEqual(record["status"], "interrupted")
+        self.assertEqual(self.events(), ["selfcheck"])
+        self.assertEqual(Path(record["previous_outputs"][0]["archive"]).read_bytes(), b"previous selfcheck report")
+        self.assertEqual(json.loads(Path(record["outputs"][0]["snapshot"]).read_text()), {"partial_selfcheck": True})
+        self.assertTrue(record["partial_outputs_safe"])
 
     @unittest.skipUnless(sys.platform == "linux", "Linux process-group cleanup")
     def test_selfcheck_timeout_kills_its_child_process_group(self):
