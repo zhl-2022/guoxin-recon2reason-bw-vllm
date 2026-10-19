@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "slug": "recon2reason-bw-vllm",
+  "track": "T02",
+  "status": "functional_verified",
+  "platform": {
+    "provider": "SCNet",
+    "region": "华中一区【A区】",
+    "resource_group": "113 / hx1hgbwnormal",
+    "card": "BW",
+    "framework": "vllm",
+    "precision": "bf16",
+    "cards": 1,
+    "instance_id": "2112186448839770114",
+    "instance_status_observed": "stopped",
+    "instance_status_source": "evidence/platform-checkpoint-20261019-002.json",
+    "instance_status_observed_at_utc": "2026-10-19T15:39:32.327873+00:00",
+    "configured_stop_at": "2026-10-20T00:00:00+08:00",
+    "configured_stop_deadline_verified": true,
+    "actual_stop_observed": true,
+    "instance_final_state": "stopped",
+    "checkpoint": "evidence/platform-checkpoint-20261019-002.json"
+  },
+  "model": {
+    "id": "BAAI/Recon2Reason-Reasoning-4B",
+    "scnet_url": "https://www.scnet.cn/ui/aihub/models/sugon_scnet/Recon2Reason-Reasoning-4B",
+    "expected_architecture": "Qwen3VLForConditionalGeneration",
+    "config_path": "evidence/model-config.json",
+    "remote_path": "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B"
+  },
+  "image_candidate": {
+    "platform_name": "jupyter-vllm018-ubuntu22.04-dtk26.04-qwen3.6-20260423",
+    "platform_reported_size_gb": 51.64,
+    "platform_reported_metadata": {
+      "torch": "2.9",
+      "python": "3.10",
+      "dtk": "26.04"
+    },
+    "registry_address": null,
+    "digest": null,
+    "actual_run_verified": true,
+    "actual_run_verification_scope": "one BF16 vLLM run reached health readiness and passed seven functional checks; no image digest, semantic quality, official accuracy or performance acceptance",
+    "image_identity_digest_verified": false
+  },
+  "environment_probe": {
+    "evidence": "evidence/vllm-probe-001.json",
+    "environment_verified": true,
+    "verification_scope": "metadata, bounded isolated imports/help, selected package sources; no model load/install",
+    "finished_at_utc": "2026-10-19T14:29:42.389477+00:00",
+    "python": "3.10.12",
+    "executable": "/usr/bin/python3",
+    "packages": {
+      "torch": "2.10.0+das.opt1.dtk2604.20260325.g6b060a",
+      "torchvision": "0.25.0+das.opt1.dtk2604.torch2100.20260325.g860505",
+      "transformers": "5.5.0",
+      "vllm": "0.18.1+das.fa71803.dtk2604",
+      "vllm-hcu": "0.18.1+das.dtk2604",
+      "triton": "3.6.0+gitc73250c4.staging",
+      "flash-attn": "2.8.3+das.opt1.dtk2604.torch2100.20260330.g3f0061",
+      "lightop": "0.6.0+das.dtk2604.torch2100.2604101656.g193111",
+      "aiter": "0.1.2+das.opt1.dtk2604.torch2100.2604212021.gd52133"
+    },
+    "hip": "6.3.26093",
+    "current_platform": {
+      "class": "HCUPlatform",
+      "module": "vllm_hcu.platforms.hcu",
+      "device_type": "cuda",
+      "device_name": "hip",
+      "dispatch_key": "CUDA"
+    },
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "name": "BW",
+        "total_memory_bytes": 68702699520,
+        "gcn_arch_name": "gfx936:sramecc+:xnack-",
+        "major": 9,
+        "minor": 3
+      }
+    ],
+    "imports_passed": [
+      "torch",
+      "torchvision",
+      "flash_attn",
+      "vllm"
+    ],
+    "api_server_cli_help_passed": true,
+    "official_framework_service": false,
+    "official_accuracy": false
+  },
+  "serving_observation": {
+    "state": "functional_verified",
+    "started_at": "2026-10-19T14:31:16.726989+00:00",
+    "source": "evidence/vllm-state-001.json and evidence/vllm-smoke-001.jsonl",
+    "model_load_success_verified": true,
+    "health_ready_verified": true,
+    "functional_smoke_passed": true,
+    "ready_at_utc": "2026-10-19T14:33:59.426998+00:00",
+    "functional_smoke_completed_at_utc": "2026-10-19T14:34:20.861488+00:00",
+    "run_id": "696971ccb2294c788b99840c3c6ce859",
+    "url": "http://127.0.0.1:30000",
+    "max_runtime_seconds": 4500,
+    "actual_command": [
+      "/usr/bin/python3",
+      "-m",
+      "vllm.entrypoints.openai.api_server",
+      "--model",
+      "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+      "--served-model-name",
+      "recon2reason-reasoning-4b",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "30000",
+      "--tensor-parallel-size",
+      "1",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--enforce-eager",
+      "--max-num-seqs",
+      "4",
+      "--limit-mm-per-prompt",
+      "{\"image\":2,\"video\":0}"
+    ],
+    "official_accuracy": false,
+    "official_performance": false,
+    "semantic_acceptance_verified": false,
+    "functional_smoke": {
+      "evidence": "evidence/vllm-smoke-001.jsonl",
+      "text_evidence": "evidence/vllm-smoke-001.txt",
+      "cases": [
+        {
+          "case": "health",
+          "passed": true
+        },
+        {
+          "case": "models",
+          "passed": true
+        },
+        {
+          "case": "single_image",
+          "passed": true
+        },
+        {
+          "case": "multiple_images",
+          "passed": true
+        },
+        {
+          "case": "multiturn_first",
+          "passed": true
+        },
+        {
+          "case": "multiturn_followup",
+          "passed": true
+        },
+        {
+          "case": "streaming_image",
+          "passed": true
+        }
+      ],
+      "nonstream_completion_tokens": {
+        "single_image": 9,
+        "multiple_images": 40,
+        "multiturn_first": 9,
+        "multiturn_followup": 9
+      },
+      "all_nonstream_finish_stop": true,
+      "stream_finish_reasons": [
+        "stop"
+      ],
+      "any_answer_truncated": false,
+      "semantic_caveat": "Two images distinguish red first and blue second; the position follow-up repeats the object without sufficient localization. Functional pass only."
+    }
+  },
+  "official": {
+    "image_reference": null,
+    "claim": {
+      "confirmed": false,
+      "reference": null
+    },
+    "baseline": {
+      "artifact": "official-baseline"
+    },
+    "evaluator": {
+      "artifact": "official-evaluator"
+    },
+    "dataset": {
+      "artifact": "official-dataset"
+    },
+    "image_digest": null
+  },
+  "artifacts": [],
+  "accuracy": {
+    "metric": "official-task-specific-pending",
+    "confirmed": false,
+    "configuration_note": "Metric, direction and tolerance must be replaced from the actual Recon2Reason task evaluation package; numeric defaults below are not a confirmed competition gate.",
+    "direction": "higher",
+    "drop_mode": "full_scale_points",
+    "max_drop": 2,
+    "full_scale": 1000,
+    "baseline": null
+  },
+  "budget": {
+    "cards": 1,
+    "wall_hours": 1.25,
+    "total_card_hours": 497.1058333333,
+    "used_card_hours": 0.7125,
+    "snapshot_note": "historical platform balance differences through stopped checkpoint002; refresh before future launch",
+    "snapshot_is_live": false
+  },
+  "evidence_files": [
+    "docs/rules-evidence.md",
+    "evidence/scnet-preflight.json",
+    "evidence/reference-gpu-002.json",
+    "evidence/vllm-probe-001.json",
+    "evidence/rules/runtime-local-validation.json",
+    "evidence/vllm-state-001.json",
+    "evidence/vllm-smoke-001.jsonl",
+    "evidence/vllm-smoke-001.txt",
+    "evidence/platform-checkpoint-20261019-002.json"
+  ],
+  "required_metrics": [
+    "official-task-specific-metrics-pending"
+  ],
+  "notes": "历史实例2112186448839770114已完成一次单卡BF16 vLLM运行：2026-10-19 22:31:16 UTC+8启动，22:33:59就绪，22:34:20七项功能检查通过，无截断。actual_run_verified只指这次功能运行，未证明空间推理语义、官方精度或性能；多轮位置追问未充分定位。服务停止见vllm-stopped-state-001.json，平台保存环境后已关机见checkpoint002。2026-10-20已将本题默认参数与成功命令统一，并以RECON2REASON_*隔离覆盖；此整理未开卡。仍缺本模型正式指标、baseline/evaluator/data，以及可供评审获取的完整镜像地址/tag；digest为可选复现补充，不把认领回执当作开工条件。预算余额为历史快照；默认服务监督上限4500秒不停止Notebook计费。"
+}

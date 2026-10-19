@@ -1,0 +1,933 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-10-19T16:36:04.669613+00:00",
+  "scope": "local Linux/WSL shell syntax, dry-run configuration and Recon entry regressions",
+  "python": "3.12.3",
+  "commands": [
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/bench.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/bench.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/env.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/env.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/env_check.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/env_check.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/run.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/smoke.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/smoke.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/stop.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/stop.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/recon2reason-bw-vllm/verify.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/verify.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/bench.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/bench.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/env.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/env.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/env_check.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/env_check.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/protocol_smoke.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/protocol_smoke.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/run_baseline.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run_baseline.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/run_compat.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run_compat.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/smoke.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/smoke.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/stop.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/stop.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/robobrain-bw-vllm/verify.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/verify.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/bench.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/bench.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/env.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/env.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/env_check.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/env_check.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/prepare.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/prepare.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/run.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/run_compat.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/run_compat.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/smoke.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/smoke.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/stop.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/stop.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "syntax tasks/qwen3-asr-bw-vllm/verify.sh",
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/verify.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": ""
+    },
+    {
+      "label": "recon2reason-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/recon2reason-bw-vllm/run.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "b7b70b8f743e546134d804cf87532e0222dba70137c23ac2276c416568537bc3",
+      "stdout_characters": 1259,
+      "stderr": ""
+    },
+    {
+      "label": "robobrain-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "5c0f424c8d58670e67de6cc06a9f995b80096e4e5a02202366d89b97207b2713",
+      "stdout_characters": 1460,
+      "stderr": ""
+    },
+    {
+      "label": "qwen3-asr-bw-vllm/run.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/run.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "a5274799e718ba44d757a90bd7e73aa415f74ddbd2ad31e0edf4d1c5dd81430f",
+      "stdout_characters": 1054,
+      "stderr": "Prepared Python absent: /mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python; using base Python for argument preview only.\n"
+    },
+    {
+      "label": "robobrain-bw-vllm/run_compat.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run_compat.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "5c0f424c8d58670e67de6cc06a9f995b80096e4e5a02202366d89b97207b2713",
+      "stdout_characters": 1460,
+      "stderr": ""
+    },
+    {
+      "label": "qwen3-asr-bw-vllm/run_compat.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/run_compat.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "a5274799e718ba44d757a90bd7e73aa415f74ddbd2ad31e0edf4d1c5dd81430f",
+      "stdout_characters": 1054,
+      "stderr": "Prepared Python absent: /mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python; using base Python for argument preview only.\n"
+    },
+    {
+      "label": "robobrain-bw-vllm/run_baseline.sh",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/robobrain-bw-vllm/run_baseline.sh",
+        "--dry-run"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "18ec8ba12fff241b98893829ab2629bb1b802e0b3b9a439732c6c9a3a61ffce0",
+      "stdout_characters": 1208,
+      "stderr": ""
+    },
+    {
+      "label": "ASR dry-run exported plugin environment",
+      "argv": [
+        "bash",
+        "-c",
+        "exec() { \"$CAPTURE_PYTHON\" -c \"$CAPTURE_CODE\"; }; source \"$1\" --dry-run",
+        "asr-env-capture",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/run.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "73fcb432202a7543c956a48bcca2ef5961f6f00fe1162c5ed4c402dd80f655bd",
+      "stdout_characters": 137,
+      "stderr": "Prepared Python absent: /mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python; using base Python for argument preview only.\n"
+    },
+    {
+      "label": "ASR default preparation plan",
+      "argv": [
+        "bash",
+        "/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/prepare.sh"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e9719156bc97461582c524d7c0edd654d653e772ffe9d28ec6eae1c0d9841162",
+      "stdout_characters": 5365,
+      "stderr": ""
+    },
+    {
+      "label": "Recon Linux entry regressions",
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_recon_task_entry.py",
+        "-v"
+      ],
+      "cwd": "/mnt/e/hg20261019",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_characters": 0,
+      "stderr": "test_core_override_in_extra_array_fails_before_any_launch (test_recon_task_entry.ReconTaskEntryTests.test_core_override_in_extra_array_fails_before_any_launch) ... ok\ntest_default_command_matches_recorded_success_despite_other_task_environment (test_recon_task_entry.ReconTaskEntryTests.test_default_command_matches_recorded_success_despite_other_task_environment) ... ok\ntest_explicit_task_overrides_work_without_mutating_historical_defaults (test_recon_task_entry.ReconTaskEntryTests.test_explicit_task_overrides_work_without_mutating_historical_defaults) ... ok\ntest_other_tasks_official_paths_and_image_identity_are_not_inherited (test_recon_task_entry.ReconTaskEntryTests.test_other_tasks_official_paths_and_image_identity_are_not_inherited) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.821s\n\nOK\n"
+    }
+  ],
+  "checks": [
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/bench.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/env.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/env_check.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/run.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/smoke.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/stop.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/recon2reason-bw-vllm/verify.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/bench.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/env.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/env_check.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/protocol_smoke.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/run.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/run_baseline.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/run_compat.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/smoke.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/stop.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/robobrain-bw-vllm/verify.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/bench.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/env.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/env_check.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/prepare.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/run.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/run_compat.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/smoke.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/stop.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "syntax tasks/qwen3-asr-bw-vllm/verify.sh",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recon2reason-bw-vllm/run.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recon2reason-bw-vllm/run.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "qwen3-asr-bw-vllm/run.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "qwen3-asr-bw-vllm/run.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recon task identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recon BF16 eager maxseq4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robo task identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robo BF16 eager maxseq4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "asr task identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "asr BF16 eager maxseq4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "three model identities and ports are distinct",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Recon command matches recorded success",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Recon image2/video0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Robo fixed compatibility worker",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Robo 1024x1024 profile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run_compat.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run_compat.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robo compatibility alias equals default",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "qwen3-asr-bw-vllm/run_compat.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "qwen3-asr-bw-vllm/run_compat.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "asr compatibility alias equals default",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run_baseline.sh exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robobrain-bw-vllm/run_baseline.sh dry-run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Robo native baseline has no worker extension",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR environment capture exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR default compatibility plugin",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR project-only plugin paths",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR default prepare exit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR pure plan: seven wheels and twelve protected native distributions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ASR preparation has no side effects",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Recon four Linux entry unittests",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "recon runtime unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "robo runtime unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "asr runtime unchanged",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "source_sha256": {
+    "evidence/rules/validate_parallel_entries_20261020.py": "ea9cacedfd67ed52c1b75d67de1048a917bfcfcd8b75c88dbb9f1ffb2e62172a",
+    "evidence/vllm-state-001.json": "064659fba7d3e26471a67dee9e599e7271c10c50f811cb58d32040a69218bc9b",
+    "scripts/prepare_qwen_asr_task.py": "03101937ccf5aa4ac8cf134ac1b1821327767614a6809b39b03559928669ca52",
+    "scripts/qwen_asr_tf55_compat.py": "84d0d5402c73d21562fb12bb649ace56d6f29b7d1fdf1d3e402b8d4a6e28820a",
+    "scripts/recon2reason_runtime.py": "ded5f1a7f35120d7f280ed209ea67a7c1ba4f4838cffd146fe043ec5a63a2112",
+    "scripts/robobrain_vision_math_compat.py": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f",
+    "tasks/qwen3-asr-bw-vllm/README.md": "71415a9281a643688f3e1967db4de48e7ba3299244eedcefef36f5ede20b4d6f",
+    "tasks/qwen3-asr-bw-vllm/bench.sh": "df5a04c7bbeae4e9ccb8dfe64cb5a13a3bc809d2b4f278ebf2790a5a7132f920",
+    "tasks/qwen3-asr-bw-vllm/compat/qwen_asr_compat-0.0.1.dist-info/METADATA": "48782f01b108c8adf99469798ffa91d8142dd6217b65d63248f405d5b2c7ff01",
+    "tasks/qwen3-asr-bw-vllm/compat/qwen_asr_compat-0.0.1.dist-info/entry_points.txt": "10de940f5d79605ba477661a9942e3bf5e98785b25230dcfba5f03beffea7fd1",
+    "tasks/qwen3-asr-bw-vllm/env.sh": "9dd7000596e42e1a0349160d7b9f94827963b7b662b9e61026c0f446f820f9f8",
+    "tasks/qwen3-asr-bw-vllm/env_check.sh": "9c436fafa353c19e4f8b22e7c0858adf4317c8ea1e1d681b90229818c7c67277",
+    "tasks/qwen3-asr-bw-vllm/native-stack.json": "8c029589352faf8418cf982f6255d81e53d7cff357c78512b519cc9950dfdc4e",
+    "tasks/qwen3-asr-bw-vllm/prepare.sh": "41351bd3fe5ea483ba930ebfcdeae2900c8bce204a2afb939f919ceae10c4796",
+    "tasks/qwen3-asr-bw-vllm/requirements-extra.txt": "58c3523b4435996e8658e85943c8fcc22c50dd6e983bf3293c938a3d85bcd9b9",
+    "tasks/qwen3-asr-bw-vllm/run.sh": "080c4b037beb3f0964448c419746ef3f540dba6b70cf3509beeecebbb12cc175",
+    "tasks/qwen3-asr-bw-vllm/run_compat.sh": "aa8b00b880793d70847e5c3165a3578b6c515b75f709f2e635dca4f287ff3323",
+    "tasks/qwen3-asr-bw-vllm/smoke.sh": "fc1f86735f7ae4c55d5f1898a0cbf612ab51176d8c8863c88279940b37ea44a3",
+    "tasks/qwen3-asr-bw-vllm/stop.sh": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c",
+    "tasks/qwen3-asr-bw-vllm/task.json": "05d866ac2f2a6152b2919355ab14771b1ca2711b0306b9d71eed75de5937e403",
+    "tasks/qwen3-asr-bw-vllm/verify.sh": "443f50dfe70b990a22569725d9562ba2659252ec4d87c4b65cb78a5a45299aa9",
+    "tasks/recon2reason-bw-vllm/README.md": "57b0d7cf0ae026dd53299a668679939b090d33e445704038b93169afb6a93beb",
+    "tasks/recon2reason-bw-vllm/bench.sh": "8cceca62de7945b77a01565659ffc2e5173da31be3a21f0feb019f0d62850d36",
+    "tasks/recon2reason-bw-vllm/env.sh": "d6ad0a8fc8fd4c1eaee5b8c9ecbb353cc8cb29e22417f1338fdb5022f3dfe091",
+    "tasks/recon2reason-bw-vllm/env_check.sh": "9e488292aff6cda8a4897a6acb8462a4fe56064968d6c4038326e20b628ded13",
+    "tasks/recon2reason-bw-vllm/requirements-extra.txt": "17d8cb919e219bd6d16c2897b06551b090e7a1884ad6166f7f33bc2816bff98d",
+    "tasks/recon2reason-bw-vllm/run.sh": "8ab5a4d53e6d317a67ab902ec3ca78332e1cb458d21765295be27f05b5f97a69",
+    "tasks/recon2reason-bw-vllm/smoke.sh": "f452355fb09c2a93008fef39b737cc287ff4bb1ac88ae54f789254d103c7b804",
+    "tasks/recon2reason-bw-vllm/stop.sh": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c",
+    "tasks/recon2reason-bw-vllm/task.json": "7af7d4c41874a6e3a98325da558491a30d775f1907df38bb500f4e347db18f89",
+    "tasks/recon2reason-bw-vllm/verify.sh": "7f134fcb6d12f8756ac885af198b250d24d2d002095925e0d1eabd0247f986f0",
+    "tasks/robobrain-bw-vllm/README.md": "ca9c355740bfc84c5700a3a32c19795fe102fe98ee1989e3d41a5881a15c0252",
+    "tasks/robobrain-bw-vllm/bench.sh": "8cceca62de7945b77a01565659ffc2e5173da31be3a21f0feb019f0d62850d36",
+    "tasks/robobrain-bw-vllm/env.sh": "877065b93e2159f8b42cebc19c49f7180ae5bca3ceffbabb2cefa4491bc53c69",
+    "tasks/robobrain-bw-vllm/env_check.sh": "9e488292aff6cda8a4897a6acb8462a4fe56064968d6c4038326e20b628ded13",
+    "tasks/robobrain-bw-vllm/protocol_smoke.sh": "a8f39babf3d514f3e02a9f43b6b13a892eb32fe8ff4442a9ce7a76eef337586d",
+    "tasks/robobrain-bw-vllm/run.sh": "d365d8d68fb87b6e1ed39005aaae008d4123f1cbdf9059525ceb5ffd4cd248cc",
+    "tasks/robobrain-bw-vllm/run_baseline.sh": "49588964645def78a7e09f8b1e98611720a20bf1567c132e12b6955a94a5aba3",
+    "tasks/robobrain-bw-vllm/run_compat.sh": "79b29bd4f31db7bc9ce4d2fc618d9a2f7f4dcc421f1f1ad34850faad208edbcd",
+    "tasks/robobrain-bw-vllm/smoke.sh": "236346e896c597adf0051e92e5dc98da85f8552d3bd5a933e2467b75d22128a4",
+    "tasks/robobrain-bw-vllm/stop.sh": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c",
+    "tasks/robobrain-bw-vllm/task.json": "ec35ac53f1b74d75f1fc4524f7076de956d3d3e1b60e9aceecec872624e7e09b",
+    "tasks/robobrain-bw-vllm/verify.sh": "7f134fcb6d12f8756ac885af198b250d24d2d002095925e0d1eabd0247f986f0",
+    "tests/test_recon_task_entry.py": "25ec763bf887295ec26a16343af82a21024f3661676c52e8706c9ddedcb2b07e"
+  },
+  "runtime_before": {
+    "recon": {
+      "exists": false,
+      "entries": {}
+    },
+    "robo": {
+      "exists": false,
+      "entries": {}
+    },
+    "asr": {
+      "exists": false,
+      "entries": {}
+    }
+  },
+  "gpu_checked": false,
+  "model_loaded": false,
+  "service_started": false,
+  "packages_installed": false,
+  "platform_accessed": false,
+  "default_config_summary": {
+    "recon": {
+      "model_id": "BAAI/Recon2Reason-Reasoning-4B",
+      "framework": "vllm",
+      "precision": "bf16",
+      "port": 30000,
+      "tp": 1,
+      "max_len": 32768,
+      "extra": [
+        "--enforce-eager",
+        "--max-num-seqs",
+        "4",
+        "--limit-mm-per-prompt",
+        "{\"image\":2,\"video\":0}"
+      ]
+    },
+    "robo": {
+      "model_id": "BAAI/RoboBrain2.5-8B-NV",
+      "framework": "vllm",
+      "precision": "bf16",
+      "port": 30001,
+      "tp": 1,
+      "max_len": 32768,
+      "extra": [
+        "--enforce-eager",
+        "--max-num-seqs",
+        "4",
+        "--limit-mm-per-prompt",
+        "{\"image\":{\"count\":2,\"width\":1024,\"height\":1024},\"video\":0}",
+        "--worker-extension-cls",
+        "robobrain_vision_math_compat.VisionMathCompat"
+      ]
+    },
+    "asr": {
+      "model_id": "Qwen/Qwen3-ASR-1.7B",
+      "framework": "vllm",
+      "precision": "bf16",
+      "port": 30002,
+      "tp": 1,
+      "max_len": 32768,
+      "extra": [
+        "--enforce-eager",
+        "--max-num-seqs",
+        "4"
+      ]
+    }
+  },
+  "asr_exported_environment": {
+    "VLLM_PLUGINS": "hcu,qwen_asr_tf55_compat",
+    "PYTHONPATH": "/mnt/e/hg20261019/scripts:/mnt/e/hg20261019/tasks/qwen3-asr-bw-vllm/compat"
+  },
+  "asr_plan_summary": {
+    "mode": "plan_only",
+    "wheels": 7,
+    "protected_native": 12,
+    "downloads_performed": false,
+    "model_loaded": false,
+    "gpu_checked": false,
+    "service_started": false,
+    "filesystem_mutated": false
+  },
+  "runtime_after": {
+    "recon": {
+      "exists": false,
+      "entries": {}
+    },
+    "robo": {
+      "exists": false,
+      "entries": {}
+    },
+    "asr": {
+      "exists": false,
+      "entries": {}
+    }
+  },
+  "summary": {
+    "shell_files": 26,
+    "commands": 35,
+    "checks": 62,
+    "passed": 62,
+    "failed": 0,
+    "recon_unittests": 4,
+    "source_files_hashed": 44
+  },
+  "status": "passed"
+}

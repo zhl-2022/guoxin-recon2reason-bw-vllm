@@ -1,0 +1,865 @@
+{
+  "schema_version": 1,
+  "primary_task": "recon2reason-bw-vllm",
+  "formal_ready": false,
+  "submitted": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 63,
+      "sha256": "ab9f6a1a7290ece159386d3310e864cd5cc9b4aa38a7a4397c6fcdd8010a53cd"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 143,
+      "sha256": "c31d74ecb55ec74fb93a2a8339e65c06b15739ce379aada5a80a806ae80beb83"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13445,
+      "sha256": "0811414fe8e3d630a26ef25fb389e2f2696dc31ab53be2daaf9e28ccf2dbc9a8"
+    },
+    {
+      "path": "ROOT_TASK.json",
+      "bytes": 655,
+      "sha256": "2556f809cf03fc3209669bffc89577ec5a5c1df1db1df9063a79d06be6bd804f"
+    },
+    {
+      "path": "bench.sh",
+      "bytes": 178,
+      "sha256": "b462d7bf4587b964e73b1ce90d98028f3d2c22e20be894d05c47058536e1a8e4"
+    },
+    {
+      "path": "docs/asr-offline-readiness.md",
+      "bytes": 7675,
+      "sha256": "c1b5b8d73077e71647e43dfa258a522e8ff5702fdcd7e43885889557d04c7670"
+    },
+    {
+      "path": "docs/asr-preparation.md",
+      "bytes": 14732,
+      "sha256": "1987797982d14b3a56f5c6f0a5998df0775cf3eaf60f5898ec9341e2195b4ba5"
+    },
+    {
+      "path": "docs/audit-model-evaluation.md",
+      "bytes": 14109,
+      "sha256": "7cbec9412815ea7c1d976bc4eb8e6e110f62f7fad4243623c7c9677b6f2edfe5"
+    },
+    {
+      "path": "docs/audit-public-repos.md",
+      "bytes": 12141,
+      "sha256": "9c48799caee2923e303e9a7509bab8365cc7a22805fc85416ba1039fee6490ae"
+    },
+    {
+      "path": "docs/audit-template-gap.md",
+      "bytes": 13984,
+      "sha256": "00f0d3eb5fd40bc56254068bea115a8645025d03e16d9d38e73b8faa134df3a4"
+    },
+    {
+      "path": "docs/cloud-materials-and-repository-access-20261020.md",
+      "bytes": 4497,
+      "sha256": "9e8d2adca5a26d855e3f269b869f8ad751367cc9fd3129169d75e875b8639042"
+    },
+    {
+      "path": "docs/development-plan.md",
+      "bytes": 6761,
+      "sha256": "664e310b57d7e16d759741c3c36fb15f5b6f5cb19840aefbb85e781d99e48961"
+    },
+    {
+      "path": "docs/official-material-search-round2-20261020.md",
+      "bytes": 13130,
+      "sha256": "e7b03667cdc87d9a17fc790c494f39011b271d0a0f571b5b42be507a22aee1a1"
+    },
+    {
+      "path": "docs/parallel-delivery-plan-20261020.md",
+      "bytes": 6711,
+      "sha256": "ca70a0aa1007fefa629788e4a95662b27e47facf52c1cda66e1cd763a31fef6d"
+    },
+    {
+      "path": "docs/recon-offline-readiness.md",
+      "bytes": 6799,
+      "sha256": "5018417ba2b0e8451813f199dad86701d3c605441d45f54fd07eea41898e2179"
+    },
+    {
+      "path": "docs/robobrain-preparation.md",
+      "bytes": 18258,
+      "sha256": "49e7644fe873b24510e34c3a6b75e016ebf1a0697bcb9da50370962058bef188"
+    },
+    {
+      "path": "docs/rules-evidence.md",
+      "bytes": 14109,
+      "sha256": "cbc5b65451e6a0f6680d196bb528e7edebe5c621fddfe55bef3f68db89618e8a"
+    },
+    {
+      "path": "docs/run-log-20261019.md",
+      "bytes": 11665,
+      "sha256": "1176c6c6c1642350e30864c157f8fbe4282e11792e53bcbf08aa314f4b4fd7b6"
+    },
+    {
+      "path": "docs/submission-readiness-audit-20261020.md",
+      "bytes": 15970,
+      "sha256": "2727205a79c4a783cc667771512f93ffd5ca73deb9626a8cbd9f1f126c5244e8"
+    },
+    {
+      "path": "docs/t02-development-bench.md",
+      "bytes": 5463,
+      "sha256": "ae621187ed0910b4cb4f974e64ec5fb03faba5149440807a54632ef9ff69466f"
+    },
+    {
+      "path": "docs/task-repositories.md",
+      "bytes": 5518,
+      "sha256": "60ff152ae65292e73d6a354dc0ccb5eda03d5831964a83e921e49bb7c50c5f57"
+    },
+    {
+      "path": "docs/upstream-recon.md",
+      "bytes": 15644,
+      "sha256": "531d53958e9c4c8ffdba6051228839065c671ed1e1dfc1121344c1be4ebd4e1b"
+    },
+    {
+      "path": "docs/upstream-vllm.md",
+      "bytes": 14566,
+      "sha256": "ff6c43a0449667d2be6a970a304a1c8c8d597b01ca7e7257a01669f297c82035"
+    },
+    {
+      "path": "env.sh",
+      "bytes": 190,
+      "sha256": "9f969716648e98a5f10d7cd0334644f814ad286224866c2b8b6f5ee20622c935"
+    },
+    {
+      "path": "env_check.sh",
+      "bytes": 182,
+      "sha256": "434a1f83fe88fa482ec63dc79a4b85bad56bdd7f7a4c78cbcfae5c6397d97cfe"
+    },
+    {
+      "path": "evidence/asr-audio-reviewed-plan-002.json",
+      "bytes": 3862,
+      "sha256": "a35d1c188033c3c0303f171e446f1ddd7bf46d0a5a9b8cdaabecc6b0af5a1fca"
+    },
+    {
+      "path": "evidence/asr-audio-validation-002.json",
+      "bytes": 1020,
+      "sha256": "04bea062530dc0d8cfb0d2148c131b85a9bda0829a9fd35cede43cabaed437c8"
+    },
+    {
+      "path": "evidence/asr-model-config.json",
+      "bytes": 6194,
+      "sha256": "2e74a751548b8ad7d7526d29365ad8144c345d8b412b1152d25dc6698452712f"
+    },
+    {
+      "path": "evidence/asr-preflight-001.json",
+      "bytes": 3524,
+      "sha256": "35db762a943d036ecd4421692c742ba7604b32194b04ce537d3c6d3acee6024f"
+    },
+    {
+      "path": "evidence/asr-preflight-002.json",
+      "bytes": 4331,
+      "sha256": "06eae665716b113001a45b6cc45f86f8c5902afa13e345c2c648a181186be9fb"
+    },
+    {
+      "path": "evidence/asr-probe-001.json",
+      "bytes": 22228,
+      "sha256": "281e15a634e07ad4574ce483b576e3d92af4bf36cd82016eff14c491c202768e"
+    },
+    {
+      "path": "evidence/asr-vllm-server-full-001.log",
+      "bytes": 6870,
+      "sha256": "73fc37c829b50a43af48513d4a070411526467341d607a0dcddd88c3f74e6be8"
+    },
+    {
+      "path": "evidence/asr-vllm-server-full-002.log",
+      "bytes": 27124,
+      "sha256": "159b06574edc00cc0a354d57eaf16e9b4b7d147a1b4e2c37478c7641b664bd58"
+    },
+    {
+      "path": "evidence/asr-vllm-smoke-en-002.jsonl",
+      "bytes": 2194,
+      "sha256": "f90c99b365528412c4b563dd1287968b859f21ab2d8b41a8d3c1fc5cb017de0a"
+    },
+    {
+      "path": "evidence/asr-vllm-smoke-zh-002.jsonl",
+      "bytes": 2208,
+      "sha256": "bb1080e2e00aa228ca8af77d102bee971e3a66d5db9e9d4b746a9d199820e893"
+    },
+    {
+      "path": "evidence/asr-vllm-state-001.json",
+      "bytes": 1161,
+      "sha256": "2f1b74562e197b3dbcd47e69c3b754b6b248104c0fbee23e9f42f5b915560b86"
+    },
+    {
+      "path": "evidence/asr-vllm-state-002.json",
+      "bytes": 1092,
+      "sha256": "e3756f49dbf06993b9261f9ea3e4dfbdb7819e8508058f4be8c5ac2adcdf6729"
+    },
+    {
+      "path": "evidence/asr-vllm-stopped-state-002.json",
+      "bytes": 1205,
+      "sha256": "4f63954eb8ae1f38d38daf38f48956933edb51b6af887ca6655f966d2c145e97"
+    },
+    {
+      "path": "evidence/cloud-materials-and-repository-access-20261020.json",
+      "bytes": 15980,
+      "sha256": "af7b863ea3fff7a9801b4781d145984b968cd891eda619fa56d1ff0769d1ccf3"
+    },
+    {
+      "path": "evidence/official-materials/20261019/report-template.md",
+      "bytes": 14427,
+      "sha256": "b151143f6fa38c87e301cfc9335a94d17fcd49c7113a53fe05f89c04b45f349f"
+    },
+    {
+      "path": "evidence/parallel-entry-checks-20261020.json",
+      "bytes": 29304,
+      "sha256": "4a748bfe2250c971afa232f08344fc28bfc342ff57c565b0cb3cf7ff85f51d72"
+    },
+    {
+      "path": "evidence/parallel-preparation-20261020.json",
+      "bytes": 11848,
+      "sha256": "caad30869455c9943acdf94676097995c0df94596a75b21d6a5c22463bf2948d"
+    },
+    {
+      "path": "evidence/platform-checkpoint-20261019-002.json",
+      "bytes": 2094,
+      "sha256": "5489f869b55608f888be5992bc21d1cb117ba8e974fa207b0725790081576d4f"
+    },
+    {
+      "path": "evidence/recon-preflight-hashed-001.json",
+      "bytes": 3789,
+      "sha256": "76a1a4451785be58bfac008356eea37ca4f272d27db4653659640bbd4ef42f57"
+    },
+    {
+      "path": "evidence/reference-gpu-002.json",
+      "bytes": 20877,
+      "sha256": "8d1d28a096dcd08d81c7420a644da497cdc395955dae87557da2f13528930c84"
+    },
+    {
+      "path": "evidence/research-round2-20261020.json",
+      "bytes": 2541731,
+      "sha256": "febdce3b4d88ff7908c284287577861f7d5cab3d9e8d8045a6e72369aae9f2e4"
+    },
+    {
+      "path": "evidence/robobrain-heldout-004.jsonl",
+      "bytes": 8074,
+      "sha256": "fe0e133d2363ad9dd3d4b99c08975bee48805be1de247cee97e00a8d6d43f9f5"
+    },
+    {
+      "path": "evidence/robobrain-heldout-manifest-004.json",
+      "bytes": 2297,
+      "sha256": "a5e95196c799b10f8779c15f47d2189839dfb7a1c2fe17f16ff07cea9b0352ca"
+    },
+    {
+      "path": "evidence/robobrain-math-compat-numerical-001.json",
+      "bytes": 6317,
+      "sha256": "23741b364b30d20c421f9faddaf0b06c4b4c4a63ab8815a3562ba7131933e300"
+    },
+    {
+      "path": "evidence/robobrain-model-config.json",
+      "bytes": 1474,
+      "sha256": "5cd452860dc1e9c29dd71cc3cef7f39b338b7a40793f7a260655c2d3568f3661"
+    },
+    {
+      "path": "evidence/robobrain-preflight-001.json",
+      "bytes": 3447,
+      "sha256": "2e668dcd9d3600fbd0b125168b8d2b74d38309dc2497627997aee68c804cf5ff"
+    },
+    {
+      "path": "evidence/robobrain-preflight-hashed-001.json",
+      "bytes": 3618,
+      "sha256": "de674d2ef86a80cee3803b166194b6be7e2a73091b7cc59846570e27ac41b4b0"
+    },
+    {
+      "path": "evidence/robobrain-protocol-smoke-001.jsonl",
+      "bytes": 5309,
+      "sha256": "5aaa379b938807eb13cba983b5288d09e638a40294ece60fc48b63ab44bee6e0"
+    },
+    {
+      "path": "evidence/robobrain-protocol-smoke-math-002.jsonl",
+      "bytes": 5020,
+      "sha256": "59190a3297c69c1b133ffd3cbc240656d3ede2c90fe746bcf337abbe5c41a6f7"
+    },
+    {
+      "path": "evidence/robobrain-reference-gpu-001.json",
+      "bytes": 23718,
+      "sha256": "75d13363094cdf65a45c260618da3f9e86c5aa00a91f23c9762e8d83d972dad9"
+    },
+    {
+      "path": "evidence/robobrain-runtime-source-001.json",
+      "bytes": 153538,
+      "sha256": "ac1b112467eb4fa01c218e4926196f8909438485b5925a32c03fa337d708ac10"
+    },
+    {
+      "path": "evidence/robobrain-runtime-source-002.json",
+      "bytes": 181363,
+      "sha256": "8bb769028162b3014942cd69f653490686211d097fd3d928a2aa5b5333a0e3d4"
+    },
+    {
+      "path": "evidence/robobrain-vllm-profile-server-003.log",
+      "bytes": 47089,
+      "sha256": "3a479befd34d280b79965bfc6c07967ca46a3a1b79cd4d438ef7de25e1ea9533"
+    },
+    {
+      "path": "evidence/robobrain-vllm-profile-state-003.json",
+      "bytes": 1165,
+      "sha256": "09873254d2f8b0eebb87d925047128cad68f3c68c744ad74186b0537e4a7a444"
+    },
+    {
+      "path": "evidence/robobrain-vllm-profile-stopped-003.json",
+      "bytes": 1275,
+      "sha256": "27d59d4a2827774b428798aa8f261d450a374924a0e0f7c6a32af6fbc52ac9a6"
+    },
+    {
+      "path": "evidence/robobrain-vllm-server-full-001.log",
+      "bytes": 16676,
+      "sha256": "6fdc23fabac758bd6497acf5c8700762d763410df9ab373ef21211c02262c46b"
+    },
+    {
+      "path": "evidence/robobrain-vllm-server-full-compat-004.log",
+      "bytes": 66676,
+      "sha256": "0defa5198dfbed2faf29d1f834b3aab21062e0389bd3e2c652da4f09c50bbd0b"
+    },
+    {
+      "path": "evidence/robobrain-vllm-server-full-math-002.log",
+      "bytes": 36377,
+      "sha256": "0cfa5bc5786252507b4ad5251b2588306feb0edb12fa2e57e5b104d88c0cb000"
+    },
+    {
+      "path": "evidence/robobrain-vllm-smoke-001.jsonl",
+      "bytes": 14933,
+      "sha256": "a2b45602b28d9122687e48d0f5917223da3f28745e5c074daf0a660891d62a5a"
+    },
+    {
+      "path": "evidence/robobrain-vllm-smoke-math-002.jsonl",
+      "bytes": 9853,
+      "sha256": "694d2971d366128edbd1c61e7203f23aeb3ba2b8517546212388162bee0b87c8"
+    },
+    {
+      "path": "evidence/robobrain-vllm-state-001.json",
+      "bytes": 1126,
+      "sha256": "51bdcb51f537c06f48d78cc5682562e9beee692ce6abf42fabbb081baac2d44b"
+    },
+    {
+      "path": "evidence/robobrain-vllm-state-compat-004.json",
+      "bytes": 1261,
+      "sha256": "4cfcf9b499bf3f017d2cf0984fe2d59ba69ea9accf5b8a199743e26ef52bfc82"
+    },
+    {
+      "path": "evidence/robobrain-vllm-state-math-002.json",
+      "bytes": 1216,
+      "sha256": "d7f12cfd143417691d6d697b868dcd6914e56db164eb081df422786018665d1e"
+    },
+    {
+      "path": "evidence/robobrain-vllm-stopped-state-001.json",
+      "bytes": 1239,
+      "sha256": "1ddf8357a09aa9f7c990b0b84f0497b82573d403b48c920e2e5db458af4ee617"
+    },
+    {
+      "path": "evidence/robobrain-vllm-stopped-state-compat-004.json",
+      "bytes": 1374,
+      "sha256": "1ab3d7db71de1cb4dd1eaa40a518112a6e30e84d940b3117de75fafe65141522"
+    },
+    {
+      "path": "evidence/robobrain-vllm-stopped-state-math-002.json",
+      "bytes": 1329,
+      "sha256": "a00a31df675a63daf428e87843d71b9f7c61e591e6e01076244dcef103e758e4"
+    },
+    {
+      "path": "evidence/rules/robobrain-heldout-prepared-001/heldout.jsonl",
+      "bytes": 3987,
+      "sha256": "bddd45fd871482dfe0c5648b093e8cbf302e42d034af9f62f4cb360f2d5cb6c8"
+    },
+    {
+      "path": "evidence/rules/robobrain-heldout-prepared-001/manifest.json",
+      "bytes": 2349,
+      "sha256": "562ab0ef03d5fa319ad9368574e9a9bc4911d69044512fde20a5c915b3fd7f90"
+    },
+    {
+      "path": "evidence/rules/robobrain-vision-math-compat-cpu-002.json",
+      "bytes": 13176,
+      "sha256": "c918e8caf7662b12f51ef5eff59b99d48cdabc521e2ec571c7ecccea4a169b85"
+    },
+    {
+      "path": "evidence/rules/robobrain-vision-math-compat-cpu.json",
+      "bytes": 1029,
+      "sha256": "5a34d0eb99143c5630000c328ec43606eb33b3d4b909f29052dfe8349e3b3264"
+    },
+    {
+      "path": "evidence/rules/robobrain-vision-math-diagnostic-cpu.json",
+      "bytes": 1144,
+      "sha256": "195a3898679f1ca0c1c3395972bf1e8396a09b2a20f92e80076bafe8c2f26861"
+    },
+    {
+      "path": "evidence/rules/runtime-local-validation.json",
+      "bytes": 2502,
+      "sha256": "772e9e4551cf4ef9684c000164fa1793b8e0ce11b5d119679ddb4a4940776928"
+    },
+    {
+      "path": "evidence/scnet-preflight.json",
+      "bytes": 2826,
+      "sha256": "38305e51f0e8f41247b4d5751f47763f7d169f66d15251ff37dc8c94c5fcff02"
+    },
+    {
+      "path": "evidence/vllm-native-001.txt",
+      "bytes": 856,
+      "sha256": "df74f787761a0923ea66f39c895f760a5e15f383279ee25fe7cdae50149c982d"
+    },
+    {
+      "path": "evidence/vllm-probe-001.json",
+      "bytes": 56689,
+      "sha256": "6d2fe91b3ef5b0d1bb427db1299fbe080159ea5f5929b4064a55db4125423628"
+    },
+    {
+      "path": "evidence/vllm-server-start-001.log",
+      "bytes": 13818,
+      "sha256": "8425d347864ec878988847156a0c5a7c3baec78a46c14ae5b4560e48f27eb016"
+    },
+    {
+      "path": "evidence/vllm-smoke-001.jsonl",
+      "bytes": 8160,
+      "sha256": "21fcc6027adb9fd4a1bd22a45906d7056198a9b55fcde91ff447715c8ca3f533"
+    },
+    {
+      "path": "evidence/vllm-smoke-001.txt",
+      "bytes": 9124,
+      "sha256": "62e43ea1ff94fbd62841b39364dd49ff16c3def66a1a75c2d494879e27daa862"
+    },
+    {
+      "path": "evidence/vllm-state-001.json",
+      "bytes": 1150,
+      "sha256": "064659fba7d3e26471a67dee9e599e7271c10c50f811cb58d32040a69218bc9b"
+    },
+    {
+      "path": "fixtures/asr/en_system_tts.wav",
+      "bytes": 197486,
+      "sha256": "6c268637b73d810007ee231a85113eacec952c9296f8e458eddff705dd7452d7"
+    },
+    {
+      "path": "fixtures/asr/manifest.json",
+      "bytes": 956,
+      "sha256": "7bad495cd2762289845f424ed05f2e2a15bb25a787d015d6ad2c386a7af16945"
+    },
+    {
+      "path": "fixtures/asr/publisher-qwen-20261020/asr_en.wav",
+      "bytes": 2172458,
+      "sha256": "f9b4440ac8393e47c14a6240e9739dea09b645bb1592b8f2dd48feb9666cea7f"
+    },
+    {
+      "path": "fixtures/asr/publisher-qwen-20261020/asr_zh.wav",
+      "bytes": 134570,
+      "sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50"
+    },
+    {
+      "path": "fixtures/asr/publisher-qwen-20261020/manifest.json",
+      "bytes": 1474,
+      "sha256": "f2972072af63bf019d296793d08a803b54c1b8cab59f44754e11b69c9ebe4f31"
+    },
+    {
+      "path": "fixtures/asr/zh_system_tts.wav",
+      "bytes": 268686,
+      "sha256": "1690a7f5c0304bedf4a319a73deda41d21945de26640b6a2c441cc3882c01377"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 364,
+      "sha256": "945eb1deb30ec85c28b660d5348ba2ef373546610af44c6354558204d7f8327a"
+    },
+    {
+      "path": "run.sh",
+      "bytes": 176,
+      "sha256": "bacbef3c5c89960380ecf5be97fae65e3a0b5ff1a3c2a40ca55154013f3381de"
+    },
+    {
+      "path": "scripts/asr_development_eval.py",
+      "bytes": 12691,
+      "sha256": "b1960668b5a70f6c8a31bdf3881881c1bc6dc785db26bf9b8e8a75ad27dd0d01"
+    },
+    {
+      "path": "scripts/create_asr_fixtures.ps1",
+      "bytes": 1988,
+      "sha256": "175fbd75586c607e420338116d6d9e5df1252e24e846f3261d3514fba048f01a"
+    },
+    {
+      "path": "scripts/make_bundle.py",
+      "bytes": 5510,
+      "sha256": "82958bb763e80b0999569134014da826e88a824948401a0390c6e75c0c32dcef"
+    },
+    {
+      "path": "scripts/prepare_asr_development_fixtures.py",
+      "bytes": 4355,
+      "sha256": "30cac5624f236254bd94c0bbe2f8039467fa7191231a09d5eb379c56659648c2"
+    },
+    {
+      "path": "scripts/prepare_audio_env.sh",
+      "bytes": 9203,
+      "sha256": "346b1c1f8711582b146485b71ae8302b9c8f67c37c75040fc762d7fa2de7ef18"
+    },
+    {
+      "path": "scripts/prepare_qwen_asr_task.py",
+      "bytes": 11320,
+      "sha256": "03101937ccf5aa4ac8cf134ac1b1821327767614a6809b39b03559928669ca52"
+    },
+    {
+      "path": "scripts/prepare_task_repositories.py",
+      "bytes": 18273,
+      "sha256": "2d85c7e4f194cb4304f6bdc632c632520836cea7a0227da421b9ab2265f6727f"
+    },
+    {
+      "path": "scripts/qwen3_asr_smoke.py",
+      "bytes": 10741,
+      "sha256": "da40fff4081c7873a4d276225d4ef990df9b2d666daf3c1d73ee0796def655f1"
+    },
+    {
+      "path": "scripts/qwen_asr_tf55_compat.py",
+      "bytes": 2230,
+      "sha256": "84d0d5402c73d21562fb12bb649ace56d6f29b7d1fdf1d3e402b8d4a6e28820a"
+    },
+    {
+      "path": "scripts/recon2reason_reference.py",
+      "bytes": 22721,
+      "sha256": "69261dcdffea3e849a7a1564d6c561ce044e69a5a75935100973e91ac464079c"
+    },
+    {
+      "path": "scripts/recon2reason_runtime.py",
+      "bytes": 29628,
+      "sha256": "58a00de2b718af6464726063b43a082b0b5b79b9cf1c734deb2b1af3e2e4eda2"
+    },
+    {
+      "path": "scripts/recon2reason_smoke.py",
+      "bytes": 10802,
+      "sha256": "21d2f90e7a1df414cb260f029a5e42a677cc06867e1222f537487b53b8a1fe2d"
+    },
+    {
+      "path": "scripts/robobrain_heldout_fixtures.py",
+      "bytes": 8633,
+      "sha256": "e0dba59f274a1629b53b0cf3c9c4fd3adf72220b41164c34f03e8a72778cbeb7"
+    },
+    {
+      "path": "scripts/robobrain_protocol_smoke.py",
+      "bytes": 12468,
+      "sha256": "bec36fb0c85332eb7144c479e9782d57c9b0dc2ad15b610ac81d1af2bd237486"
+    },
+    {
+      "path": "scripts/robobrain_vision_math_compat.py",
+      "bytes": 8173,
+      "sha256": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f"
+    },
+    {
+      "path": "scripts/robobrain_vision_math_diagnostic.py",
+      "bytes": 5609,
+      "sha256": "d529f5caf6625cfae6564dbeea4fb6617d5aa37c738386e8ec54f159d5d64bc3"
+    },
+    {
+      "path": "scripts/scnet_asr_probe.py",
+      "bytes": 9305,
+      "sha256": "88697918ca570a4ab9510f0a5cd57e787dea9cf924e2cc0bf1f75f805c30048c"
+    },
+    {
+      "path": "scripts/scnet_preflight.py",
+      "bytes": 14827,
+      "sha256": "b55d50fcf5cfea9fa213b9a27a6811b41c1c7a08b3c5cc6bb257c6b66f109466"
+    },
+    {
+      "path": "scripts/scnet_vllm_probe.py",
+      "bytes": 15060,
+      "sha256": "2a9650acefb5f8c48a9713a9979d09347c8de0e1b93f7db7f71d05c06a921ec5"
+    },
+    {
+      "path": "scripts/t02_development_bench.py",
+      "bytes": 13738,
+      "sha256": "538d717a9d51bf48ef51a2bb6ceb70bed504590dd05f6ec9956ac8f2bf2c94f3"
+    },
+    {
+      "path": "scripts/validate_robobrain_vision_math_compat.py",
+      "bytes": 8728,
+      "sha256": "ba6a94283fa63418948c466eac7fc8949a56cf244eb6f9c3be8dcd78ef673dd1"
+    },
+    {
+      "path": "smoke.sh",
+      "bytes": 178,
+      "sha256": "920b2d5f2029754deebfb0374bf841c76d89b90e812abed3ae31117627182923"
+    },
+    {
+      "path": "src/guoxin/__init__.py",
+      "bytes": 102,
+      "sha256": "128c91f210e19fdd88c315b25294a7e8ddfdc499e05272f98436f78e5700e061"
+    },
+    {
+      "path": "src/guoxin/__main__.py",
+      "bytes": 6067,
+      "sha256": "274758da59ad2166eccb79beab7a378e72665614880c46887c6c31e7b6d7c67a"
+    },
+    {
+      "path": "src/guoxin/config.py",
+      "bytes": 11481,
+      "sha256": "01a16d15bfb4fb6671791cb9f01d1d57d32522118833c87ff7536afb8b0dab88"
+    },
+    {
+      "path": "src/guoxin/gates.py",
+      "bytes": 3765,
+      "sha256": "3600e694a0440614e5525435d6f0e66384d261a0f349f14a5c598e18d0ef0e3d"
+    },
+    {
+      "path": "src/guoxin/runtime.py",
+      "bytes": 4579,
+      "sha256": "79006a5c295e1b829c330f25ee23e57def0faaae5be4a8c41ac484bd45b497f6"
+    },
+    {
+      "path": "stop.sh",
+      "bytes": 177,
+      "sha256": "83d218d1bbf4414c265830e1e4da2a4a810ec63c7ec5d70a52d9bd2cced679d6"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/README.md",
+      "bytes": 9708,
+      "sha256": "274f0ae4d0b26686d329f19a7b55099564855581f23d88577dda5a1a7c9473ba"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/bench.sh",
+      "bytes": 220,
+      "sha256": "df5a04c7bbeae4e9ccb8dfe64cb5a13a3bc809d2b4f278ebf2790a5a7132f920"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/compat/qwen_asr_compat-0.0.1.dist-info/METADATA",
+      "bytes": 135,
+      "sha256": "48782f01b108c8adf99469798ffa91d8142dd6217b65d63248f405d5b2c7ff01"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/compat/qwen_asr_compat-0.0.1.dist-info/entry_points.txt",
+      "bytes": 76,
+      "sha256": "10de940f5d79605ba477661a9942e3bf5e98785b25230dcfba5f03beffea7fd1"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/env.sh",
+      "bytes": 1396,
+      "sha256": "9dd7000596e42e1a0349160d7b9f94827963b7b662b9e61026c0f446f820f9f8"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/env_check.sh",
+      "bytes": 342,
+      "sha256": "9c436fafa353c19e4f8b22e7c0858adf4317c8ea1e1d681b90229818c7c67277"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/native-stack.json",
+      "bytes": 545,
+      "sha256": "8c029589352faf8418cf982f6255d81e53d7cff357c78512b519cc9950dfdc4e"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/prepare.sh",
+      "bytes": 299,
+      "sha256": "41351bd3fe5ea483ba930ebfcdeae2900c8bce204a2afb939f919ceae10c4796"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/requirements-extra.txt",
+      "bytes": 2008,
+      "sha256": "58c3523b4435996e8658e85943c8fcc22c50dd6e983bf3293c938a3d85bcd9b9"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/run.sh",
+      "bytes": 1191,
+      "sha256": "080c4b037beb3f0964448c419746ef3f540dba6b70cf3509beeecebbb12cc175"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/run_compat.sh",
+      "bytes": 212,
+      "sha256": "aa8b00b880793d70847e5c3165a3578b6c515b75f709f2e635dca4f287ff3323"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/smoke.sh",
+      "bytes": 288,
+      "sha256": "fc1f86735f7ae4c55d5f1898a0cbf612ab51176d8c8863c88279940b37ea44a3"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/stop.sh",
+      "bytes": 229,
+      "sha256": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/task.json",
+      "bytes": 11620,
+      "sha256": "b6f93dfe5b174ea9a2fb188564a066a3f923a915de4d58527fedbb33db156ab8"
+    },
+    {
+      "path": "tasks/qwen3-asr-bw-vllm/verify.sh",
+      "bytes": 233,
+      "sha256": "443f50dfe70b990a22569725d9562ba2659252ec4d87c4b65cb78a5a45299aa9"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/README.md",
+      "bytes": 13114,
+      "sha256": "143c501ff90fc0a9a6969bd3d0d55254cc3334627f7bdfa3bde1a912b34cf843"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/bench.sh",
+      "bytes": 230,
+      "sha256": "8cceca62de7945b77a01565659ffc2e5173da31be3a21f0feb019f0d62850d36"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/env.sh",
+      "bytes": 2779,
+      "sha256": "390c12d84c18163245e1fb994099bea5205a3a287ca44b69fad5afacff46d8aa"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/env_check.sh",
+      "bytes": 249,
+      "sha256": "9e488292aff6cda8a4897a6acb8462a4fe56064968d6c4038326e20b628ded13"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/requirements-extra.txt",
+      "bytes": 155,
+      "sha256": "17d8cb919e219bd6d16c2897b06551b090e7a1884ad6166f7f33bc2816bff98d"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/run.sh",
+      "bytes": 231,
+      "sha256": "8ab5a4d53e6d317a67ab902ec3ca78332e1cb458d21765295be27f05b5f97a69"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/smoke.sh",
+      "bytes": 227,
+      "sha256": "f452355fb09c2a93008fef39b737cc287ff4bb1ac88ae54f789254d103c7b804"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/stop.sh",
+      "bytes": 229,
+      "sha256": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/task.json",
+      "bytes": 8393,
+      "sha256": "7af7d4c41874a6e3a98325da558491a30d775f1907df38bb500f4e347db18f89"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/verify.sh",
+      "bytes": 231,
+      "sha256": "7f134fcb6d12f8756ac885af198b250d24d2d002095925e0d1eabd0247f986f0"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/README.md",
+      "bytes": 18653,
+      "sha256": "ca9c355740bfc84c5700a3a32c19795fe102fe98ee1989e3d41a5881a15c0252"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/bench.sh",
+      "bytes": 230,
+      "sha256": "8cceca62de7945b77a01565659ffc2e5173da31be3a21f0feb019f0d62850d36"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/env.sh",
+      "bytes": 1861,
+      "sha256": "877065b93e2159f8b42cebc19c49f7180ae5bca3ceffbabb2cefa4491bc53c69"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/env_check.sh",
+      "bytes": 249,
+      "sha256": "9e488292aff6cda8a4897a6acb8462a4fe56064968d6c4038326e20b628ded13"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/protocol_smoke.sh",
+      "bytes": 297,
+      "sha256": "a8f39babf3d514f3e02a9f43b6b13a892eb32fe8ff4442a9ce7a76eef337586d"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/run.sh",
+      "bytes": 1881,
+      "sha256": "d365d8d68fb87b6e1ed39005aaae008d4123f1cbdf9059525ceb5ffd4cd248cc"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/run_baseline.sh",
+      "bytes": 492,
+      "sha256": "49588964645def78a7e09f8b1e98611720a20bf1567c132e12b6955a94a5aba3"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/run_compat.sh",
+      "bytes": 210,
+      "sha256": "79b29bd4f31db7bc9ce4d2fc618d9a2f7f4dcc421f1f1ad34850faad208edbcd"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/smoke.sh",
+      "bytes": 290,
+      "sha256": "236346e896c597adf0051e92e5dc98da85f8552d3bd5a933e2467b75d22128a4"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/stop.sh",
+      "bytes": 229,
+      "sha256": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/task.json",
+      "bytes": 23668,
+      "sha256": "ec35ac53f1b74d75f1fc4524f7076de956d3d3e1b60e9aceecec872624e7e09b"
+    },
+    {
+      "path": "tasks/robobrain-bw-vllm/verify.sh",
+      "bytes": 231,
+      "sha256": "7f134fcb6d12f8756ac885af198b250d24d2d002095925e0d1eabd0247f986f0"
+    },
+    {
+      "path": "tests/test_asr_development_eval.py",
+      "bytes": 9584,
+      "sha256": "3763172fdfde5c4b0a9b1b6d944defc208028a8b1b0bff1775fc8987b8adf776"
+    },
+    {
+      "path": "tests/test_asr_task_prepare.py",
+      "bytes": 3900,
+      "sha256": "6f313a71c4f75d9358dfdf0ec3b7c49265d3b795f389d41395d9b0667b9f2fb7"
+    },
+    {
+      "path": "tests/test_guoxin.py",
+      "bytes": 12823,
+      "sha256": "e8ccfdd93aac3e4210e21bf9f3eb972cebf35f00f9f3dcf8c203d8dcc4113a8e"
+    },
+    {
+      "path": "tests/test_official_bridge.py",
+      "bytes": 11156,
+      "sha256": "dd09dc72e97cbac1c32029da077a2be5e8bea2d6b13b1cb9afb41a3a761fcf7f"
+    },
+    {
+      "path": "tests/test_qwen3_asr_smoke.py",
+      "bytes": 6755,
+      "sha256": "7896d8091a397fc1515e5ff82ab1c4112861cdc86840f671dac0059dff109f8c"
+    },
+    {
+      "path": "tests/test_qwen_asr_tf55_compat.py",
+      "bytes": 3856,
+      "sha256": "8ac7d660d3deb3f0a8d6df55019786ce0fdd85009b50a396334ec2a3e5d358d0"
+    },
+    {
+      "path": "tests/test_recon_task_entry.py",
+      "bytes": 4968,
+      "sha256": "25ec763bf887295ec26a16343af82a21024f3661676c52e8706c9ddedcb2b07e"
+    },
+    {
+      "path": "tests/test_robobrain_protocol_smoke.py",
+      "bytes": 7456,
+      "sha256": "958f5a165a3fdca85239c8c998380cd5b8c7d5e2496fa2252f8c1fbec27deec7"
+    },
+    {
+      "path": "tests/test_robobrain_vision_math_compat.py",
+      "bytes": 8885,
+      "sha256": "a6ed183aff5c690aa78f99550bf35a8686c742abe0ef8d3874fe993d7bbfbf99"
+    },
+    {
+      "path": "tests/test_robobrain_vision_math_diagnostic.py",
+      "bytes": 4444,
+      "sha256": "3211558b67d7df120e3dc9bc384808a9428d0b68796e0a08d6c2d801f0ee25e5"
+    },
+    {
+      "path": "tests/test_scnet_preflight.py",
+      "bytes": 15872,
+      "sha256": "cd2ba50dbc7cc710c1d6f338ac8aa9406fc1f13dba832c4b70ff47a4541f923c"
+    },
+    {
+      "path": "tests/test_t02_development_bench.py",
+      "bytes": 7238,
+      "sha256": "44af66969933e62e469ed204b0cf68c14ed423c0334ed167a221600fa17e22ef"
+    },
+    {
+      "path": "tests/test_task_repositories.py",
+      "bytes": 10824,
+      "sha256": "9c12716a6b5e1d74ca267100d2fde43349f73e6e52f35a6d9dc61f87eef39677"
+    },
+    {
+      "path": "verify.sh",
+      "bytes": 179,
+      "sha256": "b6a57ef79a3c9bcdd0eb9d1e2d319a95a45cfe0b973a477a3555018864475d26"
+    }
+  ],
+  "total_bytes": 6901318,
+  "manifest_scope": "All repository payload files except repository-manifest.json itself"
+}

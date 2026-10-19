@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-19T16:37:27.434030+00:00",
+  "scope": "local parallel engineering preparation; not official evaluation or submission",
+  "current_platform_operation": false,
+  "gpu_allocated": false,
+  "models_loaded": false,
+  "packages_installed": false,
+  "published": false,
+  "submitted": false,
+  "windows_tests": {
+    "command": "PYTHONPATH=src python -B -m unittest discover -s tests -v",
+    "python": "3.12.7",
+    "discovered": 74,
+    "passed": 70,
+    "skipped_linux_only": 4,
+    "exit_code": 0,
+    "log": "evidence/parallel-cpu-tests-20261020.log",
+    "first_invocation_note": "Initial invocation omitted PYTHONPATH=src and failed to import the local guoxin package. Retained attempt001 log; corrected invocation follows README and passes."
+  },
+  "linux_entry_validation": {
+    "evidence": "evidence/parallel-entry-checks-20261020.json",
+    "shell_files": 26,
+    "commands": 35,
+    "checks": 62,
+    "passed": 62,
+    "failed": 0,
+    "recon_unittests": 4,
+    "source_files_hashed": 44,
+    "source_hashes_still_match": true,
+    "runtime_before_equals_after": true
+  },
+  "task_plans": [
+    {
+      "command": [
+        "C:\\Users\\zhl\\anaconda3\\python.exe",
+        "-B",
+        "-m",
+        "guoxin",
+        "plan",
+        "--task",
+        "tasks/recon2reason-bw-vllm/task.json"
+      ],
+      "exit_code": 2,
+      "result": {
+        "task": "recon2reason-bw-vllm",
+        "ready": false,
+        "readiness_scope": "local prerequisites only; remote launch and official scoring are separate",
+        "official_evaluation": "not_run",
+        "blockers": [
+          "official_baseline_artifact_not_verified",
+          "official_evaluator_artifact_not_verified",
+          "official_dataset_artifact_not_verified",
+          "delivery_image_reference_missing_or_invalid",
+          "required_artifacts_not_verified",
+          "official_baseline_metric_missing"
+        ],
+        "advisories": [
+          "task_priority_not_independently_verified",
+          "optional_image_digest_missing"
+        ],
+        "image": {
+          "reference": null,
+          "reference_syntax_valid": false,
+          "digest": null,
+          "registry_access_verified": false,
+          "note": "The template requires a complete image address and tag; digest and claim receipt are not mandatory gates."
+        },
+        "model": {
+          "valid": true,
+          "path": "evidence/model-config.json",
+          "sha256": "cbc47621e35c7a9e65aa888432bcc6ffd38e0cab6d751d2fa21ed2ed2b06ddcf",
+          "expected_architecture": "Qwen3VLForConditionalGeneration",
+          "architectures": [
+            "Qwen3VLForConditionalGeneration"
+          ],
+          "model_type": "qwen3_vl",
+          "dtype": "bfloat16",
+          "weights_loaded": false
+        },
+        "artifacts": {
+          "verified": false,
+          "files": []
+        },
+        "accuracy": {
+          "metric": "official-task-specific-pending",
+          "direction": "higher",
+          "drop_mode": "full_scale_points",
+          "max_drop": 2,
+          "full_scale": 1000,
+          "baseline": null
+        },
+        "budget": {
+          "cards": 1,
+          "wall_hours": "1.25",
+          "estimated_card_hours": "1.25",
+          "total_card_hours": "497.1058333333",
+          "used_card_hours": "0.7125",
+          "remaining_card_hours": "496.3933333333",
+          "remaining_after_run": "495.1433333333",
+          "within_budget": true,
+          "billing_basis": "cards multiplied by allocated wall-clock hours; platform billing may differ"
+        }
+      }
+    },
+    {
+      "command": [
+        "C:\\Users\\zhl\\anaconda3\\python.exe",
+        "-B",
+        "-m",
+        "guoxin",
+        "plan",
+        "--task",
+        "tasks/robobrain-bw-vllm/task.json"
+      ],
+      "exit_code": 2,
+      "result": {
+        "task": "robobrain-bw-vllm",
+        "ready": false,
+        "readiness_scope": "local prerequisites only; remote launch and official scoring are separate",
+        "official_evaluation": "not_run",
+        "blockers": [
+          "official_baseline_artifact_not_verified",
+          "official_evaluator_artifact_not_verified",
+          "official_dataset_artifact_not_verified",
+          "delivery_image_reference_missing_or_invalid",
+          "required_artifacts_not_verified",
+          "official_baseline_metric_missing"
+        ],
+        "advisories": [
+          "task_priority_not_independently_verified",
+          "optional_image_digest_missing"
+        ],
+        "image": {
+          "reference": null,
+          "reference_syntax_valid": false,
+          "digest": null,
+          "registry_access_verified": false,
+          "note": "The template requires a complete image address and tag; digest and claim receipt are not mandatory gates."
+        },
+        "model": {
+          "valid": true,
+          "path": "evidence/robobrain-model-config.json",
+          "sha256": "5cd452860dc1e9c29dd71cc3cef7f39b338b7a40793f7a260655c2d3568f3661",
+          "expected_architecture": "Qwen3VLForConditionalGeneration",
+          "architectures": [
+            "Qwen3VLForConditionalGeneration"
+          ],
+          "model_type": "qwen3_vl",
+          "dtype": null,
+          "weights_loaded": false
+        },
+        "artifacts": {
+          "verified": false,
+          "files": []
+        },
+        "accuracy": {
+          "metric": "official-task-specific-metric-pending",
+          "direction": "higher",
+          "drop_mode": "absolute",
+          "max_drop": 0,
+          "full_scale": 1,
+          "baseline": null
+        },
+        "budget": {
+          "cards": 1,
+          "wall_hours": "2",
+          "estimated_card_hours": "2",
+          "total_card_hours": "496.9866666666",
+          "used_card_hours": "1.3623132980555555",
+          "remaining_card_hours": "495.6243533685444445",
+          "remaining_after_run": "493.6243533685444445",
+          "within_budget": true,
+          "billing_basis": "cards multiplied by allocated wall-clock hours; platform billing may differ"
+        }
+      }
+    },
+    {
+      "command": [
+        "C:\\Users\\zhl\\anaconda3\\python.exe",
+        "-B",
+        "-m",
+        "guoxin",
+        "plan",
+        "--task",
+        "tasks/qwen3-asr-bw-vllm/task.json"
+      ],
+      "exit_code": 2,
+      "result": {
+        "task": "qwen3-asr-bw-vllm",
+        "ready": false,
+        "readiness_scope": "local prerequisites only; remote launch and official scoring are separate",
+        "official_evaluation": "not_run",
+        "blockers": [
+          "official_baseline_artifact_not_verified",
+          "official_evaluator_artifact_not_verified",
+          "official_dataset_artifact_not_verified",
+          "delivery_image_reference_missing_or_invalid",
+          "required_artifacts_not_verified",
+          "official_baseline_metric_missing"
+        ],
+        "advisories": [
+          "task_priority_not_independently_verified",
+          "optional_image_digest_missing"
+        ],
+        "image": {
+          "reference": null,
+          "reference_syntax_valid": false,
+          "digest": null,
+          "registry_access_verified": false,
+          "note": "The template requires a complete image address and tag; digest and claim receipt are not mandatory gates."
+        },
+        "model": {
+          "valid": true,
+          "path": "evidence/asr-model-config.json",
+          "sha256": "2e74a751548b8ad7d7526d29365ad8144c345d8b412b1152d25dc6698452712f",
+          "expected_architecture": "Qwen3ASRForConditionalGeneration",
+          "architectures": [
+            "Qwen3ASRForConditionalGeneration"
+          ],
+          "model_type": "qwen3_asr",
+          "dtype": null,
+          "weights_loaded": false
+        },
+        "artifacts": {
+          "verified": false,
+          "files": []
+        },
+        "accuracy": {
+          "metric": "official-WER-or-CER-pending",
+          "direction": "lower",
+          "drop_mode": "relative",
+          "max_drop": 0,
+          "full_scale": null,
+          "baseline": null
+        },
+        "budget": {
+          "cards": 1,
+          "wall_hours": "0.25",
+          "estimated_card_hours": "0.25",
+          "total_card_hours": "2",
+          "used_card_hours": "1.3623132980555555",
+          "remaining_card_hours": "0.6376867019444445",
+          "remaining_after_run": "0.3876867019444445",
+          "within_budget": true,
+          "billing_basis": "cards multiplied by allocated wall-clock hours; platform billing may differ"
+        }
+      }
+    }
+  ],
+  "current_robo_candidate": {
+    "sha256": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f",
+    "cpu_tests_passed": 6,
+    "gpu_revalidated": false,
+    "historical_gpu_evidence_applies_to_current_source": false
+  },
+  "asr_new_preparation": {
+    "locked_audio_wheels": 7,
+    "protected_native_distributions": 12,
+    "default_plan_verified": true,
+    "apply_executed_in_clean_native_image": false
+  },
+  "historical_bundle_preserved": {
+    "path": "dist/guoxin-development-before-cpu-20261020.zip",
+    "sha256": "7f807ff540a4bfb8aa93a817209137d54c2f5cf523d822c1ce532af52b374724"
+  },
+  "source_and_evidence_sha256": {
+    "README.md": "27faf6b8ac3e598bb09a2fdc2f2f36108ba69807d018b358bdaa684e1f05ce81",
+    "src/guoxin/config.py": "01a16d15bfb4fb6671791cb9f01d1d57d32522118833c87ff7536afb8b0dab88",
+    "tests/test_guoxin.py": "e8ccfdd93aac3e4210e21bf9f3eb972cebf35f00f9f3dcf8c203d8dcc4113a8e",
+    "scripts/make_bundle.py": "174ae4bf648299328fdced83002f4b8d5385961fa991c8336af31bb99544d912",
+    "docs/development-plan.md": "664e310b57d7e16d759741c3c36fb15f5b6f5cb19840aefbb85e781d99e48961",
+    "docs/parallel-delivery-plan-20261020.md": "ca70a0aa1007fefa629788e4a95662b27e47facf52c1cda66e1cd763a31fef6d",
+    "docs/audit-template-gap.md": "00f0d3eb5fd40bc56254068bea115a8645025d03e16d9d38e73b8faa134df3a4",
+    "scripts/prepare_qwen_asr_task.py": "03101937ccf5aa4ac8cf134ac1b1821327767614a6809b39b03559928669ca52",
+    "tests/test_asr_task_prepare.py": "6f313a71c4f75d9358dfdf0ec3b7c49265d3b795f389d41395d9b0667b9f2fb7",
+    "tests/test_recon_task_entry.py": "25ec763bf887295ec26a16343af82a21024f3661676c52e8706c9ddedcb2b07e",
+    "scripts/robobrain_vision_math_compat.py": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f",
+    "tests/test_robobrain_vision_math_compat.py": "a6ed183aff5c690aa78f99550bf35a8686c742abe0ef8d3874fe993d7bbfbf99",
+    "evidence/parallel-cpu-tests-20261020.log": "220102a599f18a2cea19755c76f61550dc0f222469454a8480b739a5efcd0a75",
+    "evidence/parallel-cpu-tests-20261020-attempt001.log": "2b0ddb15afb1981e48eb1077294687929a3b680cb061a1db55d7d2d9409c639c",
+    "evidence/parallel-entry-checks-20261020.json": "4a748bfe2250c971afa232f08344fc28bfc342ff57c565b0cb3cf7ff85f51d72",
+    "evidence/rules/robobrain-vision-math-compat-cpu-002.json": "c918e8caf7662b12f51ef5eff59b99d48cdabc521e2ec571c7ecccea4a169b85"
+  },
+  "estimates": {
+    "preparation_effective_hours": [
+      4,
+      8
+    ],
+    "later_formal_testing_replay_delivery_hours": [
+      8,
+      16
+    ],
+    "total_effective_hours": [
+      12,
+      24
+    ],
+    "planning_days": [
+      1,
+      3
+    ],
+    "scope_note": "Initial engineering estimates before formal load calibration; this turn completed part of preparation. Official material wait and organizer review excluded. No precise GPU-hour estimate yet."
+  },
+  "remaining": [
+    "official per-model acceptance mapping, fixed dataset, reference baseline, evaluator/selfcheck and performance protocol",
+    "Robo current SHA GPU numerical/heldout revalidation",
+    "ASR new preparation apply in clean captured native image",
+    "official accuracy and performance runs, clean replay, accessible image and repository, final report and submission"
+  ]
+}

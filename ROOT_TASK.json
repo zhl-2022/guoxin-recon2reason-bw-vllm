@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "primary_task": "recon2reason-bw-vllm",
+  "canonical_task": "tasks/recon2reason-bw-vllm/task.json",
+  "canonical_report": "tasks/recon2reason-bw-vllm/README.md",
+  "model": "BAAI/Recon2Reason-Reasoning-4B",
+  "track": "T02",
+  "framework": "vllm",
+  "precision": "bf16",
+  "source_task_status": "functional_verified",
+  "formal_ready": false,
+  "submitted": false,
+  "repository_url": null,
+  "image_reference": null,
+  "shared_task_sources_are_other_submission_targets": false,
+  "notes": "Source/evidence snapshot only. No weights, model download, GPU run, git initialization, publication or official acceptance generated."
+}

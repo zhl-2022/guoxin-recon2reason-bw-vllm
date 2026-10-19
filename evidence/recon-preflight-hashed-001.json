@@ -1,0 +1,109 @@
+{
+  "created_at_utc": "2026-10-19T14:40:55.885666+00:00",
+  "kind": "preflight_only_not_official_evaluation",
+  "python": "3.10.12 (main, Aug 15 2025, 14:32:43) [GCC 11.4.0]",
+  "system": "Linux-5.15.0-25-generic-x86_64-with-glibc2.35",
+  "packages": {
+    "torch": "2.10.0+das.opt1.dtk2604.20260325.g6b060a",
+    "transformers": "5.5.0",
+    "tokenizers": "0.22.2",
+    "sglang": null,
+    "vllm": "0.18.1+das.fa71803.dtk2604",
+    "vllm-plugin-das": null,
+    "sgl-kernel": null,
+    "triton": "3.6.0+gitc73250c4.staging",
+    "safetensors": "0.7.0",
+    "accelerate": "1.12.0",
+    "Pillow": "12.1.1"
+  },
+  "tools": {
+    "hy-smi": true,
+    "rocm-smi": true,
+    "docker": false,
+    "podman": false,
+    "bash": true
+  },
+  "model_path": "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+  "model_exists": true,
+  "model_checks": {
+    "architecture": [
+      "Qwen3VLForConditionalGeneration"
+    ],
+    "model_type": "qwen3_vl",
+    "dtype": "bfloat16",
+    "expected_architecture": true,
+    "index_weight_count": 713,
+    "index_total_size": 8875631616,
+    "shards": [
+      {
+        "name": "model-00001-of-00002.safetensors",
+        "exists": true,
+        "size": 4990497880,
+        "index_keys_match": true,
+        "dtypes": [
+          "BF16"
+        ],
+        "payload_complete": true,
+        "sha256": "e0dbd6e21bd4e8a3dac445d2a7e29715a18a0adf37488e382ac105be0b5f0fbc"
+      },
+      {
+        "name": "model-00002-of-00002.safetensors",
+        "exists": true,
+        "size": 3885221448,
+        "index_keys_match": true,
+        "dtypes": [
+          "BF16"
+        ],
+        "payload_complete": true,
+        "sha256": "596f2f877e2f5bd1b8c9a32f8c7b25f892baecbe9a394383d48490ce0abea67a"
+      }
+    ],
+    "payload_bytes": 8875631616,
+    "index_total_size_matches": true,
+    "tokenizer_present": true,
+    "complete": true
+  },
+  "files": [
+    {
+      "name": "config.json",
+      "size": 1621,
+      "sha256": "cbc47621e35c7a9e65aa888432bcc6ffd38e0cab6d751d2fa21ed2ed2b06ddcf"
+    },
+    {
+      "name": "generation_config.json",
+      "size": 242,
+      "sha256": "e52f1f58e05d51d138f106aaa8a0c2501c15d1104b68b0cdcb5acc118ecc5bc0"
+    },
+    {
+      "name": "preprocessor_config.json",
+      "size": 777,
+      "sha256": "8b2f11a694a5740977cf09939228b41275ac5265ea68efd2e6aaaeba0b08c1c3"
+    },
+    {
+      "name": "tokenizer.json",
+      "size": 11423583,
+      "sha256": "e922683c962fc465c1e557e7dcddc1dac08640f691b1ff89e3728ee32c02a3d2"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "size": 6124,
+      "sha256": "de72c53dda88c4ff1fef783efe7f66a63ca28a5d9f6e132482b5f29a724a099b"
+    },
+    {
+      "name": "chat_template.jinja",
+      "size": 5292,
+      "sha256": "3636d0f0bd6bef02654cdffdc447b79cb2cef8ab02cc75267345946291a489e4"
+    },
+    {
+      "name": "model.safetensors.index.json",
+      "size": 64778,
+      "sha256": "c321e968083cc64dbdc77b9cc17842396cf376399f4ff4bca6b0a001fd22afef"
+    }
+  ],
+  "hy_smi": {
+    "returncode": 0,
+    "output": "\n================================= System Management Interface ==================================\n================================================================================================\nHCU     Temp     AvgPwr     Perf     PwrCap     VRAM%      HCU%      Dec%      Enc%      Mode     \n0       54.0C    86.0W      manual   1000.0W    0%         0.0%      0.0%      0.0%      Normal   \n================================================================================================\n======================================== End of SMI Log ========================================\n\n"
+  },
+  "weights_hashed": true,
+  "note": "Header integrity is not inference correctness. No official baseline or acceptance checked."
+}
