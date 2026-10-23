@@ -1,0 +1,4 @@
+{"name": "round1_4096_1024_c1", "status": "invalid_native_result", "wall_seconds": 417.494264}
+{"name": "round2_4096_1024_c1", "status": "invalid_native_result", "wall_seconds": 420.80666}
+{"name": "round1_16384_1024_c1", "status": "invalid_native_result", "wall_seconds": 476.181892}
+{"name": "round2_16384_1024_c1", "status": "invalid_native_result", "wall_seconds": 476.292187}

@@ -1,0 +1,15 @@
+{
+  "target": "C:\\Users\\zhl\\AppData\\Local\\Temp\\tmpva2c0drj\\fresh",
+  "archive_sha256": "4b05728f2f5e3858f59ecb59ad34ddbb7f4636630a1946595a7f42cfef78fc4b",
+  "manifest_sha256": "8debc32a394545939e20f93c7bc8d2f0d702191bbdb1ae0666e71d62ad18100c",
+  "payload_files": 7,
+  "files_installed_and_readback_verified": 8,
+  "GPU_inference_executed": false,
+  "packaged_self_identity_dry_run_passed": true,
+  "overwrite_rejected": true,
+  "win_tests_passed": 5,
+  "wsl_tests_passed": 5,
+  "installer_sha256": "2e26c7af652067c80e23f5aa2841bc9708b3c7c11ebc295b7fb0cc3fa968a312",
+  "frozen004_sources_unchanged": true,
+  "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f"
+}

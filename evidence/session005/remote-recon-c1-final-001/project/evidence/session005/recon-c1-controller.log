@@ -1,0 +1,11 @@
+nohup: ignoring input
+{
+  "output": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001",
+  "controller_exit_code": 1,
+  "bench_exit_status": 1,
+  "post_bench_metrics_saved": true,
+  "cleanup_verified": true,
+  "official_accuracy_verified": false,
+  "official_performance_verified": false,
+  "submission_ready": false
+}

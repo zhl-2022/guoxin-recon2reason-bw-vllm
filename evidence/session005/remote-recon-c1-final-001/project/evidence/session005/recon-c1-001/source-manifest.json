@@ -1,0 +1,51 @@
+{
+  "schema": "session005-recon-c1-source-v1",
+  "target_project": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1",
+  "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+  "runtime_logs_under": "evidence/session005",
+  "actual004_export_manifest_sha256": "eb5ab4603f1f557d4d07d9d8b76e24865a8aa518d6a4713981453c5f2aca15c0",
+  "actual004_pinned_sources": {
+    "scripts/recon2reason_runtime.py": "0edc33da22c07a804c93047f918a4a39a58af90997390c49695d8b39a891d85b",
+    "scripts/t02_sglang_bench.py": "ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000"
+  },
+  "historical_task_json_is_not_session005_platform_evidence": true,
+  "weights_included": false,
+  "dependency_installation_allowed": false,
+  "files": [
+    {
+      "path": "scripts/session005_recon_c1.py",
+      "size": 10182,
+      "sha256": "43fd29e52c008f16c5e0e24dd9c7db07e2c730b33b92b1802feb0854c6280d3c"
+    },
+    {
+      "path": "scripts/recon2reason_runtime.py",
+      "size": 34890,
+      "sha256": "0edc33da22c07a804c93047f918a4a39a58af90997390c49695d8b39a891d85b"
+    },
+    {
+      "path": "scripts/t02_sglang_bench.py",
+      "size": 22546,
+      "sha256": "ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/env.sh",
+      "size": 2779,
+      "sha256": "390c12d84c18163245e1fb994099bea5205a3a287ca44b69fad5afacff46d8aa"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/run.sh",
+      "size": 231,
+      "sha256": "8ab5a4d53e6d317a67ab902ec3ca78332e1cb458d21765295be27f05b5f97a69"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/stop.sh",
+      "size": 229,
+      "sha256": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c"
+    },
+    {
+      "path": "tasks/recon2reason-bw-vllm/task.json",
+      "size": 21838,
+      "sha256": "3b1b9ef4f725aa4cab4d8c0008e36a47771567b00e81f202a5e76a7a589dffd0"
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+{
+  "schema": "session005-exporter-selection-scope-addendum-v1",
+  "utc": "2026-10-23T14:36:37.850423+00:00",
+  "authenticated_capture": "evidence/session005/remote-recon-c1-final-001",
+  "archive_sha256": "bfd26699ad2ff8d53698ffd9d8813c6ca4a2df52776d9c755949aee86cfd05a8",
+  "old_exporter_alias_sha256": "fe9c797f4feae200ef04aa36b2020d3bf4df0c73da44274cbcef0a247fce6848",
+  "legacy_manifest_model_venv_cache_trees_traversed_flag": false,
+  "scope_correction": "001 did not know the newly introduced Kimi CPU checkpoint-config-only and isolated-hf-modules names. Its broad flag must not be used as proof these special probe directories were excluded. This capture includes the listed auxiliary copied metadata and hash-only Python files.",
+  "included_auxiliary_payloads": [
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/README.md",
+      "captured_utc": "2026-10-23T14:27:50.980824+00:00",
+      "crc32": "3f76244d",
+      "sha256": "7fa4d4e39537a43a7d6cc6f62873eb014b2f8bc3da2142111ba2ad29d4984794",
+      "size": 14619,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/README.md",
+      "source_mtime_ns": 1792765205000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/config.json",
+      "captured_utc": "2026-10-23T14:27:50.981770+00:00",
+      "crc32": "1ae8cbb6",
+      "sha256": "af3810295de6b08232776b74110ed482fa0183f4aeaec586ff4f7593910951cb",
+      "size": 2005,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/config.json",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/generation_config.json",
+      "captured_utc": "2026-10-23T14:27:50.982728+00:00",
+      "crc32": "556de5c0",
+      "sha256": "da26dd1916774784790db2b83336bad62d0917356743478ba6eb0c425c53eac5",
+      "size": 149,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/generation_config.json",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/model.safetensors.index.json",
+      "captured_utc": "2026-10-23T14:27:50.985008+00:00",
+      "crc32": "13fdd32c",
+      "sha256": "178ba3a15cb12f6ceac42aecfe665a8f041d47e948220d75b073088957efedd8",
+      "size": 588207,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/model.safetensors.index.json",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/preprocessor_config.json",
+      "captured_utc": "2026-10-23T14:27:50.992842+00:00",
+      "crc32": "0168ada4",
+      "sha256": "d968a7d7f83f82c3b0e1061079dcdbefd6f2c75b7ee4240cce995afaeae1f622",
+      "size": 401,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/preprocessor_config.json",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/tokenizer_config.json",
+      "captured_utc": "2026-10-23T14:27:50.994128+00:00",
+      "crc32": "1417c808",
+      "sha256": "d7861718cab22c7962e14b4693b4009dd526115cd392dc779069a8173be95703",
+      "size": 3857,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/tokenizer_config.json",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/README.md",
+      "captured_utc": "2026-10-23T14:27:50.995448+00:00",
+      "crc32": "3f76244d",
+      "sha256": "7fa4d4e39537a43a7d6cc6f62873eb014b2f8bc3da2142111ba2ad29d4984794",
+      "size": 14619,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/README.md",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/config.json",
+      "captured_utc": "2026-10-23T14:27:50.996375+00:00",
+      "crc32": "1ae8cbb6",
+      "sha256": "af3810295de6b08232776b74110ed482fa0183f4aeaec586ff4f7593910951cb",
+      "size": 2005,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/config.json",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/generation_config.json",
+      "captured_utc": "2026-10-23T14:27:50.997314+00:00",
+      "crc32": "556de5c0",
+      "sha256": "da26dd1916774784790db2b83336bad62d0917356743478ba6eb0c425c53eac5",
+      "size": 149,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/generation_config.json",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/model.safetensors.index.json",
+      "captured_utc": "2026-10-23T14:27:50.999560+00:00",
+      "crc32": "13fdd32c",
+      "sha256": "178ba3a15cb12f6ceac42aecfe665a8f041d47e948220d75b073088957efedd8",
+      "size": 588207,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/model.safetensors.index.json",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/preprocessor_config.json",
+      "captured_utc": "2026-10-23T14:27:51.007405+00:00",
+      "crc32": "0168ada4",
+      "sha256": "d968a7d7f83f82c3b0e1061079dcdbefd6f2c75b7ee4240cce995afaeae1f622",
+      "size": 401,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/preprocessor_config.json",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/tokenizer_config.json",
+      "captured_utc": "2026-10-23T14:27:51.213415+00:00",
+      "crc32": "1417c808",
+      "sha256": "d7861718cab22c7962e14b4693b4009dd526115cd392dc779069a8173be95703",
+      "size": 3857,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/tokenizer_config.json",
+      "source_mtime_ns": 1792765555000000000
+    }
+  ],
+  "included_auxiliary_source_hashes": [
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/configuration_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.982344+00:00",
+      "crc32": "cdcaaf3c",
+      "sha256": "d30462b89993b9fef138db983d3884bbc39750effadf2efe67f404d28ee40e5b",
+      "size": 13151,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/configuration_kimi_vl.py",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/image_processing_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.983211+00:00",
+      "crc32": "ef58dea7",
+      "sha256": "bb58551e088f3bb0027b1886ca5ff42776c485acec1a9aafe91553ff76926870",
+      "size": 4680,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/image_processing_kimi_vl.py",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/modeling_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.992354+00:00",
+      "crc32": "9479bb54",
+      "sha256": "74e8f18afa5bf8f580ef5be5f15b51506f1e4f604df5a84f508a7796b8947c0b",
+      "size": 105649,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/modeling_kimi_vl.py",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/processing_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.993342+00:00",
+      "crc32": "d5bd7137",
+      "sha256": "f8e64816baed0a92d85d0a987b587028ad55a0779f3ace8c5b68db705dc61561",
+      "size": 7537,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/processing_kimi_vl.py",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/tokenization_moonshot.py",
+      "captured_utc": "2026-10-23T14:27:50.993749+00:00",
+      "crc32": "ac330742",
+      "sha256": "0ae85e29c37689fefe41b8bfdb7aebd9a0152defedbf37fae0f8413000512029",
+      "size": 10958,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-002/checkpoint-config-only/tokenization_moonshot.py",
+      "source_mtime_ns": 1792765206000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/configuration_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.996954+00:00",
+      "crc32": "cdcaaf3c",
+      "sha256": "d30462b89993b9fef138db983d3884bbc39750effadf2efe67f404d28ee40e5b",
+      "size": 13151,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/configuration_kimi_vl.py",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/image_processing_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:50.997808+00:00",
+      "crc32": "ef58dea7",
+      "sha256": "bb58551e088f3bb0027b1886ca5ff42776c485acec1a9aafe91553ff76926870",
+      "size": 4680,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/image_processing_kimi_vl.py",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/modeling_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:51.006967+00:00",
+      "crc32": "9479bb54",
+      "sha256": "74e8f18afa5bf8f580ef5be5f15b51506f1e4f604df5a84f508a7796b8947c0b",
+      "size": 105649,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/modeling_kimi_vl.py",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/processing_kimi_vl.py",
+      "captured_utc": "2026-10-23T14:27:51.007980+00:00",
+      "crc32": "d5bd7137",
+      "sha256": "f8e64816baed0a92d85d0a987b587028ad55a0779f3ace8c5b68db705dc61561",
+      "size": 7537,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/processing_kimi_vl.py",
+      "source_mtime_ns": 1792765555000000000
+    },
+    {
+      "archive_path": "kimi-tools/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/tokenization_moonshot.py",
+      "captured_utc": "2026-10-23T14:27:51.212844+00:00",
+      "crc32": "ac330742",
+      "sha256": "0ae85e29c37689fefe41b8bfdb7aebd9a0152defedbf37fae0f8413000512029",
+      "size": 10958,
+      "source": "/root/private_data/guoxin-kimi-tools-005/evidence/session005/kimi-cpu-preflight-003/checkpoint-config-only/tokenization_moonshot.py",
+      "source_mtime_ns": 1792765555000000000
+    }
+  ],
+  "auxiliary_payload_count": 12,
+  "auxiliary_source_hash_count": 10,
+  "isolated_hf_modules_entries_observed": 0,
+  "model_weight_payloads_observed": false,
+  "all_integrity_checks_still_passed": true,
+  "Recon_source_runtime_client_metrics_cleanup_conclusions_changed": false,
+  "existing_ZIP_or_audit_bytes_rewritten": false,
+  "future_exporter_alias": "dist/export_session005_results_002.py",
+  "future_exporter_sha256": "38c9952b6af37010ce04ed5693a37dd538ab002ea3fdb802619878d1b7a9a9b2",
+  "fix": "Prune both names before os.walk descent; retain probe result and repair JSON without traversing config copies or dynamic module caches",
+  "official_acceptance": false
+}

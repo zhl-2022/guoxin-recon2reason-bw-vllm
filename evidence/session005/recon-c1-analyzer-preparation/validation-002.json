@@ -1,0 +1,14 @@
+{
+  "utc": "2026-10-23T14:15:55.130188+00:00",
+  "supersedes": "validation-001.json",
+  "script": "scripts/analyze_recon_c1_session005.py",
+  "sha256": "e7f0d0edc18fb3df64c2dc36d28f724f31f4e35018c94fb3a5d93e48d570a697",
+  "Win_unit_tests_passed": 11,
+  "WSL_unit_tests_passed": 11,
+  "scope": "CPU synthetic contract tests, no actual session005 c1 input audited yet",
+  "test_file_sha256": "2febc507d2cad263f4d2038c98296f49802c711e56b6de0fefeb31eb0a22628a",
+  "peer_review": "completion_preflight read-only layer/metrics/runtime audit found no blocking issue; hist series absent in before conservatively rejected rather than fabricated",
+  "archive_schema": "hg-session005-evidence-export-v1",
+  "actual_GPU_evidence_audited": false,
+  "official_performance_accepted": false
+}

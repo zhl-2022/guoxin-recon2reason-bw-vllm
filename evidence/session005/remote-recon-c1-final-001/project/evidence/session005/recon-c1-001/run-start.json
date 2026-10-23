@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-23T13:48:55.350341+00:00",
+  "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+  "expected_project": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1",
+  "controller_total_seconds": 2200,
+  "service_seconds": 2400,
+  "per_load_seconds": 600,
+  "loads": [
+    "4096:1",
+    "16384:1"
+  ],
+  "rounds": [
+    1,
+    2
+  ],
+  "measured_requests": 32,
+  "warmups": 4,
+  "expected_POSTs": 36,
+  "output_cap_sum_if_all_caps_hit": 32896,
+  "co_run_declared_by_root": "Kimi checkpoint download; not an isolated official performance run",
+  "historical_task_json_is_not_session005_platform_evidence": true,
+  "official_accuracy_verified": false,
+  "official_performance_verified": false,
+  "submission_ready": false
+}

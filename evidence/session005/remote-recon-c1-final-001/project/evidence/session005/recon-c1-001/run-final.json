@@ -1,0 +1,92 @@
+{
+  "started_utc": "2026-10-23T13:48:55.362627+00:00",
+  "plan": {
+    "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+    "expected_project": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1",
+    "controller_total_seconds": 2200,
+    "service_seconds": 2400,
+    "per_load_seconds": 600,
+    "loads": [
+      "4096:1",
+      "16384:1"
+    ],
+    "rounds": [
+      1,
+      2
+    ],
+    "measured_requests": 32,
+    "warmups": 4,
+    "expected_POSTs": 36,
+    "output_cap_sum_if_all_caps_hit": 32896,
+    "co_run_declared_by_root": "Kimi checkpoint download; not an isolated official performance run",
+    "historical_task_json_is_not_session005_platform_evidence": true,
+    "official_accuracy_verified": false,
+    "official_performance_verified": false,
+    "submission_ready": false
+  },
+  "steps": [
+    {
+      "argv": [
+        "bash",
+        "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/run.sh",
+        "--run-id",
+        "c78f8f7f9b24488a9d0d529a5ad28f0f"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "child_reaped": true,
+      "wall_seconds": 124.6449620462954,
+      "log_sha256": "c012fe5a6b9dd87da0704067219eabf5bce0cb7de9ab425fd9f178b056585e2c"
+    },
+    {
+      "argv": [
+        "/usr/bin/python",
+        "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/scripts/t02_sglang_bench.py",
+        "--run",
+        "--client-python",
+        "/root/private_data/sglang-client-004c/bin/python",
+        "--model-path",
+        "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+        "--served-model-name",
+        "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+        "--port",
+        "30000",
+        "--output-dir",
+        "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix",
+        "--timeout-seconds",
+        "600",
+        "--total-timeout-seconds",
+        "2015.3201746828854",
+        "--load",
+        "4096:1",
+        "--load",
+        "16384:1",
+        "--round",
+        "1",
+        "--round",
+        "2",
+        "--runtime-dir",
+        "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime",
+        "--expected-run-id",
+        "c78f8f7f9b24488a9d0d529a5ad28f0f",
+        "--allow-client-device-discovery"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "child_reaped": true,
+      "wall_seconds": 1793.7073677843437,
+      "log_sha256": "6fa1916f6e94e85303797de60853486ccf43786a79de553ea55b88783cdbbdf8"
+    }
+  ],
+  "official_accuracy_verified": false,
+  "official_performance_verified": false,
+  "submission_ready": false,
+  "bench_exit_status": 1,
+  "bench_status_is_not_official_judgment": true,
+  "post_bench_metrics_saved": true,
+  "cleanup_verified": true,
+  "frozen_sources_unchanged": true,
+  "ended_utc": "2026-10-23T14:21:05.528824+00:00",
+  "wall_seconds": 1930.1662258859724,
+  "controller_exit_code": 1
+}

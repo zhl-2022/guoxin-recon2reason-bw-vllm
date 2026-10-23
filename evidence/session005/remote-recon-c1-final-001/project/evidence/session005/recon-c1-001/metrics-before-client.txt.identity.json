@@ -1,0 +1,9 @@
+{
+  "utc": "2026-10-23T13:51:00.035274+00:00",
+  "owned_run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+  "status": 200,
+  "bytes": 79036,
+  "sha256": "2124a9083e5ea8479f2ef7e85ff6e549428a35125b8c092e521717a01a9f7d1a",
+  "method": "GET",
+  "model_request_sent": false
+}

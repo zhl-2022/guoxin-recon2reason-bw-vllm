@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Transparent canonical task entry; does not synthesize evaluation results."""
+"""Transparent shell verifier; no evaluation result synthesis."""
 import os
 from pathlib import Path
 import sys

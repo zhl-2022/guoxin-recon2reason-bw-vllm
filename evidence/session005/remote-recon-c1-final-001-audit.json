@@ -1,0 +1,494 @@
+{
+  "schema": "session005-recon-c1-final-audit-v1",
+  "utc": "2026-10-23T14:34:05.864902+00:00",
+  "archive_sha256": "bfd26699ad2ff8d53698ffd9d8813c6ca4a2df52776d9c755949aee86cfd05a8",
+  "archive_bytes": 223420,
+  "manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae",
+  "ZIP_entries": 91,
+  "payload_files": 90,
+  "source_hash_count": 44,
+  "analysis_sha256": "a8e5a85ae6d5926f20cb0fb036c944c0bf8c25227142f8fd5e4ef74c2dba6c89",
+  "analyzer_sha256": "e7f0d0edc18fb3df64c2dc36d28f724f31f4e35018c94fb3a5d93e48d570a697",
+  "local_integrity_verification_sha256": "37c53c4713ca0d624c770cc69666482cb4f587fee2586a4a5e4210aea098b8a2",
+  "all_integrity_checks_passed": true,
+  "rows": [
+    {
+      "name": "round1_4096_1024_c1",
+      "process_exit_code": 0,
+      "process_status": "exited",
+      "child_reaped": true,
+      "original_producer_status": "invalid_native_result",
+      "original_result_error": "Infinity",
+      "native_client_contract_passed": true,
+      "extra_visible_body_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "client_wall_seconds": 417.494264,
+      "native_file_sha256": "c62319476c812b0b87265c928b9c2ce073821f77095a9e9f490a8fc4d6b6c658",
+      "input_lens": [
+        4340,
+        4357,
+        4374,
+        4403,
+        4369,
+        4350,
+        4367,
+        4364
+      ],
+      "output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "client_metrics": {
+        "completed": 8,
+        "duration": 376.0525239170529,
+        "output_throughput": 21.784190981276158,
+        "mean_ttft_ms": 770.5490599037148,
+        "mean_tpot_ms": 45.19476821967687,
+        "p99_ttft_ms": 1198.6475894274188,
+        "p99_tpot_ms": 45.592221832307985,
+        "total_input_tokens": 34924,
+        "total_input_text_tokens": 34516,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192
+      }
+    },
+    {
+      "name": "round2_4096_1024_c1",
+      "process_exit_code": 0,
+      "process_status": "exited",
+      "child_reaped": true,
+      "original_producer_status": "invalid_native_result",
+      "original_result_error": "Infinity",
+      "native_client_contract_passed": true,
+      "extra_visible_body_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "client_wall_seconds": 420.80666,
+      "native_file_sha256": "a531036b43195af6453088d5236a20e548d1b250b9c6aa98d8e32e318f7a6997",
+      "input_lens": [
+        4324,
+        4366,
+        4363,
+        4353,
+        4360,
+        4359,
+        4365,
+        4377
+      ],
+      "output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "client_metrics": {
+        "completed": 8,
+        "duration": 378.53202081192285,
+        "output_throughput": 21.641498075720975,
+        "mean_ttft_ms": 718.2813991676085,
+        "mean_tpot_ms": 45.54884843131116,
+        "p99_ttft_ms": 920.501640047878,
+        "p99_tpot_ms": 45.788524114278275,
+        "total_input_tokens": 34867,
+        "total_input_text_tokens": 34459,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192
+      }
+    },
+    {
+      "name": "round1_16384_1024_c1",
+      "process_exit_code": 0,
+      "process_status": "exited",
+      "child_reaped": true,
+      "original_producer_status": "invalid_native_result",
+      "original_result_error": "Infinity",
+      "native_client_contract_passed": true,
+      "extra_visible_body_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "client_wall_seconds": 476.181892,
+      "native_file_sha256": "7c38970642f376f3f3d43361ebbeffa2eee7d2b20d2123d01ca061eee6b10b9e",
+      "input_lens": [
+        17363,
+        17271,
+        17216,
+        17227,
+        17366,
+        17343,
+        17311,
+        17391
+      ],
+      "output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "client_metrics": {
+        "completed": 8,
+        "duration": 426.2288773069158,
+        "output_throughput": 19.21972075604151,
+        "mean_ttft_ms": 6530.2740967599675,
+        "mean_tpot_ms": 45.69527734794089,
+        "p99_ttft_ms": 7660.094292405993,
+        "p99_tpot_ms": 45.9503515514628,
+        "total_input_tokens": 138488,
+        "total_input_text_tokens": 138080,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192
+      }
+    },
+    {
+      "name": "round2_16384_1024_c1",
+      "process_exit_code": 0,
+      "process_status": "exited",
+      "child_reaped": true,
+      "original_producer_status": "invalid_native_result",
+      "original_result_error": "Infinity",
+      "native_client_contract_passed": true,
+      "extra_visible_body_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "client_wall_seconds": 476.292187,
+      "native_file_sha256": "a9f3c997eda351b180c5ea9b4f35b8c3bcc9d3190016bb8210b2238e578aaae9",
+      "input_lens": [
+        17281,
+        17385,
+        17342,
+        17277,
+        17331,
+        17222,
+        17330,
+        17300
+      ],
+      "output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "client_metrics": {
+        "completed": 8,
+        "duration": 425.84275139914826,
+        "output_throughput": 19.23714792158462,
+        "mean_ttft_ms": 6590.166042908095,
+        "mean_tpot_ms": 45.58990222280381,
+        "p99_ttft_ms": 7788.193131834269,
+        "p99_tpot_ms": 45.807275797849485,
+        "total_input_tokens": 138468,
+        "total_input_text_tokens": 138060,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192
+      }
+    }
+  ],
+  "summary": {
+    "selected_c1_four_rows_planned": true,
+    "selected_c1_rows": 4,
+    "native_client_contract_pass_rows": 4,
+    "native_client_reported_requests": 32,
+    "visible_body_additional_check_pass_rows": 4,
+    "empty_body_total": 0,
+    "rows_without_a_typed_text_array": 0,
+    "this_is_a_separate_session005_c1_run": true,
+    "full_twelve_row_same_run_matrix_complete": false,
+    "official_accuracy_verified": false,
+    "official_performance_accepted": false,
+    "submission_ready": false
+  },
+  "server_metrics": {
+    "paired_snapshots_available": true,
+    "before_sha256": "2124a9083e5ea8479f2ef7e85ff6e549428a35125b8c092e521717a01a9f7d1a",
+    "after_sha256": "e396c1f93085e765936f4d6ca3b5d1c5e473a8ef084981c1803149d74ae4070c",
+    "delta": {
+      "request_params_max_tokens_sum": 32896,
+      "request_generation_tokens_sum": 32896,
+      "request_params_max_tokens_count": 36,
+      "request_generation_tokens_count": 36,
+      "generation_tokens_total": 32896,
+      "request_success_total": 36,
+      "request_success_by_reason": {
+        "error": 0,
+        "abort": 0,
+        "length": 36,
+        "repetition": 0,
+        "stop": 0
+      }
+    },
+    "histogram_bucket_deltas": {
+      "request_generation_tokens": {
+        "500.0": 4,
+        "10.0": 0,
+        "10000.0": 36,
+        "+Inf": 36,
+        "1.0": 0,
+        "5000.0": 36,
+        "20.0": 0,
+        "20000.0": 36,
+        "50.0": 4,
+        "200.0": 4,
+        "100.0": 4,
+        "2000.0": 36,
+        "2.0": 0,
+        "1000.0": 4,
+        "5.0": 0
+      },
+      "request_params_max_tokens": {
+        "100.0": 4,
+        "2000.0": 36,
+        "20000.0": 36,
+        "50.0": 4,
+        "10.0": 0,
+        "1.0": 0,
+        "5000.0": 36,
+        "20.0": 0,
+        "2.0": 0,
+        "1000.0": 4,
+        "5.0": 0,
+        "500.0": 4,
+        "10000.0": 36,
+        "+Inf": 36,
+        "200.0": 4
+      }
+    },
+    "series_absent_before_treated_as_zero": [],
+    "absent_series_policy": "Only after a matching counter family TYPE declaration exists in the before snapshot",
+    "expected_POSTs": 36,
+    "expected_measured_requests": 32,
+    "expected_warmups": 4,
+    "expected_cap_sum": 32896,
+    "expected_counts_and_token_cap_sum_match": true,
+    "generation_and_requested_cap_bucket_deltas_match": true,
+    "saturation_inference": {
+      "paired_finished_counts_and_sums_match_expected": true,
+      "conditional_math": "For the same 36 finished requests, if each actual output t_i <= requested cap m_i, equal sums imply every t_i=m_i.",
+      "semantic_assumptions": [
+        "Native DAS fork uses the audited vLLM finished-request generation/max-token histogram semantics",
+        "The same observations populate both histograms and actual output cannot exceed each corresponding requested cap",
+        "All model POSTs in this owned run are the 32 measured requests and four 32-token warmups"
+      ],
+      "raw_SSE_per_request_exact_token_counts_independently_verified": false
+    },
+    "official_performance_accepted": false,
+    "owned_server_POST_log": {
+      "observed_POSTs": 36,
+      "POST_path_status_pairs": [
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ]
+      ],
+      "exactly_expected_chat_POSTs_all_200": true
+    }
+  },
+  "all_selected_before_metric_counters_zero": true,
+  "server_log_POST_counts_before_after_stopped": {
+    "matrix/runtime/before/server.log": 0,
+    "matrix/runtime/after/server.log": 36,
+    "runtime-after-stop/server.log": 36
+  },
+  "metrics_snapshots_temporally_bracket_matrix": true,
+  "all_seven_sources_directly_export_sealed": true,
+  "source_provenance_closed": true,
+  "runtime_same_PID_tokens_config_before_after": true,
+  "independent_cleanup_verified": true,
+  "controller_exit_code": 1,
+  "bench_exit_status": 1,
+  "post_bench_metrics_saved": true,
+  "frozen_sources_unchanged": true,
+  "controller_start_utc": "2026-10-23T13:48:55.362627+00:00",
+  "controller_end_utc": "2026-10-23T14:21:05.528824+00:00",
+  "controller_wall_seconds": 1930.1662258859724,
+  "limits": [
+    "Separate session005 c1 run; not one twelve-row matrix with session004",
+    "32 nonempty client bodies are a diagnostic, not an official accuracy or extra performance threshold",
+    "Output_lens usage-vs-fallback origin is not recorded per request; raw SSE terminal/usage not independently captured",
+    "ITL sample counts are62-122 per request, not1023 independently observed per-token intervals",
+    "Native DAS finished-request/cap semantics remain stated assumptions of saturation inference",
+    "Kimi checkpoint download co-run declared; no isolated official performance claim",
+    "Source hash-only seals are not reconstructed into missing source payloads"
+  ],
+  "official_accuracy_verified": false,
+  "official_performance_accepted": false,
+  "submission_ready": false,
+  "contest_submission_performed": false
+}

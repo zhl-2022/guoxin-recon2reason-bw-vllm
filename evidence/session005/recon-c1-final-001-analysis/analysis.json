@@ -1,0 +1,1327 @@
+{
+  "schema": "session005-recon-c1-audit-v1",
+  "utc": "2026-10-23T14:31:16.843508+00:00",
+  "analyzer_sha256": "e7f0d0edc18fb3df64c2dc36d28f724f31f4e35018c94fb3a5d93e48d570a697",
+  "shared_parser_sha256": "d73ecca728b47b8f58fed407f13c9a496e73ba8e165ee08b740afd9065efdaa8",
+  "shared_prometheus_grammar_sha256": "37846b851baacedf903071b43a81a4b145973526105f0a89578816fc7583dcfa",
+  "source_run_sha256": "1a63e0b1fb16878d62457729fbcb3650c2b43f7327f3c56f7b5bc75431356cea",
+  "source_run_path": "E:\\hg20261019\\evidence\\session005\\remote-recon-c1-final-001\\project\\evidence\\session005\\recon-c1-001\\matrix\\run.json",
+  "source_provenance": {
+    "issues": [],
+    "verified_for_reanalysis": true,
+    "artifacts": [
+      {
+        "path": "sources/t02_sglang_bench.py",
+        "sha256": "ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000",
+        "bytes": 22546,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/t02_sglang_bench.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      },
+      {
+        "path": "sources/upstream-sglang/__init__.py",
+        "sha256": "ffda05a78218ed47a7fad82a86c8a1068ac6549cb0ddecf9959fe8752034b9c8",
+        "bytes": 2820,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/upstream-sglang/__init__.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      },
+      {
+        "path": "sources/upstream-sglang/bench_serving.py",
+        "sha256": "129e40b9e361be192306a9df56df41507f0397d5768696db3a9b994421daa259",
+        "bytes": 90674,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/upstream-sglang/bench_serving.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      },
+      {
+        "path": "sources/upstream-sglang/benchmark/datasets/image.py",
+        "sha256": "8a9a1c8cd9f1818b76b06c01aedf7283de999a84baf115f00c46caf52ed3003c",
+        "bytes": 10610,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/upstream-sglang/benchmark/datasets/image.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      },
+      {
+        "path": "sources/upstream-sglang/benchmark/datasets/common.py",
+        "sha256": "5f00c71b31cfcc3e446eed7ce0774650c2b684f46f80cc091e995d8504900b08",
+        "bytes": 3150,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/upstream-sglang/benchmark/datasets/common.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      },
+      {
+        "path": "sources/upstream-sglang/benchmark/utils.py",
+        "sha256": "437c615343bb4d2d006e62278fbe579022618c71d5c6f5e33581e768a9aaf2c0",
+        "bytes": 4935,
+        "source_payload_archived": false,
+        "proof_type": "session005_export_before_after_source_hash_only",
+        "remote_source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix/sources/upstream-sglang/benchmark/utils.py",
+        "export_manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae"
+      }
+    ],
+    "export_source_hash_seal": {
+      "manifest_path": "E:\\hg20261019\\evidence\\session005\\remote-recon-c1-final-001\\export-manifest.json",
+      "manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae",
+      "schema": "hg-session005-evidence-export-v1",
+      "before_after_script_hashes_identical": true,
+      "source_payloads_not_reconstructed": true,
+      "capture_semantics": "Live non-atomic capture. Individual reads fail on mutation. Before/after state and stable actual source hashes are separate evidence, not success/acceptance.",
+      "source_hash_count": 44
+    },
+    "approved_driver_sha256": "ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000",
+    "upstream_bench_reference_sha256": "129e40b9e361be192306a9df56df41507f0397d5768696db3a9b994421daa259",
+    "server_framework_verified_from_runtime": true,
+    "official_framework_acceptance_verified": false
+  },
+  "export_seal": {
+    "manifest_path": "E:\\hg20261019\\evidence\\session005\\remote-recon-c1-final-001\\export-manifest.json",
+    "manifest_sha256": "ac8787321a5e448c6f2ba0b7f5da381571981bb790739a583edd44af09ae80ae",
+    "schema": "hg-session005-evidence-export-v1",
+    "before_after_script_hashes_identical": true,
+    "source_payloads_not_reconstructed": true,
+    "capture_semantics": "Live non-atomic capture. Individual reads fail on mutation. Before/after state and stable actual source hashes are separate evidence, not success/acceptance.",
+    "source_hash_count": 44
+  },
+  "frozen_source_bundle_proof": {
+    "frozen_bundle_sha256": "4b05728f2f5e3858f59ecb59ad34ddbb7f4636630a1946595a7f42cfef78fc4b",
+    "source_manifest_sha256": "8debc32a394545939e20f93c7bc8d2f0d702191bbdb1ae0666e71d62ad18100c",
+    "captured_source_manifest_sha256": "a565ddadf959a71ac8b0cdc2a1d9052cbb89e263ab59cf4a31571266ce764ac0",
+    "manifest_objects_equal": true,
+    "source_manifest_format_boundary": "Controller reserializes the source manifest with LF; frozen Windows-generated source JSON may use CRLF. Both original byte hashes remain recorded.",
+    "observed_actual_source_seals_match": [
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/scripts/session005_recon_c1.py",
+        "sha256": "43fd29e52c008f16c5e0e24dd9c7db07e2c730b33b92b1802feb0854c6280d3c",
+        "size": 10182
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/scripts/recon2reason_runtime.py",
+        "sha256": "0edc33da22c07a804c93047f918a4a39a58af90997390c49695d8b39a891d85b",
+        "size": 34890
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/scripts/t02_sglang_bench.py",
+        "sha256": "ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000",
+        "size": 22546
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/env.sh",
+        "sha256": "390c12d84c18163245e1fb994099bea5205a3a287ca44b69fad5afacff46d8aa",
+        "size": 2779
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/run.sh",
+        "sha256": "8ab5a4d53e6d317a67ab902ec3ca78332e1cb458d21765295be27f05b5f97a69",
+        "size": 231
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/stop.sh",
+        "sha256": "d3e0b15a5bc42ca3d62a2215582ec61c47c1364f7b398898ab800a7396f4bc2c",
+        "size": 229
+      },
+      {
+        "source": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/task.json",
+        "sha256": "3b1b9ef4f725aa4cab4d8c0008e36a47771567b00e81f202a5e76a7a589dffd0",
+        "size": 21838
+      }
+    ],
+    "sources_without_direct_export_seal": [],
+    "all_seven_files_directly_sealed": true,
+    "source_manifest_is_not_alone_proof_of_execution": true
+  },
+  "runtime_binding": {
+    "before_after_same_owned_ready_processes_and_config": true,
+    "snapshots": {
+      "before": {
+        "state": {
+          "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+          "status": "ready",
+          "created_utc": "2026-10-23T13:48:57.263399+00:00",
+          "supervisor_pid": 2094,
+          "supervisor_token": "279071986",
+          "config_path": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime/config-c78f8f7f9b24488a9d0d529a5ad28f0f.json",
+          "url": "http://127.0.0.1:30000",
+          "max_runtime_seconds": 2400,
+          "framework": "vllm",
+          "precision": "bf16",
+          "command": [
+            "/usr/bin/python",
+            "-m",
+            "vllm.entrypoints.openai.api_server",
+            "--model",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--served-model-name",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "30000",
+            "--tensor-parallel-size",
+            "1",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "32768",
+            "--gpu-memory-utilization",
+            "0.85",
+            "--enforce-eager",
+            "--max-num-seqs",
+            "16",
+            "--limit-mm-per-prompt",
+            "{\"image\":2,\"video\":0}"
+          ],
+          "server_pid": 2095,
+          "server_token": "279072096",
+          "ready_utc": "2026-10-23T13:50:59.860296+00:00"
+        },
+        "config_sha256": "1859ef01da445be2374aae9fbe477455171167a996239172980d86e4430d0878"
+      },
+      "after": {
+        "state": {
+          "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+          "status": "ready",
+          "created_utc": "2026-10-23T13:48:57.263399+00:00",
+          "supervisor_pid": 2094,
+          "supervisor_token": "279071986",
+          "config_path": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime/config-c78f8f7f9b24488a9d0d529a5ad28f0f.json",
+          "url": "http://127.0.0.1:30000",
+          "max_runtime_seconds": 2400,
+          "framework": "vllm",
+          "precision": "bf16",
+          "command": [
+            "/usr/bin/python",
+            "-m",
+            "vllm.entrypoints.openai.api_server",
+            "--model",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--served-model-name",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "30000",
+            "--tensor-parallel-size",
+            "1",
+            "--dtype",
+            "bfloat16",
+            "--max-model-len",
+            "32768",
+            "--gpu-memory-utilization",
+            "0.85",
+            "--enforce-eager",
+            "--max-num-seqs",
+            "16",
+            "--limit-mm-per-prompt",
+            "{\"image\":2,\"video\":0}"
+          ],
+          "server_pid": 2095,
+          "server_token": "279072096",
+          "ready_utc": "2026-10-23T13:50:59.860296+00:00"
+        },
+        "config_sha256": "1859ef01da445be2374aae9fbe477455171167a996239172980d86e4430d0878"
+      }
+    }
+  },
+  "native_inventory": [
+    {
+      "path": "native/round1_16384_1024_c1.jsonl",
+      "bytes": 23035,
+      "sha256": "7c38970642f376f3f3d43361ebbeffa2eee7d2b20d2123d01ca061eee6b10b9e"
+    },
+    {
+      "path": "native/round1_4096_1024_c1.jsonl",
+      "bytes": 21473,
+      "sha256": "c62319476c812b0b87265c928b9c2ce073821f77095a9e9f490a8fc4d6b6c658"
+    },
+    {
+      "path": "native/round2_16384_1024_c1.jsonl",
+      "bytes": 21192,
+      "sha256": "a9f3c997eda351b180c5ea9b4f35b8c3bcc9d3190016bb8210b2238e578aaae9"
+    },
+    {
+      "path": "native/round2_4096_1024_c1.jsonl",
+      "bytes": 20835,
+      "sha256": "a531036b43195af6453088d5236a20e548d1b250b9c6aa98d8e32e318f7a6997"
+    }
+  ],
+  "rows": [
+    {
+      "name": "round1_4096_1024_c1",
+      "round": 1,
+      "scored_round": false,
+      "text_target_tokens": 4096,
+      "concurrency": 1,
+      "expected_requests": 8,
+      "original_producer_status": "invalid_native_result",
+      "prompt_length_boundary": "generated text target; image/chat tokens and detokenization are separate",
+      "original_result_error": "Infinity",
+      "process_status": "exited",
+      "exit_code": 0,
+      "child_reaped": true,
+      "client_wall_seconds": 417.494264,
+      "native_client_execution_and_contract_passed": true,
+      "native_contract_issues": [],
+      "native_arrays_counts_and_metrics_consistent": true,
+      "normalizations_in_memory": [
+        {
+          "path": "$.request_rate",
+          "original_token": "Infinity",
+          "normalized_value": "inf",
+          "reason": "upstream json.dumps default for --request-rate inf"
+        }
+      ],
+      "client_reported_metrics": {
+        "tag": null,
+        "backend": "sglang-oai-chat",
+        "dataset_name": "image",
+        "request_rate": "inf",
+        "max_concurrency": 1,
+        "sharegpt_output_len": null,
+        "random_input_len": 4096,
+        "random_output_len": 1024,
+        "random_range_ratio": 1.0,
+        "server_info": null,
+        "duration": 376.0525239170529,
+        "completed": 8,
+        "total_input_tokens": 34924,
+        "total_input_text_tokens": 34516,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192,
+        "total_output_tokens_retokenized": 753,
+        "request_throughput": 0.021273624005152498,
+        "input_throughput": 92.87000559449322,
+        "output_throughput": 21.784190981276158,
+        "total_throughput": 114.65419657576938,
+        "mean_e2e_latency_ms": 47004.79694863316,
+        "median_e2e_latency_ms": 47236.09549878165,
+        "std_e2e_latency_ms": 535.7179673349195,
+        "p90_e2e_latency_ms": 47461.5002643317,
+        "p99_e2e_latency_ms": 47548.23699370958,
+        "mean_ttft_ms": 770.5490599037148,
+        "median_ttft_ms": 769.21446621418,
+        "std_ttft_ms": 283.25091397296757,
+        "p99_ttft_ms": 1198.6475894274188,
+        "mean_tpot_ms": 45.19476821967687,
+        "median_tpot_ms": 45.2934322218235,
+        "std_tpot_ms": 0.3414555417762412,
+        "p99_tpot_ms": 45.592221832307985,
+        "mean_itl_ms": 45.66071854451619,
+        "median_itl_ms": 45.26626877486706,
+        "std_itl_ms": 4.70739100342575,
+        "p95_itl_ms": 46.23035015538335,
+        "p99_itl_ms": 68.75006373971773,
+        "concurrency": 0.9999623767237612,
+        "accept_length": null,
+        "max_output_tokens_per_s": 23.0,
+        "max_concurrent_requests": 2
+      },
+      "client_reported_input_lens": [
+        4340,
+        4357,
+        4374,
+        4403,
+        4369,
+        4350,
+        4367,
+        4364
+      ],
+      "client_reported_output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "request_errors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "per_request_ttfts_seconds": [
+        0.1372347050346434,
+        0.7729511423967779,
+        0.7654777900315821,
+        0.7738964972086251,
+        0.76267543528229,
+        0.7596010193228722,
+        0.9772434746846557,
+        1.2153124152682722
+      ],
+      "per_request_itl_sample_counts": [
+        75,
+        85,
+        96,
+        101,
+        88,
+        98,
+        117,
+        93
+      ],
+      "native_stream_timing_coverage": {
+        "positive_ttft_requests": 8,
+        "zero_ttft_requests": 0,
+        "requests_with_itl_samples": 8,
+        "all_client_stream_timing_fields_are_not_independent_raw_SSE_capture": true
+      },
+      "visible_body_additional_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "output_lens_can_use_requested_length_fallback": true,
+      "per_request_output_lens_usage_vs_fallback_origin_recorded": false,
+      "server_actual_prompt_tokens_per_request_verified": false,
+      "exact_output_tokens_verified_from_raw_SSE": false,
+      "stream_terminal_framing_verified": false,
+      "raw_SSE_usage_captured": false,
+      "boundary": "Native output_lens can come from stream usage or requested-length fallback; raw SSE usage, terminal framing, and exact 1024 generated tokens are not independently certified by this JSONL. Upstream combines reasoning_content/content.",
+      "native_file_sha256": "c62319476c812b0b87265c928b9c2ce073821f77095a9e9f490a8fc4d6b6c658",
+      "native_file_bytes": 21473,
+      "client_log_sha256": "63574e2ba9637b13e9369204402ae70d09831bee86b1b7fa953560e33cba11b8",
+      "native_process_exited_zero_and_reaped": true,
+      "issues": []
+    },
+    {
+      "name": "round2_4096_1024_c1",
+      "round": 2,
+      "scored_round": true,
+      "text_target_tokens": 4096,
+      "concurrency": 1,
+      "expected_requests": 8,
+      "original_producer_status": "invalid_native_result",
+      "prompt_length_boundary": "generated text target; image/chat tokens and detokenization are separate",
+      "original_result_error": "Infinity",
+      "process_status": "exited",
+      "exit_code": 0,
+      "child_reaped": true,
+      "client_wall_seconds": 420.80666,
+      "native_client_execution_and_contract_passed": true,
+      "native_contract_issues": [],
+      "native_arrays_counts_and_metrics_consistent": true,
+      "normalizations_in_memory": [
+        {
+          "path": "$.request_rate",
+          "original_token": "Infinity",
+          "normalized_value": "inf",
+          "reason": "upstream json.dumps default for --request-rate inf"
+        }
+      ],
+      "client_reported_metrics": {
+        "tag": null,
+        "backend": "sglang-oai-chat",
+        "dataset_name": "image",
+        "request_rate": "inf",
+        "max_concurrency": 1,
+        "sharegpt_output_len": null,
+        "random_input_len": 4096,
+        "random_output_len": 1024,
+        "random_range_ratio": 1.0,
+        "server_info": null,
+        "duration": 378.53202081192285,
+        "completed": 8,
+        "total_input_tokens": 34867,
+        "total_input_text_tokens": 34459,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192,
+        "total_output_tokens_retokenized": 729,
+        "request_throughput": 0.021134275464571264,
+        "input_throughput": 92.11109782790078,
+        "output_throughput": 21.641498075720975,
+        "total_throughput": 113.75259590362175,
+        "mean_e2e_latency_ms": 47314.75334439892,
+        "median_e2e_latency_ms": 47449.7040968854,
+        "std_e2e_latency_ms": 414.9247342432681,
+        "p90_e2e_latency_ms": 47600.911712879315,
+        "p99_e2e_latency_ms": 47639.676179704256,
+        "mean_ttft_ms": 718.2813991676085,
+        "median_ttft_ms": 718.4562520124018,
+        "std_ttft_ms": 236.9133061269449,
+        "p99_ttft_ms": 920.501640047878,
+        "mean_tpot_ms": 45.54884843131116,
+        "median_tpot_ms": 45.63763775072541,
+        "std_tpot_ms": 0.2189287058518648,
+        "p99_tpot_ms": 45.788524114278275,
+        "mean_itl_ms": 45.988414808980025,
+        "median_itl_ms": 45.468684285879135,
+        "std_itl_ms": 4.765888348178152,
+        "p95_itl_ms": 46.9133622944355,
+        "p99_itl_ms": 78.82179405540333,
+        "concurrency": 0.9999630307187714,
+        "accept_length": null,
+        "max_output_tokens_per_s": 23.0,
+        "max_concurrent_requests": 2
+      },
+      "client_reported_input_lens": [
+        4324,
+        4366,
+        4363,
+        4353,
+        4360,
+        4359,
+        4365,
+        4377
+      ],
+      "client_reported_output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "request_errors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "per_request_ttfts_seconds": [
+        0.14401640323922038,
+        0.9115168740972877,
+        0.7049686280079186,
+        0.9198548696003854,
+        0.7084315926767886,
+        0.7249443922191858,
+        0.9205503216944635,
+        0.7119681118056178
+      ],
+      "per_request_itl_sample_counts": [
+        84,
+        75,
+        117,
+        85,
+        90,
+        84,
+        82,
+        112
+      ],
+      "native_stream_timing_coverage": {
+        "positive_ttft_requests": 8,
+        "zero_ttft_requests": 0,
+        "requests_with_itl_samples": 8,
+        "all_client_stream_timing_fields_are_not_independent_raw_SSE_capture": true
+      },
+      "visible_body_additional_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "output_lens_can_use_requested_length_fallback": true,
+      "per_request_output_lens_usage_vs_fallback_origin_recorded": false,
+      "server_actual_prompt_tokens_per_request_verified": false,
+      "exact_output_tokens_verified_from_raw_SSE": false,
+      "stream_terminal_framing_verified": false,
+      "raw_SSE_usage_captured": false,
+      "boundary": "Native output_lens can come from stream usage or requested-length fallback; raw SSE usage, terminal framing, and exact 1024 generated tokens are not independently certified by this JSONL. Upstream combines reasoning_content/content.",
+      "native_file_sha256": "a531036b43195af6453088d5236a20e548d1b250b9c6aa98d8e32e318f7a6997",
+      "native_file_bytes": 20835,
+      "client_log_sha256": "84e33f3f1dad7ec8d7e5d569975d6d7c892b5a118dc31ff4a72a10d38e788612",
+      "native_process_exited_zero_and_reaped": true,
+      "issues": []
+    },
+    {
+      "name": "round1_16384_1024_c1",
+      "round": 1,
+      "scored_round": false,
+      "text_target_tokens": 16384,
+      "concurrency": 1,
+      "expected_requests": 8,
+      "original_producer_status": "invalid_native_result",
+      "prompt_length_boundary": "generated text target; image/chat tokens and detokenization are separate",
+      "original_result_error": "Infinity",
+      "process_status": "exited",
+      "exit_code": 0,
+      "child_reaped": true,
+      "client_wall_seconds": 476.181892,
+      "native_client_execution_and_contract_passed": true,
+      "native_contract_issues": [],
+      "native_arrays_counts_and_metrics_consistent": true,
+      "normalizations_in_memory": [
+        {
+          "path": "$.request_rate",
+          "original_token": "Infinity",
+          "normalized_value": "inf",
+          "reason": "upstream json.dumps default for --request-rate inf"
+        }
+      ],
+      "client_reported_metrics": {
+        "tag": null,
+        "backend": "sglang-oai-chat",
+        "dataset_name": "image",
+        "request_rate": "inf",
+        "max_concurrency": 1,
+        "sharegpt_output_len": null,
+        "random_input_len": 16384,
+        "random_output_len": 1024,
+        "random_range_ratio": 1.0,
+        "server_info": null,
+        "duration": 426.2288773069158,
+        "completed": 8,
+        "total_input_tokens": 138488,
+        "total_input_text_tokens": 138080,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192,
+        "total_output_tokens_retokenized": 805,
+        "request_throughput": 0.018769258550821788,
+        "input_throughput": 324.91463477327596,
+        "output_throughput": 19.21972075604151,
+        "total_throughput": 344.1343555293175,
+        "mean_e2e_latency_ms": 53276.542823703494,
+        "median_e2e_latency_ms": 54245.00436312519,
+        "std_e2e_latency_ms": 2511.9199641000923,
+        "p90_e2e_latency_ms": 54346.52398619801,
+        "p99_e2e_latency_ms": 54463.87359360233,
+        "mean_ttft_ms": 6530.2740967599675,
+        "median_ttft_ms": 7354.013330070302,
+        "std_ttft_ms": 2384.159907980581,
+        "p99_ttft_ms": 7660.094292405993,
+        "mean_tpot_ms": 45.69527734794089,
+        "median_tpot_ms": 45.712309945711574,
+        "std_tpot_ms": 0.19897564195364406,
+        "p99_tpot_ms": 45.9503515514628,
+        "mean_itl_ms": 46.03048866059377,
+        "median_itl_ms": 45.67249491810799,
+        "std_itl_ms": 4.722698752004848,
+        "p95_itl_ms": 46.61596994847059,
+        "p99_itl_ms": 49.254105482250466,
+        "concurrency": 0.99996120695202,
+        "accept_length": null,
+        "max_output_tokens_per_s": 23.0,
+        "max_concurrent_requests": 2
+      },
+      "client_reported_input_lens": [
+        17363,
+        17271,
+        17216,
+        17227,
+        17366,
+        17343,
+        17311,
+        17391
+      ],
+      "client_reported_output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "request_errors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "per_request_ttfts_seconds": [
+        0.23274408001452684,
+        7.279400577768683,
+        7.358972245361656,
+        7.258004283066839,
+        7.574171401094645,
+        7.349054414778948,
+        7.52328416518867,
+        7.666561606805772
+      ],
+      "per_request_itl_sample_counts": [
+        119,
+        110,
+        110,
+        88,
+        87,
+        88,
+        84,
+        119
+      ],
+      "native_stream_timing_coverage": {
+        "positive_ttft_requests": 8,
+        "zero_ttft_requests": 0,
+        "requests_with_itl_samples": 8,
+        "all_client_stream_timing_fields_are_not_independent_raw_SSE_capture": true
+      },
+      "visible_body_additional_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "output_lens_can_use_requested_length_fallback": true,
+      "per_request_output_lens_usage_vs_fallback_origin_recorded": false,
+      "server_actual_prompt_tokens_per_request_verified": false,
+      "exact_output_tokens_verified_from_raw_SSE": false,
+      "stream_terminal_framing_verified": false,
+      "raw_SSE_usage_captured": false,
+      "boundary": "Native output_lens can come from stream usage or requested-length fallback; raw SSE usage, terminal framing, and exact 1024 generated tokens are not independently certified by this JSONL. Upstream combines reasoning_content/content.",
+      "native_file_sha256": "7c38970642f376f3f3d43361ebbeffa2eee7d2b20d2123d01ca061eee6b10b9e",
+      "native_file_bytes": 23035,
+      "client_log_sha256": "d418a78c223d7b48027f493928fe43604306ec02f6700744462e451d09cba837",
+      "native_process_exited_zero_and_reaped": true,
+      "issues": []
+    },
+    {
+      "name": "round2_16384_1024_c1",
+      "round": 2,
+      "scored_round": true,
+      "text_target_tokens": 16384,
+      "concurrency": 1,
+      "expected_requests": 8,
+      "original_producer_status": "invalid_native_result",
+      "prompt_length_boundary": "generated text target; image/chat tokens and detokenization are separate",
+      "original_result_error": "Infinity",
+      "process_status": "exited",
+      "exit_code": 0,
+      "child_reaped": true,
+      "client_wall_seconds": 476.292187,
+      "native_client_execution_and_contract_passed": true,
+      "native_contract_issues": [],
+      "native_arrays_counts_and_metrics_consistent": true,
+      "normalizations_in_memory": [
+        {
+          "path": "$.request_rate",
+          "original_token": "Infinity",
+          "normalized_value": "inf",
+          "reason": "upstream json.dumps default for --request-rate inf"
+        }
+      ],
+      "client_reported_metrics": {
+        "tag": null,
+        "backend": "sglang-oai-chat",
+        "dataset_name": "image",
+        "request_rate": "inf",
+        "max_concurrency": 1,
+        "sharegpt_output_len": null,
+        "random_input_len": 16384,
+        "random_output_len": 1024,
+        "random_range_ratio": 1.0,
+        "server_info": null,
+        "duration": 425.84275139914826,
+        "completed": 8,
+        "total_input_tokens": 138468,
+        "total_input_text_tokens": 138060,
+        "total_input_vision_tokens": 408,
+        "total_output_tokens": 8192,
+        "total_output_tokens_retokenized": 735,
+        "request_throughput": 0.01878627726717248,
+        "input_throughput": 325.16228007885485,
+        "output_throughput": 19.23714792158462,
+        "total_throughput": 344.39942800043946,
+        "mean_e2e_latency_ms": 53228.63601683639,
+        "median_e2e_latency_ms": 54004.49165003374,
+        "std_e2e_latency_ms": 2473.7591823975526,
+        "p90_e2e_latency_ms": 54437.00496419333,
+        "p99_e2e_latency_ms": 54470.23037544917,
+        "mean_ttft_ms": 6590.166042908095,
+        "median_ttft_ms": 7466.966331936419,
+        "std_ttft_ms": 2414.314960624008,
+        "p99_ttft_ms": 7788.193131834269,
+        "mean_tpot_ms": 45.58990222280381,
+        "median_tpot_ms": 45.60041132010702,
+        "std_tpot_ms": 0.12814534125897428,
+        "p99_tpot_ms": 45.807275797849485,
+        "mean_itl_ms": 46.027870244999114,
+        "median_itl_ms": 45.655544847249985,
+        "std_itl_ms": 5.014714416839822,
+        "p95_itl_ms": 46.56789940781891,
+        "p99_itl_ms": 76.09906367957457,
+        "concurrency": 0.9999679147656917,
+        "accept_length": null,
+        "max_output_tokens_per_s": 23.0,
+        "max_concurrent_requests": 2
+      },
+      "client_reported_input_lens": [
+        17281,
+        17385,
+        17342,
+        17277,
+        17331,
+        17222,
+        17330,
+        17300
+      ],
+      "client_reported_output_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "request_errors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "per_request_ttfts_seconds": [
+        0.2176529481075704,
+        7.37959620822221,
+        7.802187148015946,
+        7.312664097175002,
+        7.602272631134838,
+        7.259042790159583,
+        7.554336455650628,
+        7.593576064798981
+      ],
+      "per_request_itl_sample_counts": [
+        122,
+        92,
+        87,
+        62,
+        64,
+        76,
+        118,
+        114
+      ],
+      "native_stream_timing_coverage": {
+        "positive_ttft_requests": 8,
+        "zero_ttft_requests": 0,
+        "requests_with_itl_samples": 8,
+        "all_client_stream_timing_fields_are_not_independent_raw_SSE_capture": true
+      },
+      "visible_body_additional_check": {
+        "all_entries_are_strings": true,
+        "empty_or_whitespace_indices": [],
+        "nonempty_text_count": 8,
+        "passed": true,
+        "is_official_performance_threshold": false,
+        "is_semantic_accuracy_evaluation": false
+      },
+      "output_lens_can_use_requested_length_fallback": true,
+      "per_request_output_lens_usage_vs_fallback_origin_recorded": false,
+      "server_actual_prompt_tokens_per_request_verified": false,
+      "exact_output_tokens_verified_from_raw_SSE": false,
+      "stream_terminal_framing_verified": false,
+      "raw_SSE_usage_captured": false,
+      "boundary": "Native output_lens can come from stream usage or requested-length fallback; raw SSE usage, terminal framing, and exact 1024 generated tokens are not independently certified by this JSONL. Upstream combines reasoning_content/content.",
+      "native_file_sha256": "a9f3c997eda351b180c5ea9b4f35b8c3bcc9d3190016bb8210b2238e578aaae9",
+      "native_file_bytes": 21192,
+      "client_log_sha256": "6b38b2ff2e58889d42717d6d529b12c00b487c9bf83404c408d2d4cb38e699d0",
+      "native_process_exited_zero_and_reaped": true,
+      "issues": []
+    }
+  ],
+  "controller": {
+    "start": {
+      "utc": "2026-10-23T13:48:55.350341+00:00",
+      "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+      "expected_project": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1",
+      "controller_total_seconds": 2200,
+      "service_seconds": 2400,
+      "per_load_seconds": 600,
+      "loads": [
+        "4096:1",
+        "16384:1"
+      ],
+      "rounds": [
+        1,
+        2
+      ],
+      "measured_requests": 32,
+      "warmups": 4,
+      "expected_POSTs": 36,
+      "output_cap_sum_if_all_caps_hit": 32896,
+      "co_run_declared_by_root": "Kimi checkpoint download; not an isolated official performance run",
+      "historical_task_json_is_not_session005_platform_evidence": true,
+      "official_accuracy_verified": false,
+      "official_performance_verified": false,
+      "submission_ready": false
+    },
+    "final": {
+      "started_utc": "2026-10-23T13:48:55.362627+00:00",
+      "plan": {
+        "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+        "expected_project": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1",
+        "controller_total_seconds": 2200,
+        "service_seconds": 2400,
+        "per_load_seconds": 600,
+        "loads": [
+          "4096:1",
+          "16384:1"
+        ],
+        "rounds": [
+          1,
+          2
+        ],
+        "measured_requests": 32,
+        "warmups": 4,
+        "expected_POSTs": 36,
+        "output_cap_sum_if_all_caps_hit": 32896,
+        "co_run_declared_by_root": "Kimi checkpoint download; not an isolated official performance run",
+        "historical_task_json_is_not_session005_platform_evidence": true,
+        "official_accuracy_verified": false,
+        "official_performance_verified": false,
+        "submission_ready": false
+      },
+      "steps": [
+        {
+          "argv": [
+            "bash",
+            "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/run.sh",
+            "--run-id",
+            "c78f8f7f9b24488a9d0d529a5ad28f0f"
+          ],
+          "exit_code": 0,
+          "timed_out": false,
+          "child_reaped": true,
+          "wall_seconds": 124.6449620462954,
+          "log_sha256": "c012fe5a6b9dd87da0704067219eabf5bce0cb7de9ab425fd9f178b056585e2c"
+        },
+        {
+          "argv": [
+            "/usr/bin/python",
+            "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/scripts/t02_sglang_bench.py",
+            "--run",
+            "--client-python",
+            "/root/private_data/sglang-client-004c/bin/python",
+            "--model-path",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--served-model-name",
+            "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+            "--port",
+            "30000",
+            "--output-dir",
+            "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/evidence/session005/recon-c1-001/matrix",
+            "--timeout-seconds",
+            "600",
+            "--total-timeout-seconds",
+            "2015.3201746828854",
+            "--load",
+            "4096:1",
+            "--load",
+            "16384:1",
+            "--round",
+            "1",
+            "--round",
+            "2",
+            "--runtime-dir",
+            "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime",
+            "--expected-run-id",
+            "c78f8f7f9b24488a9d0d529a5ad28f0f",
+            "--allow-client-device-discovery"
+          ],
+          "exit_code": 1,
+          "timed_out": false,
+          "child_reaped": true,
+          "wall_seconds": 1793.7073677843437,
+          "log_sha256": "6fa1916f6e94e85303797de60853486ccf43786a79de553ea55b88783cdbbdf8"
+        }
+      ],
+      "official_accuracy_verified": false,
+      "official_performance_verified": false,
+      "submission_ready": false,
+      "bench_exit_status": 1,
+      "bench_status_is_not_official_judgment": true,
+      "post_bench_metrics_saved": true,
+      "cleanup_verified": true,
+      "frozen_sources_unchanged": true,
+      "ended_utc": "2026-10-23T14:21:05.528824+00:00",
+      "wall_seconds": 1930.1662258859724,
+      "controller_exit_code": 1
+    },
+    "cleanup": {
+      "utc": "2026-10-23T14:20:53.979552+00:00",
+      "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+      "state_exists_with_matching_identity": true,
+      "stop_called": true,
+      "stop_step": {
+        "argv": [
+          "bash",
+          "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/stop.sh",
+          "--run-id",
+          "c78f8f7f9b24488a9d0d529a5ad28f0f"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "child_reaped": true,
+        "wall_seconds": 10.83350769802928,
+        "log_sha256": "f876dd5029a62e13517e28fa6e32b074ea9cf830a09182054467451c7c866cb1"
+      },
+      "state_after": {
+        "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+        "status": "stopped",
+        "created_utc": "2026-10-23T13:48:57.263399+00:00",
+        "supervisor_pid": 2094,
+        "supervisor_token": "279071986",
+        "config_path": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime/config-c78f8f7f9b24488a9d0d529a5ad28f0f.json",
+        "url": "http://127.0.0.1:30000",
+        "max_runtime_seconds": 2400,
+        "framework": "vllm",
+        "precision": "bf16",
+        "command": [
+          "/usr/bin/python",
+          "-m",
+          "vllm.entrypoints.openai.api_server",
+          "--model",
+          "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+          "--served-model-name",
+          "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "30000",
+          "--tensor-parallel-size",
+          "1",
+          "--dtype",
+          "bfloat16",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.85",
+          "--enforce-eager",
+          "--max-num-seqs",
+          "16",
+          "--limit-mm-per-prompt",
+          "{\"image\":2,\"video\":0}"
+        ],
+        "server_pid": 2095,
+        "server_token": "279072096",
+        "ready_utc": "2026-10-23T13:50:59.860296+00:00",
+        "reason": "stop requested",
+        "ended_utc": "2026-10-23T14:21:04.247398+00:00",
+        "elapsed_seconds": 1926.984
+      },
+      "owned_processes_alive": {
+        "server": false,
+        "supervisor": false
+      },
+      "cleanup_verified": true,
+      "port_30000_open": false
+    },
+    "copied_state_after_stop": {
+      "run_id": "c78f8f7f9b24488a9d0d529a5ad28f0f",
+      "status": "stopped",
+      "created_utc": "2026-10-23T13:48:57.263399+00:00",
+      "supervisor_pid": 2094,
+      "supervisor_token": "279071986",
+      "config_path": "/root/private_data/guoxin-hackathon-20261023-session005-recon-c1/tasks/recon2reason-bw-vllm/runtime/config-c78f8f7f9b24488a9d0d529a5ad28f0f.json",
+      "url": "http://127.0.0.1:30000",
+      "max_runtime_seconds": 2400,
+      "framework": "vllm",
+      "precision": "bf16",
+      "command": [
+        "/usr/bin/python",
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+        "--served-model-name",
+        "/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "30000",
+        "--tensor-parallel-size",
+        "1",
+        "--dtype",
+        "bfloat16",
+        "--max-model-len",
+        "32768",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--enforce-eager",
+        "--max-num-seqs",
+        "16",
+        "--limit-mm-per-prompt",
+        "{\"image\":2,\"video\":0}"
+      ],
+      "server_pid": 2095,
+      "server_token": "279072096",
+      "ready_utc": "2026-10-23T13:50:59.860296+00:00",
+      "reason": "stop requested",
+      "ended_utc": "2026-10-23T14:21:04.247398+00:00",
+      "elapsed_seconds": 1926.984
+    },
+    "independent_cleanup_record_consistent": true,
+    "frozen_source_self_check_after_run_passed": true
+  },
+  "server_paired_metrics": {
+    "paired_snapshots_available": true,
+    "before_sha256": "2124a9083e5ea8479f2ef7e85ff6e549428a35125b8c092e521717a01a9f7d1a",
+    "after_sha256": "e396c1f93085e765936f4d6ca3b5d1c5e473a8ef084981c1803149d74ae4070c",
+    "delta": {
+      "request_params_max_tokens_sum": 32896,
+      "request_generation_tokens_sum": 32896,
+      "request_params_max_tokens_count": 36,
+      "request_generation_tokens_count": 36,
+      "generation_tokens_total": 32896,
+      "request_success_total": 36,
+      "request_success_by_reason": {
+        "error": 0,
+        "abort": 0,
+        "length": 36,
+        "repetition": 0,
+        "stop": 0
+      }
+    },
+    "histogram_bucket_deltas": {
+      "request_generation_tokens": {
+        "500.0": 4,
+        "10.0": 0,
+        "10000.0": 36,
+        "+Inf": 36,
+        "1.0": 0,
+        "5000.0": 36,
+        "20.0": 0,
+        "20000.0": 36,
+        "50.0": 4,
+        "200.0": 4,
+        "100.0": 4,
+        "2000.0": 36,
+        "2.0": 0,
+        "1000.0": 4,
+        "5.0": 0
+      },
+      "request_params_max_tokens": {
+        "100.0": 4,
+        "2000.0": 36,
+        "20000.0": 36,
+        "50.0": 4,
+        "10.0": 0,
+        "1.0": 0,
+        "5000.0": 36,
+        "20.0": 0,
+        "2.0": 0,
+        "1000.0": 4,
+        "5.0": 0,
+        "500.0": 4,
+        "10000.0": 36,
+        "+Inf": 36,
+        "200.0": 4
+      }
+    },
+    "series_absent_before_treated_as_zero": [],
+    "absent_series_policy": "Only after a matching counter family TYPE declaration exists in the before snapshot",
+    "expected_POSTs": 36,
+    "expected_measured_requests": 32,
+    "expected_warmups": 4,
+    "expected_cap_sum": 32896,
+    "expected_counts_and_token_cap_sum_match": true,
+    "generation_and_requested_cap_bucket_deltas_match": true,
+    "saturation_inference": {
+      "paired_finished_counts_and_sums_match_expected": true,
+      "conditional_math": "For the same 36 finished requests, if each actual output t_i <= requested cap m_i, equal sums imply every t_i=m_i.",
+      "semantic_assumptions": [
+        "Native DAS fork uses the audited vLLM finished-request generation/max-token histogram semantics",
+        "The same observations populate both histograms and actual output cannot exceed each corresponding requested cap",
+        "All model POSTs in this owned run are the 32 measured requests and four 32-token warmups"
+      ],
+      "raw_SSE_per_request_exact_token_counts_independently_verified": false
+    },
+    "official_performance_accepted": false,
+    "owned_server_POST_log": {
+      "observed_POSTs": 36,
+      "POST_path_status_pairs": [
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ],
+        [
+          "/v1/chat/completions",
+          "200"
+        ]
+      ],
+      "exactly_expected_chat_POSTs_all_200": true
+    }
+  },
+  "summary": {
+    "selected_c1_four_rows_planned": true,
+    "selected_c1_rows": 4,
+    "native_client_contract_pass_rows": 4,
+    "native_client_reported_requests": 32,
+    "visible_body_additional_check_pass_rows": 4,
+    "empty_body_total": 0,
+    "rows_without_a_typed_text_array": 0,
+    "this_is_a_separate_session005_c1_run": true,
+    "full_twelve_row_same_run_matrix_complete": false,
+    "official_accuracy_verified": false,
+    "official_performance_accepted": false,
+    "submission_ready": false
+  },
+  "boundaries": [
+    "Only top-level request_rate Infinity is normalized in memory; original native bytes are never changed or republished as normalized raw",
+    "Native output_lens can come from stream usage or requested-length fallback; raw SSE usage, terminal framing, and exact 1024 generated tokens are not independently certified by this JSONL. Upstream combines reasoning_content/content.",
+    "Nonempty client text is an additional diagnostic, not a published contest performance threshold",
+    "Reported native throughput may use requested-length fallback; TTFT/TPOT need visible stream samples and are not independent raw-SSE proof",
+    "Paired server metrics are a separate aggregate/conditional inference layer; do not silently relabel client output_lens as raw server usage",
+    "Kimi checkpoint download co-run was declared; this is not an isolated official performance measurement"
+  ],
+  "source_files_modified": false,
+  "GPU_or_model_execution_performed_by_analyzer": false,
+  "normalized_native_artifacts_written": false
+}
