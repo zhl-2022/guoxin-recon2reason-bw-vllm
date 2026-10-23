@@ -1,2 +1,2 @@
-# Preserve source/evidence bytes across Git checkouts.
+# Preserve evidence/source bytes, including LF shell scripts.
 * -text

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Never send an audio task to the shared BENCH_MODE=image six-load benchmark.
-printf '%s\n' 'T04 audio benchmark materials/integration are pending; no benchmark started.' >&2
-exit 2
+TASK_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+source "$TASK_DIR/env.sh"
+# T04 requires an explicit external audio benchmark and output contract.
+exec "$PYTHON_BIN" "$TASK_DIR/../../scripts/recon2reason_runtime.py" bench --task-dir "$TASK_DIR" "$@"

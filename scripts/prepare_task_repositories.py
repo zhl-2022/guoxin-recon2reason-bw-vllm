@@ -321,6 +321,18 @@ def task_payloads(sources, task, normalize_text_lf=False):
                         "REPOSITORY_ROOT=\"$(cd -- \"$(dirname -- \"${BASH_SOURCE[0]}\")\" && pwd)\"\n"
                         f"exec bash \"$REPOSITORY_ROOT/tasks/{task}/{entry}\" \"$@\"\n")
             files[entry] = body.encode("utf-8")
+    # The report template invokes Python directly. This entry deliberately
+    # delegates to the task's real bridge, including its official selfcheck;
+    # it neither implements a substitute scorer nor reports a synthetic PASS.
+    files["verify.py"] = ("#!/usr/bin/env python3\n"
+                          '"""Forward the report-template interface to the canonical task verifier."""\n'
+                          "import os\nfrom pathlib import Path\nimport sys\n\n"
+                          f"entry = Path(__file__).resolve().parent / 'tasks/{task}/verify.sh'\n"
+                          "try:\n"
+                          "    os.execvp('bash', ['bash', str(entry), *sys.argv[1:]])\n"
+                          "except OSError as exc:\n"
+                          "    print(f'Cannot execute canonical verifier: {exc}', file=sys.stderr)\n"
+                          "    raise SystemExit(2)\n").encode("utf-8")
     if normalize_text_lf:
         files = normalize_payloads_text_lf(files)
     total = sum(map(len, files.values()))

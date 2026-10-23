@@ -2,7 +2,7 @@
   "schema_version": 1,
   "slug": "qwen3-asr-bw-vllm",
   "track": "T04",
-  "status": "isolated_prepare_publisher_wav_long_and_fullfile_sse_verified_formal_pending",
+  "status": "session004_native_vllm_asr_functional_revalidated_official_pending",
   "platform": {
     "provider": "SCNet",
     "region": "华中一区【A区】",
@@ -11,14 +11,24 @@
     "framework": "vllm",
     "precision": "bf16",
     "cards": 1,
-    "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery",
-    "instance_final_state": "stopped",
+    "execution_policy": "session004 reused authorized instances for bounded development; service terminal state and platform billing closure require separate evidence",
+    "instance_final_state": null,
     "checkpoint": "evidence/platform-checkpoint-20261020-003.json",
     "historical_checkpoint": "evidence/platform-checkpoint-20261019-002.json",
     "latest_instance_id": "2112237945233408001",
-    "latest_instance_final_state": "stopped",
-    "latest_instance_environment_saved": true,
-    "latest_state_source": "evidence/platform-checkpoint-20261020-003.json"
+    "latest_instance_final_state": null,
+    "latest_instance_environment_saved": null,
+    "latest_state_source": null,
+    "session004_instance_id_reported_by_root": "2112237945233408001",
+    "session004_instance_final_state_verified_by_archive": false,
+    "session004_model_service_terminal_state": "expired",
+    "historical_platform_closure_003": {
+      "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery",
+      "instance_final_state": "stopped",
+      "latest_instance_final_state": "stopped",
+      "latest_instance_environment_saved": true,
+      "latest_state_source": "evidence/platform-checkpoint-20261020-003.json"
+    }
   },
   "model": {
     "id": "Qwen/Qwen3-ASR-1.7B",
@@ -371,7 +381,7 @@
     "drop_mode": "relative",
     "max_drop": 0,
     "baseline": null,
-    "policy_status": "disabled pending official materials; zero-drop scaffold is not an official threshold"
+    "policy_status": "Official execution bridge enabled; scoring contract unconfirmed. max_drop=0 remains legacy scaffold, not an official threshold."
   },
   "budget": {
     "cards": 1,
@@ -478,5 +488,101 @@
   },
   "formal_ready": false,
   "official_performance": false,
-  "submitted": false
+  "submitted": false,
+  "session004_observation": {
+    "session": "004",
+    "recorded_from_archive_utc": "2026-10-23T12:11:25.079495+00:00",
+    "archive_manifest": {
+      "path": "evidence/session004/remote-intermediate-001/export-manifest.json",
+      "sha256": "2b1543b7bb12c95f3a0aa041e8e3db605f6189921f2819316c5fcfc7ea86ecb2"
+    },
+    "runtime_run_id": "1a02b2e4e0c944cabdb195dd54dc8348",
+    "status": "expired",
+    "created_utc": "2026-10-23T09:57:35.327930+00:00",
+    "ready_utc": "2026-10-23T09:59:20.009955+00:00",
+    "ended_utc": "2026-10-23T10:12:39.030575+00:00",
+    "elapsed_seconds": 903.702,
+    "command": [
+      "/root/private_data/guoxin-hackathon-20261023-session004/tasks/qwen3-asr-bw-vllm/runtime/audio-venv/bin/python",
+      "-m",
+      "vllm.entrypoints.openai.api_server",
+      "--model",
+      "/root/private_data/SothisAI/model/Aihub/Qwen3-ASR-1.7B/main/Qwen3-ASR-1.7B",
+      "--served-model-name",
+      "qwen3-asr-1.7b",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "30002",
+      "--tensor-parallel-size",
+      "1",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--enforce-eager",
+      "--max-num-seqs",
+      "4"
+    ],
+    "state": {
+      "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/asr-state-stopped.json",
+      "sha256": "ddf0e86f6c071c7f29b2ff45f06419229da2b24dd330f56b8766ddd0651a85db",
+      "bytes": 1270
+    },
+    "config": {
+      "path": "evidence/session004/remote-intermediate-001/project/tasks/qwen3-asr-bw-vllm/runtime/config-1a02b2e4e0c944cabdb195dd54dc8348.json",
+      "sha256": "2f52b343f0620b851076540961c6a70ba45449fce1db9c6810a38c5dc4d3afbb",
+      "bytes": 1214
+    },
+    "server_log": {
+      "path": "evidence/session004/remote-intermediate-001/project/tasks/qwen3-asr-bw-vllm/runtime/server.log",
+      "sha256": "18ca1fea6f19e60d9994dc6331b6ed67a5856e6acdf9ed7b6c491cc0b7a024a0",
+      "bytes": 20782
+    },
+    "stop_log": {
+      "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/asr-stop.log",
+      "sha256": "9cab7f8f9c0c46d44e6e3d8eafea7f7e3595cc906ff7ed47f8fbb2137fedbcf3",
+      "bytes": 71
+    },
+    "smoke_logs": [
+      {
+        "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/asr-default-smoke.jsonl",
+        "sha256": "71c6417f9268131277da79b0f2349c27de895bca2d714d3bbe303e72c2a90259",
+        "bytes": 2228
+      },
+      {
+        "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/asr-en-smoke.jsonl",
+        "sha256": "7bff4221c81db822889bbd80d2d4b3186a7a9dd05c56f593ebb475dd36d5b69a",
+        "bytes": 2393
+      },
+      {
+        "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/asr-sse-zh.jsonl",
+        "sha256": "9ba208f2094c8c132854394d6fdf1904964ba8258a4896ebe8f7e1f1617b1284",
+        "bytes": 4442
+      }
+    ],
+    "functional_verified": true,
+    "independent_post_stop_process_and_port_probe": null,
+    "platform_final_state_verified_by_this_archive": false,
+    "official_accuracy": false,
+    "official_performance": false,
+    "official_acceptance": false,
+    "submitted": false,
+    "task_metadata_updated_after_run": true,
+    "runtime_code_sha256": "0edc33da22c07a804c93047f918a4a39a58af90997390c49695d8b39a891d85b",
+    "transcription_requests": 2,
+    "fullfile_sse_requests": 1,
+    "realtime_audio_input_verified": false,
+    "wer_cer_computed": false,
+    "protected_native_unchanged": true,
+    "protected_native_packages": 12,
+    "locked_cpu_wheels_installed": 7,
+    "plugin_sha256": "84d0d5402c73d21562fb12bb649ace56d6f29b7d1fdf1d3e402b8d4a6e28820a",
+    "source_sha256": "da40fff4081c7873a4d276225d4ef990df9b2d666daf3c1d73ee0796def655f1",
+    "sse_source_sha256": "3ae83568801ff05787cef6b959d3cfc28b63d3014e04049d8803cb3cd35a7f05",
+    "post_stop_scope": "Expired supervisor; later stop reports supervisor absent and no signal sent; no independent all-descendants/port probe"
+  },
+  "official_acceptance": false
 }

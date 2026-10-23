@@ -2,6 +2,8 @@
 
 ## 1. 简介
 
+session004 已回读当前 head72 compat 在 BW/native vLLM 的七项检查通过：其中 health/models 两项，实际生成请求五次，均完整结束；没有新增官方精度、性能矩阵或 GPU 数值对照。服务 `68f2ba449dbd41629b40cca27aa07553` 于 10:15:51 UTC ready、10:25:49 UTC 因 stop requested 进入 stopped，stop 输出确认匹配监督器/进程组；独立端口检查和平台计费终态仍需另核。原始输入/回答/脚本 seal 与状态见 [session004 技术报告](../../docs/report-004-robobrain-bw-vllm.md)。以下历史数值、IoU和81次Math调用仍只属于其各自 run。
+
 本目录是 `BAAI/RoboBrain2.5-8B-NV` 的独立 T02 开发任务。默认 `run.sh` 启用受源码哈希约束的 head72 分块 Math 兼容候选，`run_compat.sh` 只是同一入口的别名；`run_baseline.sh` 保留显式原生框架对照。当前状态为 `head72_compat_gpu_numerical_and_functional_revalidated_official_pending`，`adaptation_ready=false`。baseline001 将红方块回答为人群、坐标不符及多图截断的历史失败完整保留。
 
 历史版本 `cc6591b5c99bf3cef5090e88d8893e83e6db77e8cbc6bf97c24d42380a92c3af` 已通过 18 项 BW 数值对照；`robobrain-heldout-004.jsonl` 保存 640×448 红方块、512×512 蓝圆的七个新图片功能请求。实际 vision 长度 1120/1024，合成框 IoU 为 0.88396594/0.90244166，点选均在框内；81 次 Math 调用全部完成，服务已停止。该次启动显式使用 1024×1024 dummy profiling，默认 65536-patch profiling 的 Run003 因计算开销主动停止并保留日志。历史结果只绑定历史源码哈希。

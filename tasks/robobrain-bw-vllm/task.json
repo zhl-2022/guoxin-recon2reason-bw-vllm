@@ -2,7 +2,7 @@
   "schema_version": 1,
   "slug": "robobrain-bw-vllm",
   "track": "T02",
-  "status": "head72_compat_gpu_numerical_and_functional_revalidated_official_pending",
+  "status": "session004_head72_compat_native_vllm_functional_revalidated_official_pending",
   "platform": {
     "provider": "SCNet",
     "region": "华中一区【A区】",
@@ -11,14 +11,24 @@
     "framework": "vllm",
     "precision": "bf16",
     "cards": 1,
-    "instance_final_state": "stopped",
+    "instance_final_state": null,
     "checkpoint": "evidence/platform-checkpoint-20261020-003.json",
     "latest_instance_id": "2112237945233408001",
-    "latest_instance_final_state": "stopped",
-    "latest_instance_environment_saved": true,
-    "latest_state_source": "evidence/platform-checkpoint-20261020-003.json",
+    "latest_instance_final_state": null,
+    "latest_instance_environment_saved": null,
+    "latest_state_source": null,
     "historical_checkpoint": "evidence/platform-checkpoint-20261019-002.json",
-    "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery"
+    "execution_policy": "session004 reused authorized instances for bounded development; service terminal state and platform billing closure require separate evidence",
+    "session004_instance_id_reported_by_root": "2112237945233408001",
+    "session004_instance_final_state_verified_by_archive": false,
+    "session004_model_service_terminal_state": "stopped",
+    "historical_platform_closure_003": {
+      "execution_policy": "session003 used authorized A Recon and B Robo-to-ASR sequential execution; all instances verified stopped; no further GPU allocation in final delivery",
+      "instance_final_state": "stopped",
+      "latest_instance_final_state": "stopped",
+      "latest_instance_environment_saved": true,
+      "latest_state_source": "evidence/platform-checkpoint-20261020-003.json"
+    }
   },
   "model": {
     "id": "BAAI/RoboBrain2.5-8B-NV",
@@ -188,7 +198,7 @@
     "max_drop": 0,
     "full_scale": 1,
     "baseline": null,
-    "policy_status": "disabled pending official materials; zero-drop scaffold is not an official threshold"
+    "policy_status": "Official execution bridge enabled; scoring contract unconfirmed. max_drop=0 remains legacy scaffold, not an official threshold."
   },
   "budget": {
     "cards": 1,
@@ -603,5 +613,90 @@
     "official_performance": false,
     "official_acceptance": false
   },
-  "official_acceptance": false
+  "official_acceptance": false,
+  "session004_observation": {
+    "session": "004",
+    "recorded_from_archive_utc": "2026-10-23T12:11:25.079495+00:00",
+    "archive_manifest": {
+      "path": "evidence/session004/remote-intermediate-001/export-manifest.json",
+      "sha256": "2b1543b7bb12c95f3a0aa041e8e3db605f6189921f2819316c5fcfc7ea86ecb2"
+    },
+    "runtime_run_id": "68f2ba449dbd41629b40cca27aa07553",
+    "status": "stopped",
+    "created_utc": "2026-10-23T10:13:15.079736+00:00",
+    "ready_utc": "2026-10-23T10:15:51.060057+00:00",
+    "ended_utc": "2026-10-23T10:25:49.335472+00:00",
+    "elapsed_seconds": 754.255,
+    "command": [
+      "/usr/bin/python",
+      "-m",
+      "vllm.entrypoints.openai.api_server",
+      "--model",
+      "/root/private_data/SothisAI/model/Aihub/RoboBrain2.5-8B-NV/main/RoboBrain2.5-8B-NV",
+      "--served-model-name",
+      "robobrain2-5-8b-nv",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "30001",
+      "--tensor-parallel-size",
+      "1",
+      "--dtype",
+      "bfloat16",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--enforce-eager",
+      "--max-num-seqs",
+      "4",
+      "--limit-mm-per-prompt",
+      "{\"image\":{\"count\":2,\"width\":1024,\"height\":1024},\"video\":0}",
+      "--worker-extension-cls",
+      "robobrain_vision_math_compat.VisionMathCompat"
+    ],
+    "state": {
+      "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/robo-state-stopped.json",
+      "sha256": "243ee38dd58e46ffe35eed214215e9a113f36fed2af219e0c4ada47308d520ae",
+      "bytes": 1370
+    },
+    "config": {
+      "path": "evidence/session004/remote-intermediate-001/project/tasks/robobrain-bw-vllm/runtime/config-68f2ba449dbd41629b40cca27aa07553.json",
+      "sha256": "c67cbdf401cafce358f8251103bddd8449e63c06a21f28977b9276c3caefe1f4",
+      "bytes": 1525
+    },
+    "server_log": {
+      "path": "evidence/session004/remote-intermediate-001/project/tasks/robobrain-bw-vllm/runtime/server.log",
+      "sha256": "de33edb34ebd2fdb2cffa2eacdfb73a2b46169351e05ca9e9537c0a68f088b23",
+      "bytes": 19932
+    },
+    "stop_log": {
+      "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/robo-stop.log",
+      "sha256": "f876dd5029a62e13517e28fa6e32b074ea9cf830a09182054467451c7c866cb1",
+      "bytes": 67
+    },
+    "smoke_logs": [
+      {
+        "path": "evidence/session004/remote-intermediate-001/project/evidence/session004/robo-default-smoke-004.log",
+        "sha256": "554d43f8be07dc5ab3f014d3287a5c480fe91e9c1018fad86f49ba9a684110d7",
+        "bytes": 10136
+      }
+    ],
+    "functional_verified": true,
+    "independent_post_stop_process_and_port_probe": null,
+    "platform_final_state_verified_by_this_archive": false,
+    "official_accuracy": false,
+    "official_performance": false,
+    "official_acceptance": false,
+    "submitted": false,
+    "task_metadata_updated_after_run": true,
+    "runtime_code_sha256": "0edc33da22c07a804c93047f918a4a39a58af90997390c49695d8b39a891d85b",
+    "functional_checks_passed": 7,
+    "generation_requests": 5,
+    "plugin_sha256": "083dc53f3e4f8171b774469bffa724c2269a9d289769f56a9d7a5624cd81659f",
+    "source_sha256": "bec36fb0c85332eb7144c479e9782d57c9b0dc2ad15b610ac81d1af2bd237486",
+    "new_gpu_numerical_cases_this_session": 0,
+    "post_stop_scope": "Stop command reports matching supervisor/server process group stopped; no separate all-descendants/port probe"
+  },
+  "formal_ready": false
 }

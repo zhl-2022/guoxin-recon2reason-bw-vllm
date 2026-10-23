@@ -367,14 +367,26 @@ def t02_load_plan() -> list[dict]:
             for length in (4096, 16384) for concurrency in (1, 8, 64) for round_ in (1, 2)]
 
 
-def official(task: Path, kind: str, dry_run: bool = False) -> int:
+def official(task: Path, kind: str, dry_run: bool = False, selfcheck_only: bool = False) -> int:
     """Preserve and execute externally supplied materials, without inventing their schema.
 
     Exit zero means the execution pipeline completed. Every result remains
     executed_uninterpreted until the actual task-specific scoring contract is integrated.
     """
+    if kind not in {"verify", "bench"} or (selfcheck_only and kind != "verify"):
+        raise ValueError("selfcheck-only execution is supported only for verify")
+    task_metadata = read(task / "task.json") if (task / "task.json").is_file() else {}
+    if not isinstance(task_metadata, dict):
+        raise ValueError("task.json must contain an object")
+    track = task_metadata.get("track", "T02")
+    if track not in {"T01", "T02", "T03", "T04"}:
+        raise ValueError("task track must be T01, T02, T03 or T04")
     prefix = f"OFFICIAL_{kind.upper()}"
-    required = [prefix + "_SCRIPT"] + (["OFFICIAL_BASELINE", "OFFICIAL_DATA_DIR"] if kind == "verify" else [])
+    required = [prefix + "_SCRIPT"]
+    if kind == "verify" and not selfcheck_only:
+        required += ["OFFICIAL_BASELINE", "OFFICIAL_DATA_DIR"]
+    if kind == "bench" and track != "T02":
+        required += ["OFFICIAL_BENCH_OUTPUTS_JSON"]
     missing = [name for name in required
                if not os.environ.get(name)]
     script = Path(os.environ[prefix + "_SCRIPT"]).resolve() if os.environ.get(prefix + "_SCRIPT") else None
@@ -392,12 +404,18 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
     selfcheck_args = json.loads(os.environ.get("OFFICIAL_SELFCHECK_ARGS_JSON", '["--selfcheck"]'))
     if not isinstance(selfcheck_args, list) or not selfcheck_args or not all(isinstance(item, str) for item in selfcheck_args):
         raise ValueError("OFFICIAL_SELFCHECK_ARGS_JSON must be a nonempty array of strings")
-    default_outputs = (["verify_result.json"] if kind == "verify" else
-                       ["bench/round1.jsonl", "bench/round2.jsonl", "bench/summary.md"] +
-                       [f"bench/round{round_}_{length}_1024_c{concurrency}.log"
-                        for round_ in (1, 2) for length in (4096, 16384) for concurrency in (1, 8, 64)])
+    if kind == "verify":
+        default_outputs = ["verify_result.json"]
+    elif track == "T02":
+        default_outputs = ["bench/round1.jsonl", "bench/round2.jsonl", "bench/summary.md"] + [
+            f"bench/round{round_}_{length}_1024_c{concurrency}.log"
+            for round_ in (1, 2) for length in (4096, 16384) for concurrency in (1, 8, 64)]
+    else:
+        default_outputs = []
     names = json.loads(os.environ.get(prefix + "_OUTPUTS_JSON", json.dumps(default_outputs)))
-    if not isinstance(names, list) or not names or not all(isinstance(name, str) and name for name in names):
+    if not isinstance(names, list) or not all(isinstance(name, str) and name for name in names):
+        raise ValueError(prefix + "_OUTPUTS_JSON must be a nonempty array of relative filenames")
+    if not names and prefix + "_OUTPUTS_JSON" not in missing:
         raise ValueError(prefix + "_OUTPUTS_JSON must be a nonempty array of relative filenames")
     output_files = []
     for name in names:
@@ -416,18 +434,22 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
         raise ValueError("official execution timeouts must be positive finite seconds")
     base_command = ([sys.executable, str(script)] if script and script.suffix == ".py"
                     else ["bash", str(script)] if script else None)
-    command = [*base_command, *extra] if base_command else None
-    plan = {"kind": kind, "dry_run": dry_run, "official_acceptance": False,
+    command = [*base_command, *extra] if base_command and not selfcheck_only else None
+    plan = {"kind": kind, "track": track, "selfcheck_only": selfcheck_only,
+            "dry_run": dry_run, "official_acceptance": False,
             "identity_expected": {key: os.environ.get(key) for key in ("MODEL_ID", "CARD", "FRAMEWORK", "PRECISION")},
             "script": str(script) if script else None, "baseline": str(baseline) if baseline else None,
             "data": str(data) if data else None, "command": command,
             "selfcheck_command": [*base_command, *selfcheck_args] if kind == "verify" and base_command else None,
             "timeout_seconds": timeout, "selfcheck_timeout_seconds": selfcheck_timeout,
-            "expected_outputs": [str(path.relative_to(task)) for path in output_files],
+            "expected_outputs": [] if selfcheck_only else [path.relative_to(task).as_posix() for path in output_files],
+            "selfcheck_observed_output_paths": [path.relative_to(task).as_posix() for path in output_files] if selfcheck_only else [],
+            "outputs_required": not selfcheck_only,
             "problems": problems, "material_schema": "not_assumed",
-            "result_interpretation": "execution_only; task-specific scoring contract still required",
+            "result_interpretation": ("selfcheck_execution_only; no accuracy evaluation or acceptance interpretation" if selfcheck_only else
+                                      "execution_only; task-specific scoring contract still required"),
             "service_health_checked": False, "subprocess_executed": False, "filesystem_mutated": False}
-    if kind == "bench":
+    if kind == "bench" and track == "T02":
         plan["t02_template_load_plan"] = t02_load_plan()
         plan["template_requests_total"] = sum(item["requests"] for item in plan["t02_template_load_plan"])
         plan["image_resolution_confirmed"] = False
@@ -437,11 +459,12 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
     if problems:
         return fail("official materials missing or invalid: " + "; ".join(problems))
     assert script is not None
-    if not healthy(configuration(task)["url"]):
+    if not selfcheck_only and not healthy(configuration(task)["url"]):
         return fail("serving is not healthy; no official evaluation was started")
     runtime = task / "runtime"
     runtime.mkdir(parents=True, exist_ok=True)
-    run_dir = runtime / f"official-{kind}-{uuid.uuid4().hex}"
+    execution_kind = "selfcheck" if selfcheck_only else kind
+    run_dir = runtime / f"official-{execution_kind}-{uuid.uuid4().hex}"
     run_dir.mkdir()
     record_path = run_dir / "record.json"
     materials = run_dir / "materials"
@@ -455,7 +478,7 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
         saved_sources[label] = {"path": str(path), "sha256": hashlib.sha256(raw).hexdigest()}
     record = {**plan, "dry_run": False, "started_utc": stamp(), "status": "preparing",
               "materials": saved_sources, "steps": [], "previous_outputs": [], "outputs": [],
-              "service_health_checked": True, "filesystem_mutated": True}
+              "service_health_checked": not selfcheck_only, "filesystem_mutated": True}
     dump(record_path, record)
 
     def finish(status: str, reason: str, code: int) -> int:
@@ -474,8 +497,12 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
         env.update(OFFICIAL_BASELINE=str(baseline), BASELINE_PATH=str(baseline))
     if data is not None:
         env.update(OFFICIAL_DATA_DIR=str(data), DATA_DIR=str(data))
-    if kind == "bench":
+    if kind == "bench" and track == "T02":
         env["BENCH_MODE"] = "image"
+    elif kind == "bench":
+        # Audio/generation load and output schemas come from their own materials.
+        # Never carry a previously sourced T02 image mode into these scripts.
+        env.pop("BENCH_MODE", None)
 
     def step(label: str, argv: list[str], seconds: float) -> int:
         log = run_dir / (label + ".log")
@@ -549,7 +576,12 @@ def official(task: Path, kind: str, dry_run: bool = False) -> int:
         if not unchanged():
             return finish("materials_changed", "script or baseline changed during selfcheck; evaluation not started", 2)
         if code:
+            record["partial_outputs_safe"] = snapshot_outputs(skip_unchanged_previous=True)
             return finish("selfcheck_failed", "selfcheck failed or timed out; evaluation not started", code if code > 0 else 1)
+        if selfcheck_only:
+            if not snapshot_outputs(skip_unchanged_previous=True):
+                return finish("unsafe_output", "selfcheck produced an output outside the task directory", 2)
+            return finish("selfcheck_executed_uninterpreted", "external selfcheck completed; full accuracy evaluation was not started", 0)
     # Only after successful selfcheck remove stale working copies; archives stay intact.
     for path in output_files:
         if path.exists():
@@ -595,11 +627,15 @@ def main() -> int:
     parser.add_argument("--task-dir", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--selfcheck", "--selfcheck-only", dest="selfcheck", action="store_true",
+                        help="verify only: run and archive the external selfcheck without full evaluation")
     parser.add_argument("--run-id", help="optional exact caller identity for launch/stop;32 lowercase hex characters")
     args = parser.parse_args()
     try:
         if args.run_id is not None and args.action not in {"launch", "stop"}:
             return fail("--run-id is only supported for launch/stop")
+        if args.selfcheck and args.action != "verify":
+            return fail("--selfcheck is only supported for verify")
         if args.action == "supervise":
             if not args.config:
                 return fail("--config is required for the internal supervisor")
@@ -613,7 +649,7 @@ def main() -> int:
             return stop(task, args.run_id)
         if args.action == "env":
             return environment(task)
-        return official(task, args.action, args.dry_run)
+        return official(task, args.action, args.dry_run, args.selfcheck)
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
         return fail(f"{type(exc).__name__}: {exc}")
 

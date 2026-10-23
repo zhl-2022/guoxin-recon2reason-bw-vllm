@@ -19,6 +19,12 @@ if [[ "$DRY_RUN" == 1 ]]; then
   fi
 else
   VENV_DIR="$(dirname -- "$(dirname -- "$PYTHON_BIN")")"
+  # A clean clone has no audio venv. Prepare only a new directory; existing
+  # paths are always validated and never overwritten, repaired or reinstalled.
+  if [[ ! -e "$VENV_DIR" && ! -L "$VENV_DIR" ]]; then
+    "${SCNET_BASE_PYTHON:-python3}" -B "$PROJECT_DIR/scripts/prepare_qwen_asr_task.py" \
+      --task-dir "$TASK_DIR" --venv "$VENV_DIR" --apply
+  fi
   "${SCNET_BASE_PYTHON:-python3}" -B "$PROJECT_DIR/scripts/prepare_qwen_asr_task.py" \
     --task-dir "$TASK_DIR" --check-existing "$VENV_DIR"
 fi

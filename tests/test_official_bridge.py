@@ -49,11 +49,11 @@ class OfficialBridgeTests(unittest.TestCase):
                                    "Path('verify_result.json').write_text(json.dumps({'new_metric':0.75,'passed':True}))").splitlines()) + "\n",
                                encoding="utf-8")
 
-    def execute(self, kind="verify", dry_run=False):
+    def execute(self, kind="verify", dry_run=False, selfcheck_only=False):
         self.stdout = io.StringIO()
         with patch.dict(os.environ, self.env, clear=True), patch.object(runtime, "healthy", return_value=True) as health:
             with contextlib.redirect_stdout(self.stdout), contextlib.redirect_stderr(io.StringIO()):
-                code = runtime.official(self.task, kind, dry_run)
+                code = runtime.official(self.task, kind, dry_run, selfcheck_only)
             self.health_calls = health.call_count
         return code
 
@@ -297,6 +297,111 @@ class OfficialBridgeTests(unittest.TestCase):
         self.env["OFFICIAL_VERIFY_OUTPUTS_JSON"] = '["../outside.json"]'
         with self.assertRaisesRegex(ValueError, "stay inside"):
             self.execute(dry_run=True)
+
+    def test_selfcheck_only_needs_no_dataset_baseline_or_service_and_never_evaluates(self):
+        self.env.pop("OFFICIAL_BASELINE")
+        self.env.pop("OFFICIAL_DATA_DIR")
+        self.make_script(selfcheck="print('real selfcheck stdout')\nprint('real selfcheck stderr', file=sys.stderr)",
+                         evaluation="raise RuntimeError('full evaluation must not execute')")
+        original_script = self.script.read_bytes()
+        old = self.task / "verify_result.json"
+        old.write_bytes(b"old accuracy report; must survive selfcheck")
+        self.assertEqual(self.execute(selfcheck_only=True), 0)
+        self.assertEqual(self.health_calls, 0)
+        self.assertEqual(self.events(), ["selfcheck"])
+        self.assertEqual(old.read_bytes(), b"old accuracy report; must survive selfcheck")
+        record = self.record()
+        self.assertEqual(record["status"], "selfcheck_executed_uninterpreted")
+        self.assertTrue(record["selfcheck_only"])
+        self.assertFalse(record["official_acceptance"])
+        self.assertFalse(record["service_health_checked"])
+        self.assertFalse(record["outputs_required"])
+        self.assertEqual(record["expected_outputs"], [])
+        self.assertIsNone(record["command"])
+        self.assertEqual(record["outputs"], [])
+        self.assertEqual(len(record["steps"]), 1)
+        self.assertNotIn("baseline", record["materials"])
+        saved_script = Path(record["steps"][0]["log"]).parent / "materials/script.py"
+        self.assertEqual(saved_script.read_bytes(), original_script)
+        raw_log = Path(record["steps"][0]["log"]).read_bytes()
+        self.assertIn(b"real selfcheck stdout", raw_log)
+        self.assertIn(b"real selfcheck stderr", raw_log)
+        self.assertEqual(record["steps"][0]["log_sha256"], hashlib.sha256(raw_log).hexdigest())
+
+    def test_selfcheck_only_dry_run_missing_script_has_no_side_effects(self):
+        self.env.pop("OFFICIAL_VERIFY_SCRIPT")
+        self.env.pop("OFFICIAL_BASELINE")
+        self.env.pop("OFFICIAL_DATA_DIR")
+        with patch.object(runtime.subprocess, "Popen") as popen:
+            self.assertEqual(self.execute(dry_run=True, selfcheck_only=True), 2)
+        popen.assert_not_called()
+        plan = json.loads(self.stdout.getvalue())
+        self.assertEqual(plan["problems"], ["missing OFFICIAL_VERIFY_SCRIPT"])
+        self.assertIsNone(plan["command"])
+        self.assertEqual(self.health_calls, 0)
+        self.assertFalse((self.task / "runtime").exists())
+
+    def test_selfcheck_only_failure_and_changed_report_do_not_run_evaluation(self):
+        self.make_script(selfcheck="Path('verify_result.json').write_text('{\"partial_selfcheck\":true}')\nraise SystemExit(9)")
+        self.assertEqual(self.execute(selfcheck_only=True), 9)
+        self.assertEqual(self.events(), ["selfcheck"])
+        record = self.record()
+        self.assertEqual(record["status"], "selfcheck_failed")
+        self.assertFalse(record["official_acceptance"])
+        self.assertTrue(record["partial_outputs_safe"])
+        self.assertEqual(json.loads(Path(record["outputs"][0]["snapshot"]).read_text()), {"partial_selfcheck": True})
+
+    def test_selfcheck_cli_flag_and_alias_only_work_for_verify(self):
+        for flag in ("--selfcheck", "--selfcheck-only"):
+            with self.subTest(flag=flag), patch.dict(os.environ, self.env, clear=True):
+                with patch.object(sys, "argv", [str(SCRIPT), "verify", "--task-dir", str(self.task), flag, "--dry-run"]):
+                    with contextlib.redirect_stdout(io.StringIO()) as output:
+                        self.assertEqual(runtime.main(), 0)
+                    self.assertTrue(json.loads(output.getvalue())["selfcheck_only"])
+                with patch.object(sys, "argv", [str(SCRIPT), "bench", "--task-dir", str(self.task), flag]):
+                    with contextlib.redirect_stderr(io.StringIO()):
+                        self.assertEqual(runtime.main(), 2)
+
+    def test_t04_bench_requires_explicit_audio_script_and_output_contract(self):
+        (self.task / "task.json").write_text('{"track":"T04"}')
+        self.assertEqual(self.execute(kind="bench", dry_run=True), 2)
+        plan = json.loads(self.stdout.getvalue())
+        self.assertEqual(set(plan["problems"]), {"missing OFFICIAL_BENCH_SCRIPT", "missing OFFICIAL_BENCH_OUTPUTS_JSON"})
+        self.assertEqual(plan["expected_outputs"], [])
+        self.assertNotIn("t02_template_load_plan", plan)
+        self.assertNotIn("template_requests_total", plan)
+        self.assertNotIn("image_resolution_confirmed", plan)
+        self.assertFalse((self.task / "runtime").exists())
+        self.env["OFFICIAL_BENCH_SCRIPT"] = str(self.script)
+        self.assertEqual(self.execute(kind="bench", dry_run=True), 2)
+        self.assertEqual(json.loads(self.stdout.getvalue())["problems"], ["missing OFFICIAL_BENCH_OUTPUTS_JSON"])
+
+    def test_t04_bench_executes_audio_contract_without_inherited_image_mode(self):
+        (self.task / "task.json").write_text('{"track":"T04"}')
+        self.env.update(OFFICIAL_BENCH_SCRIPT=str(self.script),
+                        OFFICIAL_BENCH_OUTPUTS_JSON='["audio-bench/summary.json"]', BENCH_MODE="image")
+        self.make_script(evaluation="assert 'BENCH_MODE' not in os.environ\n"
+                         "Path('audio-bench').mkdir()\nPath('audio-bench/summary.json').write_text('{\"audio_seconds\":123}')")
+        self.assertEqual(self.execute(kind="bench"), 0)
+        self.assertEqual(self.events(), ["evaluation"])
+        record = self.record()
+        self.assertEqual(record["track"], "T04")
+        self.assertEqual(record["status"], "executed_uninterpreted")
+        self.assertFalse(record["official_acceptance"])
+        self.assertEqual(record["expected_outputs"], ["audio-bench/summary.json"])
+        self.assertEqual(len(record["outputs"]), 1)
+        self.assertNotIn("template_requests_total", record)
+
+    def test_t04_bench_rejects_empty_or_unsafe_output_contract_before_execution(self):
+        (self.task / "task.json").write_text('{"track":"T04"}')
+        self.env["OFFICIAL_BENCH_SCRIPT"] = str(self.script)
+        for value in ('[]', '["../outside.json"]', '["evaluator.py"]', '["a.json","a.json"]'):
+            self.env["OFFICIAL_BENCH_OUTPUTS_JSON"] = value
+            with self.subTest(value=value), patch.object(runtime.subprocess, "Popen") as popen:
+                with self.assertRaises(ValueError):
+                    self.execute(kind="bench")
+                popen.assert_not_called()
+        self.assertFalse((self.task / "runtime").exists())
 
 
 if __name__ == "__main__":

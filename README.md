@@ -1,175 +1,114 @@
-# Recon2Reason-Reasoning-4B × BW × vLLM × BF16
-
-本仓库唯一目标题为 `recon2reason-bw-vllm`。当前为开发交付目录，正式就绪和赛事提交均未确认；详见 [ROOT_TASK.json](ROOT_TASK.json)。`tasks/` 内其余两题仅保留为共享开发源码和测试依赖，不作为本仓库提交目标。完整原报告保留于 [canonical README](tasks/recon2reason-bw-vllm/README.md)。
+# Recon2Reason-Reasoning-4B on BW + vLLM 0.18.1（session004 最终实测记录）
 
 ## 1. 简介
 
-本任务已在 SCNet 的 BW 单卡上，以原生 vLLM、BF16 启动 `BAAI/Recon2Reason-Reasoning-4B`。2026-10-20 的 session003 通过七项图文功能检查；最终原矩阵与独立补跑合计核验 **11/12 格、480 个完整请求、491520 个输出 token**。全部480条均恰为1024输出 token、正文非空、errors为空；最后一格超时且没有 native JSON，完整覆盖仍为 false。原矩阵完成10格／352请求，独立补跑仅第一格128请求完整，两份 run 都保持 `incomplete_or_failed`。详见 [session003 结果审计](docs/session003-recon-results.md) 与 [最终结构化审计](evidence/recon-matrix-final-audit-003.json)。
+本文记录 `BAAI/Recon2Reason-Reasoning-4B` 的 BW 单卡、BF16、vLLM 适配。本轮已完成真实服务功能检查，并核验 UTC `2026-10-23T12:14:56.329311` 的最终导出：八格客户端全部正常退出、八份 native JSONL 均已保存；三格合计十二条空正文，因此严格整格检查为五格合格，c1 的四格本轮未跑。服务已停止并独立核验进程/端口清理。`formal_ready=false`、`submitted=false`；这是最终实测原件记录，不是完整 12 格或官方验收通过声明。最后验收表由用户手动提交。
 
-最终68条 ZIP 产物已逐字节核验并零覆盖合并。maxseq16 的原服务与独立补跑均已停止，最终 run ID 为 `bb6a20bae32640c0b924511637d6a222`；[清理快照](evidence/session003/recon-final-runtime/cleanup-check.json) 确认自有进程 token 均不再存活、端口关闭。[checkpoint003](evidence/platform-checkpoint-20261020-003.json) 实际确认三个 Notebook 均已关机，本轮运行的A/B均选择保存环境。2026-10-19 的首次功能及 [session002 快照](evidence/platform-checkpoint-20261019-002.json) 继续作为历史证据保留。
+最终 ZIP 为 1,164,740 字节，SHA256 `baf2f84d3d717d3256a9d63ece4f274912ac6285a625ff59eb9ec9dd6a472671`，与远端打印值一致；255 个 ZIP entry 对应 254 份 payload 加 manifest。全部路径、CRC、大小、SHA 和解包回读通过，91 份脚本导出前后 SHA 一致。见 [最终独立完整性检查](evidence/session004/remote-final-001.local-verification.json) 和 [最终独立审计](evidence/session004/remote-final-001-audit.json)。exporter 保留实时、非原子的采集语义；服务终态由另外的清理原件核验。
 
-当前为开发交付候选，尚无正式精度或六档性能成绩。2026-10-20 的公开材料核查结果见 [评测材料与提交核查](docs/submission-readiness-audit-20261020.md)。该模型适用的正式指标、固定数据、GPU baseline、评测器和图像负载仍需确认；无需等待单独认领回执才能继续开发。
+UTC `11:30:29.978614` 的中间 ZIP（SHA256 `8b4481d5fcc8d1080cd5ffa8cf14509ab9577d8ea4b30089eb5b1f049ce702d5`）及其 [检查](evidence/session004/remote-intermediate-001.local-verification.json)、[阶段审计](evidence/session004/remote-intermediate-001-audit.json) 原样保留。前六份 native 文件在最终导出中逐字节未变，空输出记录没有因最终整理被删除。
 
-任务的唯一服务入口为 `run.sh`。保留本目录与根 `scripts/` 的相对结构，其他入口均读取同一份 `env.sh`；不要直接从另一题复制展开的命令。
-
-```bash
-cd tasks/recon2reason-bw-vllm
-# 本地只检查命令展开，不导入 Torch/vLLM、不连接服务、不检查 GPU。
-bash run.sh --dry-run
-```
-
-选好镜像后的运行顺序为：
-
-```bash
-bash env_check.sh
-bash run.sh
-bash smoke.sh --image /实际图片1.png --image /实际图片2.png
-bash stop.sh
-```
-
-`stop.sh` 只停止本任务进程。释放 Notebook 和结束平台计费需另外在 SCNet 停机；历史午夜期限不是下一次启动的计费保护。
+权重：[发布方模型](https://huggingface.co/BAAI/Recon2Reason-Reasoning-4B)。既有私有仓库：[光合](https://developer.sourcefind.cn/codes/ghu_30ebea88e/guoxin-recon2reason-bw-vllm)、[GitHub 备份](https://github.com/zhl-2022/guoxin-recon2reason-bw-vllm)。这些地址已保存 session003，本轮 stage004 和远端分支按独立构建、推送及回读回执核对。实际最终镜像 `registry/repo:tag` 与评审获取方式待填写，展示名不能替代完整引用。
 
 ## 2. 验证环境
 
-以下版本由历史 [环境探针](evidence/vllm-probe-001.json) 记录，session003 的 [实际 env.log](evidence/recon-functional-env-003.log) 再次记录 BW、BF16、Python 3.10.12 和相同原生 vLLM/Torch 栈；该 env.log 中 SGLang 为 null。新建干净镜像仍需重新自检，不能根据镜像展示元数据推定实际包版本。
+<!-- session004-platform-closure -->
 
-| 项目 | 已观察值 |
+本轮已独立核对[SCNet 平台关机与余额记录](evidence/platform-checkpoint-20261023-004.json)：A/B 两个本轮实例及旧参考实例均为“已关机”；A 手动关机并选择保存环境，B 按预定时限自动关机。可见余额为 **488.0238888888 卡时**，与开机前可见余额差 4.6686111111 卡时；余额差可能包含延迟结算，不当作最终账单。资源为华中一区 A 区 113 组、BW64GB×1、CPU15核、内存59GB。账户镜像 ID `2071293281204580354` / version `2082674417745739777`，Notebook 可选择标签 `jupyter-vllm018-ubuntu22.04-dtk26.04-qwen3.6-20260423`；完整实际 registry/repo:tag 和评审获取方式尚缺，digest 仅为可复现补充项。平台配置不替代任务原始环境/驱动实测。
+
+本轮代码仓库目标：[zhl-2022/guoxin-recon2reason-bw-vllm 的 codex/session004 分支](https://github.com/zhl-2022/guoxin-recon2reason-bw-vllm/tree/codex/session004)。仓库保持私有；实际推送 commit 和逐文件回读以独立交付回执为准，评审权限仍须落实。光合既有三仓库的 session003 与本轮 GitHub 分支分别记录，不假称光合已同步新版。
+
+历史镜像展示名为 `jupyter-vllm018-ubuntu22.04-dtk26.04-qwen3.6-20260423`。session003 的 [env.log](evidence/recon-functional-env-003.log) 另保留历史环境；本轮客户端实测版本直接取自 [client-identity.log](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/client-identity.log)：Python 3.10.12、Torch `2.10.0+das.opt1.dtk2604.20260325.g6b060a`、vLLM `0.18.1+das.fa71803.dtk2604`、Transformers 5.5.0、Triton `3.6.0+gitc73250c4.staging`，原生包位于 `/usr/local/lib/python3.10/dist-packages`。客户端 SGLang 为隔离环境中的 `0.5.12`，服务框架仍为 vLLM。
+
+| 本轮字段 | 当前报告内容 |
 |---|---|
-| 私有镜像展示名 | `jupyter-vllm018-ubuntu22.04-dtk26.04-qwen3.6-20260423` |
-| 完整镜像地址与 tag | 尚未取得；`IMAGE` 默认为空，展示名不能替代评审可获取的完整地址 |
-| 镜像 digest | 尚未取得；可作为复现补充，官方报告附件未明示为必填项 |
-| 实际实例 / 最终状态 | `2112186448839770114`；checkpoint003 于03:49观察到关机，保存环境开启 |
-| 区域 / 资源组 | 华中一区【A区】；`113 / hx1hgbwnormal` |
-| 设备 | BW × 1；`gfx936:sramecc+:xnack-`；68,702,699,520 字节显存 |
-| Python | `3.10.12`，`/usr/bin/python3` |
-| Torch | `2.10.0+das.opt1.dtk2604.20260325.g6b060a` |
-| TorchVision | `0.25.0+das.opt1.dtk2604.torch2100.20260325.g860505` |
-| vLLM / vLLM-HCU | `0.18.1+das.fa71803.dtk2604` / `0.18.1+das.dtk2604` |
-| Transformers / Triton | `5.5.0` / `3.6.0+gitc73250c4.staging` |
-| FlashAttention | `2.8.3+das.opt1.dtk2604.torch2100.20260330.g3f0061` |
-| LightOp / AITER | `0.6.0+das.dtk2604.torch2100.2604101656.g193111` / `0.1.2+das.opt1.dtk2604.torch2100.2604212021.gd52133` |
-| HIP / 平台类 | `6.3.26093` / `vllm_hcu.platforms.hcu.HCUPlatform` |
-| 模型结构 / 精度 | `Qwen3VLForConditionalGeneration` / BF16 |
-| 模型挂载 | `/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B` |
-| 服务监听 | `127.0.0.1:30000` |
-
-模型权重已做静态预检与哈希记录，见 [recon-preflight-hashed-001.json](evidence/recon-preflight-hashed-001.json)。`env_check.sh` 采集实际版本与设备并生成 `env.log`，不会安装包；没有可用 GPU 时返回 2。`run.sh --dry-run` 可以在不开卡时运行，但它不证明镜像与模型可用。
+| 实例 ID、CPU/内存/存储、实际设备 | A `2112186448839770114`；平台 BW64GB×1/15核/59GB；存储配额与独立设备型号清单未新增认证 |
+| 镜像 ID/version、完整引用与访问方式 | 待实际最终镜像记录 |
+| 解释器与原生包 | 服务 `/usr/bin/python`；客户端 `/root/private_data/sglang-client-004c/bin/python`；版本见本轮 identity 原件 |
+| 模型路径 | `/root/private_data/SothisAI/model/Aihub/Recon2Reason-Reasoning-4B/main/Recon2Reason-Reasoning-4B`；本报告未新增全量 checkpoint SHA 认证 |
+| 实际精度、TP、上下文、端口 | BF16、TP=1、32768、`127.0.0.1:30000`；矩阵服务 max-num-seqs=16 |
+| DTK/HIP 与设备完整清单 | 当前版本标签含 DTK26.04；独立 env/设备清单及最终镜像引用仍待补齐，不从标签推导完整驱动事实 |
+| 服务映射及截图 | 服务仅 127.0.0.1:30000，无自定义外网服务映射；关机截图在本轮平台记录中 |
 
 ## 3. 适配优化方案
 
-当前成功路径没有新增 Python 依赖，没有修改权重、结构、tokenizer 或采样策略，也没有项目专用 attention patch。[requirements-extra.txt](tasks/recon2reason-bw-vllm/requirements-extra.txt) 仅说明这个事实；不自动安装或升级原生 Torch、vLLM 和 HCU 插件。
+原成功路径保留权重、结构、tokenizer 与采样语义，使用原生 vLLM，无新增模型 attention patch。框架原日志中的 GELU tanh→exact 行为保留披露，是否满足正式精度须靠固定集验证。
 
-vLLM 原生日志显示 GELU 从 tanh 近似切换为 exact none；这是当前框架行为。功能通过不能证明这项数值路径差异满足正式精度门槛，仍需在固定数据上比较。
+本轮增加透明根 `verify.py`、默认功能 fixture、真实官方 selfcheck-only 执行桥，以及与 vLLM 服务分离的 SGLang 压测客户端。见 [入口检查](evidence/session004-interface-validation.json)、[官方桥 CPU 检查](evidence/session004/official-bridge-validation-20261023/validation.json)。Ubuntu 缺少 ensurepip 的修复使用新 venv + 系统可见 pip，仍以 venv 解释器安装，见 [004c 检查](evidence/session004/sglang-bootstrap-validation-004c-20261023/validation.json)。依赖准备的 CPU 检查不当作 GPU 或正式评测成绩。
 
-默认参数保持历史成功配置：BF16、TP=1、上下文 32768、显存比例 0.85、eager、最多 4 个序列、每请求 image=2 / video=0。session003 的 maxseq16 是独立的吞吐候选，尚未改为默认，也不能与 maxseq4 的校准混为同一次运行。
+实际执行使用 [004g driver](scripts/t02_sglang_bench.py)，SHA256 `ff8eef852e19f336e99884cc031353627ca304c6a7534c22375116758a850000`。原版 SGLang `0.5.12` 的 image 数据集允许 `sglang-oai-chat`，其 sender 为通用 `/v1/chat/completions`；该 alias 不把 vLLM 服务变成 SGLang 服务。DAS 客户端 import 需要读取设备标签，本次明确允许 device discovery，并原样保留调用 shell 的可见设备变量，没有扩展设备范围；原始策略位于运行 JSON 的 `client_identity.client_device_discovery`。
 
-所有显式覆盖使用 `RECON2REASON_*` 前缀。即使先前 source 过 ASR 或 RoboBrain 的配置，本目录也会重设通用 `MODEL_PATH`、`PORT`、`PYTHON_BIN`、正式评测路径等变量，不继承另一题的值。模型 ID、框架和精度固定为本题身份。
+exporter 对 Python 源码只保存导出前后 SHA，不保存源码 payload。重新分析使用已单独核对 SHA 的 [export-manifest.json](evidence/session004/remote-final-001/export-manifest.json)，绑定原始输出目录、run/native 文件大小与 SHA、004g producer 和五份原版客户端模块的来源路径/SHA。记录明确标为 `export_manifest_before_after_script_hash_only`，没有补造远端源码文件。原版 `bench_serving.py` SHA 为 `129e40b9e361be192306a9df56df41507f0397d5768696db3a9b994421daa259`。
 
 ## 4. 服务启动脚本
 
-`run.sh` 读取 `env.sh` 后调用共享监督器 `scripts/recon2reason_runtime.py`。默认展开命令与 [历史成功命令](evidence/vllm-state-001.json) 的参数相同：
+canonical 入口为 [env.sh](tasks/recon2reason-bw-vllm/env.sh)、[run.sh](tasks/recon2reason-bw-vllm/run.sh)、[stop.sh](tasks/recon2reason-bw-vllm/stop.sh)。默认 max-num-seqs=4；本轮矩阵覆盖为 16。实际 [config 原件](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/runtime/before/config-c2277b5d03b54683a5c7ba0193e5e55b.json) 记录 BF16、TP=1、上下文 32768、显存比例 0.85、eager、max-num-seqs=16、image=2/video=0，服务 run ID 为 `c2277b5d03b54683a5c7ba0193e5e55b`。创建 UTC `10:41:53.518926`，ready UTC `10:43:31.275280`；完整 argv、6200 秒监督时限和客户端 6000 秒总时限均按原件披露。
+
+独立仓库根入口由 [session004 装配器](docs/session004-assembler-usage.md) 透明生成，已在系统临时目录验证参数转发和缺官方材料时返回 2。最终文件身份以 stage004 的 repository-manifest004.json 与独立构建回执为准；本工程可使用 `tasks/recon2reason-bw-vllm/` 对应 canonical 入口，下面是装配后仓库根目录的命令：
 
 ```bash
-python3 -m vllm.entrypoints.openai.api_server \
-  --model "$MODEL_PATH" --served-model-name recon2reason-reasoning-4b \
-  --host 127.0.0.1 --port 30000 --tensor-parallel-size 1 \
-  --dtype bfloat16 --max-model-len 32768 --gpu-memory-utilization 0.85 \
-  --enforce-eager --max-num-seqs 4 \
-  --limit-mm-per-prompt '{"image":2,"video":0}'
+bash run.sh --dry-run
+# 以下仅在选定最终镜像、模型和本轮运行限额后执行。
+bash run.sh
+bash env_check.sh
+bash smoke.sh
+python verify.py --selfcheck
+source env.sh && python verify.py
+bash bench.sh
+bash stop.sh
 ```
 
-默认加载超时 900 秒，总服务上限 4500 秒，包含加载时间；停止宽限为 30 秒。历史健康就绪约耗时 162.7 秒，这只是启动观测，不是 benchmark。监督器保存 `runtime/config-<run_id>.json`、`state.json`、`supervisor.log` 和 `server.log`。重复启动发现健康端口或本任务存活的监督器时会拒绝，不复用未知进程。失败、超时和中断会清理匹配进程组；`stop.sh` 核对 PID、Linux 启动时间和命令行后停止。
+正式 verify 和正式 bench 需要真实官方材料/适用契约接入。缺材料时返回 2；未知评分 schema 的完整执行记录仍为 `executed_uninterpreted`。本轮矩阵实际由 [归档 controller](evidence/session004/remote-final-001/project/evidence/session004/executed-recon-matrix-driver.sh.txt) 调用原版 SGLang 客户端，不能把 root `bench.sh` 的正式结果预先填为通过。
 
-session003 maxseq4 的 [原始状态](evidence/recon-calibration-server-maxseq4-state-003.json) 显示实际监督上限3600秒、01:13:50健康就绪、01:33:07停止，其 [profile](evidence/recon-calibration-server-maxseq4-server-003.log) 为44.95 GiB／327,296 KV tokens。maxseq16 的 [原服务日志](evidence/session003/recon-original-runtime/server.log) 和 [补跑日志](evidence/session003/recon-final-runtime/server.log) 均已下载，独立确认 **44.93 GiB／327,168 KV tokens**、实际 chunked prefill 的 max_num_batched_tokens=2048、prefix caching 开启。原服务02:56:41停止；新服务03:01:32 ready、03:46:43停止。原runtime04与新runtime66源文件分别保全，不能将旧/新 run 或 maxseq4/16 的结果合并成一次实验。
-
-| 可覆盖项 | 环境变量 |
-|---|---|
-| 模型路径、服务名、解释器 | `RECON2REASON_MODEL_PATH`、`RECON2REASON_SERVED_NAME`、`RECON2REASON_PYTHON_BIN` |
-| 端口、TP、上下文、显存比例 | `RECON2REASON_PORT`、`RECON2REASON_TP`、`RECON2REASON_MAX_LEN`、`RECON2REASON_MEM_FRAC` |
-| 加载、总运行和停止时限 | `RECON2REASON_LOAD_TIMEOUT`、`RECON2REASON_MAX_RUNTIME_SECONDS`、`RECON2REASON_STOP_GRACE_SECONDS` |
-| 卡名、完整镜像地址、展示名 | `RECON2REASON_CARD`、`RECON2REASON_IMAGE`、`RECON2REASON_IMAGE_CANDIDATE_NAME` |
-| 额外参数数组 | `RECON2REASON_EXTRA_ARGS_JSON` |
-| 正式脚本、baseline、数据与图片规格 | `RECON2REASON_OFFICIAL_VERIFY_SCRIPT`、`RECON2REASON_OFFICIAL_BENCH_SCRIPT`、`RECON2REASON_OFFICIAL_BASELINE`、`RECON2REASON_OFFICIAL_DATA_DIR`、`RECON2REASON_IMAGE_RES` |
-
-例如更换模型挂载位置并预览：
-
-```bash
-RECON2REASON_MODEL_PATH=/data/Recon2Reason-Reasoning-4B bash run.sh --dry-run
-```
-
-`RECON2REASON_EXTRA_ARGS_JSON` 会替换整个额外参数数组。若单独研究图模式，需显式保留 `--max-num-seqs 4` 和 image/video 限制，并作为另一组配置记录；不要把改过参数的输出归入历史成功运行。核心模型、网络、精度、TP、上下文、显存参数不能通过额外参数重复覆盖。
+矩阵 producer 从 UTC `10:43:32.061379` 运行到 `12:11:57.025297`，实际 wall=5304.963429 秒。服务 state 在 UTC `12:12:05.973275` 记录 `stopped`、`reason=stop requested`、elapsed=5412.454 秒。UTC `12:14:55.823368` 的 [独立 cleanup 原件](evidence/session004/remote-final-001/project/evidence/session004/recon-final-cleanup-001.json) 再核对相同 run ID，supervisor/server 的进程 token 都不存在，30000 端口关闭，`cleanup_verified=true`。这些证明服务清理；SCNet Notebook 关机与账单终态由平台另行确认，不从进程停止推导。
 
 ## 5. Smoke 测试
 
-```bash
-bash smoke.sh --image /data/test/red-square.png --image /data/test/blue-circle.png
-```
+无参 smoke 默认使用 [固定 fixture manifest](fixtures/smoke-session004/manifest.json) 中两张不同内容的合成图，可用两个 `--image` 完全替换。检查健康、模型名、单图、多图、多轮、流式，保存输入 hash 和原始回答；非空回答不能当空间推理正确率。
 
-脚本要求两张内容不同的真实本地图片，检查健康、模型名、单图、多图、多轮和 SSE 流式；保存图片 SHA-256 和原始回答，不记录图片 base64。流式必须有非空正文和 `[DONE]`，错误事件会失败。默认写本目录 `smoke.log`，不同轮次通过 `run_id` 区分。
-
-历史红色方块、蓝色圆形测试的七项功能检查均通过，见 [JSONL 原始输出](evidence/vllm-smoke-001.jsonl) 和 [文本输出](evidence/vllm-smoke-001.txt)。
-
-| 检查 | 历史结果 | 生成 token / 结束情况 |
-|---|---|---|
-| `/health` | 通过 | HTTP 成功 |
-| `/v1/models` | 通过 | 目标模型可见 |
-| 单图 | 通过 | 9 / stop |
-| 多图 | 通过 | 40 / stop |
-| 多轮首轮 | 通过 | 9 / stop |
-| 多轮追问 | 通过 | 9 / stop |
-| 图像流式 | 通过 | 正文、stop、`[DONE]` |
-
-回答区分了首图红色与次图蓝色；位置追问只重复了物体描述，没有充分定位。这证明接口链路工作，不能当作空间推理正确性或正式精度验收。
-
-session003 使用重新生成的红方块／蓝圆形图片于 01:17:16（北京时间）完成 [新七项功能](evidence/recon-functional-smoke-003.jsonl)，四个非流式回答与图像流式均以 stop 结束、未截断；这仍是开发功能检查。测试图与原始记录均做逐字节保全，来源和 SHA 见 [审计记录](evidence/recon-completed-audit-003.json)。
+本轮 [smoke.log 原件](evidence/session004/remote-final-001/project/tasks/recon2reason-bw-vllm/smoke.log) 记录七项检查全部完成：health、models、single_image、multiple_images、multiturn_first、multiturn_followup、streaming_image。功能检查 ID 为 `2a5aa189359a4aa6a422f89362489147`，UTC `09:54:33.280337` 写出汇总；与稍后矩阵服务 run ID 分开保存。非流式四个回答均非空、`finish_reason=stop`、无 length 截断；流式有 DONE、stop、非空文本和空错误列表。独立回读结果见阶段审计的 `A.Recon_functional`，最终原件 SHA 与中间版一致。这些检查证明功能/API 交换，不提供空间推理正确率。session003 的 [旧七项功能原件](evidence/recon-functional-smoke-003.jsonl) 保持历史身份，没有替代本轮结果。
 
 ## 6. 精度测评
 
-尚未取得本模型的赛事专属评测包。需要明确适用指标、固定样本与版本、GPU baseline 或逐样本参考、原版判分器、最大输出、思考开关及图像预处理。发布方 `verify_release.py` 是发布完整性检查，不计算 OCRBench、MMMU 或空间推理精度。`task.json` 的正式指标当前明确标为待确认，不预选 OCRBench 代替官方口径。
+正式结果：**未填；分题材料尚未在本报告闭合**。需要本模型固定数据/reference、原版 evaluator/selfcheck、GPU baseline、图像预处理、最大输出、思考/解码和答案/坐标解析契约。不能把发布方完整性检查、合成图回答、OCRBench/MMMU 名称或通用阈值擅自组合为本题验收。
 
-`verify.sh` 是外部正式脚本执行桥，不能独立完成测评。桥不假设 baseline 是 JSON 或含 `model/metrics`，也不会改官方文件来适配自身。实际运行会先保存脚本与 baseline 原始副本、SHA-256 和旧结果，再以当前解释器执行 `verify.py --selfcheck`；Shell 脚本使用 Bash。自检失败、超时，或脚本/baseline 内容改变时，禁止进入正式步骤。原始自检/评测日志、新旧产物分别保存在 `runtime/official-verify-<id>/`。
-
-接入路径示例仅描述配置方式，不代表这些文件现已存在：
-
-```bash
-export RECON2REASON_OFFICIAL_VERIFY_SCRIPT=/已核实的正式材料/verify.py
-export RECON2REASON_OFFICIAL_BASELINE=/已核实的正式材料/baselines/模型.json
-export RECON2REASON_OFFICIAL_DATA_DIR=/已核实的正式材料/data
-bash verify.sh
-```
-
-可在不开卡时先执行 `bash verify.sh --dry-run`，只读检查文件并输出命令、缺项和产物计划，不查服务、不执行脚本、不写结果。缺材料时返回 2，不生成 baseline 或 `verify_result.json`。
-
-未知正式结果格式只记为 `executed_uninterpreted`、`official_acceptance=false`。执行桥返回 0 仅代表执行和新产物保全完成，不能作为精度 PASS；需拿到真实分题评分契约后再接入解释。结果若明确写了错误的 `MODEL_ID/CARD/FRAMEWORK/PRECISION`，或明确 `passed=false`，会失败。正式精度、自检和对应原始预测均尚未运行。
-
-可用 `RECON2REASON_OFFICIAL_VERIFY_ARGS_JSON` 传评测参数，用 `RECON2REASON_OFFICIAL_SELFCHECK_ARGS_JSON` 单独指定自检参数（默认 `["--selfcheck"]`），全部进入记录；不经过 shell eval。默认等待自检 120 秒、外部脚本 7200 秒，分别由 `RECON2REASON_OFFICIAL_SELFCHECK_TIMEOUT_SECONDS` 与 `RECON2REASON_OFFICIAL_TIMEOUT_SECONDS` 控制。Linux 超时会清理该脚本的整个进程组。改变正式接口参数应依据真实材料，不借此省略自检。
+`python verify.py --selfcheck` 只执行真实脚本自检；缺脚本返回 2，不生成假结果。正式报告需要归档原版文件 SHA、自检输出、逐样本预测、`verify_result.json` 和评分解释。精确待填字段见 [report-fields](docs/stage004-report-fields.json)。
 
 ## 7. 性能参考
 
-T02 通用模板规定 4096 / 16384 输入 × 1024 输出 × 并发 1 / 8 / 64，共六档、各连续两轮，第二轮计分；每档请求数为并发的两倍且至少 8。需要保留两轮 JSONL、十二份档位日志和汇总表。具体图像分辨率、取图集与分题脚本仍待确认。
+历史 [最终审计](evidence/recon-matrix-final-audit-003.json) 核验 native vLLM random-mm 开发覆盖 **11/12 格、480 个完整请求、491520 个输出 token**。最后 `round2_16384_1024_c64` 超时且无 native JSON。输入目标仅是随机文本，1024×1024 一图额外 token/chat 包装未认证为模板总长度；持续 prefix cache 与独立重启条件也分别保存。这些结果不改名为 SGLang client 数据。
 
-`bench.sh` 桥接外部正式脚本，本身没有实现六档客户端。`bash bench.sh --dry-run` 会输出六档两轮纯计划、每轮请求数、计分轮标记和当前缺项，共 608 请求；不连接服务、不执行、不写文件。缺正式脚本时仍输出计划并返回 2。
+本轮实际 [run.json](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/run.json) 选择 4096/16384 文本目标、1024 输出、并发 8/64、两轮，共八格、576 个测量请求和八次 warmup；八个客户端进程全部 `exited/0` 且已回收，各有一份 native 原件。**本轮没有执行 c1 两档的两轮；默认完整 12 格/608 请求是另一份计划，不能写为本轮已跑。** 图像为一张 1024×1024 随机 JPEG，seed=1；请求体显式 temperature=0、ignore_eos=true、stream usage=true。第二轮是报告取数轮，但先后顺序不等同于独立重启/冷缓存；完整输入 token 含图像/chat 包装，4096/16384 是生成文本目标，不是已认证的模板总 token 长度。
 
-后续设置 `RECON2REASON_OFFICIAL_BENCH_SCRIPT`；如脚本要求其他参数，使用 `RECON2REASON_OFFICIAL_BENCH_ARGS_JSON`。benchmark 不硬性依赖 baseline、data 或 IMAGE_RES；若显式提供则检查文件，实际图像规格仍须按分题材料确认。默认保全两轮 JSONL、汇总和十二份档位日志，并将结果标为未解释，不因为文件齐全就宣称成绩或负载完成。模板外的真实输出文件名可通过 `RECON2REASON_OFFICIAL_{VERIFY,BENCH}_OUTPUTS_JSON` 提供相对路径数组，禁止路径逃逸。新旧产物分开保留，不覆盖历史证据。详细离线复现见 [Recon 离线就绪记录](docs/recon-offline-readiness.md)。
+原版客户端合法支持 CLI `--request-rate inf`，但默认 `json.dumps` 把它输出为非标准 JSON 数值 `request_rate: Infinity`。原 driver 的严格 JSON parser 因此把已正常退出的格标为 `invalid_native_result`；Infinity 本身并不是标准 JSON 数字。独立 [analyzer](scripts/analyze_sglang_results_004.py) 只把顶层该正 Infinity 常量记录为字符串 `"inf"`，保留原始 SHA 和 producer 状态；其他 NaN/Inf、溢出、重复 key、超时或 mock 结果仍不通过。没有改写 driver、run.json 或 native 原件。真实重分析见 [analysis.json](evidence/session004/remote-final-001-analysis/analysis.json) 和 [summary.md](evidence/session004/remote-final-001-analysis/summary.md)。
 
-已完成以下开发校准；它们不是正式性能成绩，也没有与官方 SGLang 客户端建立同口径等价关系。当前镜像未安装 SGLang。
+UTC `12:14:56.329311` 最终导出的八格结果如下，轮次链接指向对应原始 native JSONL。token/s、TTFT、TPOT 均为客户端原报值；不合格格的数值保留披露，不能计为完整输出通过。wall 包括客户端启动与 warmup 等开销，不能与 native 测量 duration 混用。
 
-| 服务配置 / 客户端并发 | 请求 / 每条输出 | 原生 duration | 客户端 wall | 输出 token/s | mean TTFT ms | mean TPOT ms | mean E2EL ms |
-|---|---|---|---|---|---|---|---|
-| maxseq4 / c1 | 8 / 1024 | 380.702 s | 414.879 s | 21.518 | 812.167 | 45.724 | 47587.538 |
-| maxseq16 / c8 | 16 / 1024 | 107.452 s | 141.348 s | 152.478 | 3510.727 | 48.847 | 53480.968 |
+| 轮次 | 文本目标 | 并发 | 原报完成 | native duration(s) | 输出token/s | mean TTFT(ms) | mean TPOT(ms) | 客户端wall(s) | 严格回读 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| [1](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round1_4096_1024_c8.jsonl) | 4096 | 8 | 16 | 111.2563 | 147.2636 | 2685.2537 | 51.5739 | 156.2312 | 完成 |
+| [2](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round2_4096_1024_c8.jsonl) | 4096 | 8 | 16 | 110.4682 | 148.3142 | 1963.9933 | 51.9127 | 160.9553 | 完成 |
+| [1](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round1_4096_1024_c64.jsonl) | 4096 | 64 | 128 | 486.5786 | 269.3748 | 139825.6770 | 57.6298 | 619.0592 | 完成 |
+| [2](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round2_4096_1024_c64.jsonl) | 4096 | 64 | 128 | 486.6267 | 269.3482 | 139972.6450 | 57.5879 | 608.1738 | 完成 |
+| [1](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round1_16384_1024_c8.jsonl) | 16384 | 8 | 16 | 211.0890 | 77.6165 | 19519.5332 | 83.3836 | 268.0748 | 完成 |
+| [2](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round2_16384_1024_c8.jsonl) | 16384 | 8 | 16 | 209.9050 | 78.0544 | 18418.5317 | 83.8609 | 264.9646 | 不合格：一个空输出 |
+| [1](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round1_16384_1024_c64.jsonl) | 16384 | 64 | 128 | 1432.9932 | 91.4673 | 413590.4622 | 182.0693 | 1622.8783 | 不合格：七个空输出 |
+| [2](evidence/session004/remote-final-001/project/evidence/session004/recon-sglang-matrix-A-001/native/round2_16384_1024_c64.jsonl) | 16384 | 64 | 128 | 1433.9009 | 91.4094 | 426527.2897 | 169.9330 | 1600.6205 | 不合格：四个空输出 |
 
-两次都是4096文本目标＋一张1024×1024随机图、第一轮、输出目标1024，失败数均为0、逐请求完整性均通过；客户端并发和服务 maxseq 同时变化，不能宣称这是单一改动带来的7倍优化。原始 [c1 JSON](evidence/recon-calibration-native-round1_4096_1024_c1-003.json)、[c8 JSON](evidence/recon-maxseq16-calibration-native-round1_4096_1024_c8-003.json) 和 [初始校准审计](evidence/recon-completed-audit-003.json) 保留其当时范围。
+八份 native 文件合计原报 completed=576、output tokens=589824，errors 数组全空、output_lens 全部为1024；其中仅564条有非空生成文本，**这个计数不是正确率**。严格整格检查仍只计五格、304 请求、311296 个**客户端报告**输出 token，第二轮合格格为两格。空输出分布为：R2 16384/c8 的零基 index=8；R1 16384/c64 的 indices=2,26,47,70,95,97,119；R2 16384/c64 的 indices=0,23,50,95。十二条均 `generated_text=""`、TTFT=0、ITL=[]、errors=""，但 output_lens=1024。三格原报完成数和吞吐保留披露，不能用于“输出完整”合格结论；修复 Infinity 或删除坏样本不会改变这些事实。
 
-最终 [原矩阵](evidence/session003/recon-matrix/run.json) 按4000秒总预算完成10/12格；16384/c64第一轮在745.997秒时超时，第二轮未尝试。独立 [retry](evidence/session003/recon-matrix-retry/run.json) 使用新服务和2697秒总预算：第一轮128×1024完整，native duration1335.164秒、输出98.169 token/s、client wall1388.661秒；第二轮1307.366秒超时、无 native JSON。因此当前是11/12格、480个可核完整请求，最后128个计划请求的完整结果未知，不能记为0或丢弃失败。
+本轮另以 [只读 collector 原件](evidence/session004/remote-final-001/project/evidence/session004/recon-server-metrics-001/collector-final.json) 保存服务 `/metrics`。采集从 UTC `11:49:32.913679` 开始，到 `12:11:58.461899` 因连接拒绝结束，1340 个样本身份保持同一 run/PID/start token；最后有效采样为 UTC `12:11:56.998927`。collector 不发模型请求、不改服务，原始全文仅保留 first/latest/last-good，其余历史记录保存所选数值和全文 SHA。最终审计重新核对 collector 自带 manifest、1340 个样本以及首末原文的 SHA 和解析值。
 
-全部命令使用 fixed seed=1，并在各自持续开启 prefix cache 的服务中连续执行；第二轮及跨并发可能复用缓存，独立retry又重启了服务。输入目标只描述随机文本，视觉/chat额外 token 与重编码差异未认证；这是一图1024×1024的 native vLLM开发负载，没有与正式 SGLang 客户端建立同口径等价关系。详见 [最终汇总](evidence/recon-final-results-summary-003.json) 和 [逐格表](docs/session003-recon-results.md)。
+最后有效服务计数为 `request_success_total{finished_reason="length"}=584`、`request_generation_tokens_count=584`、`generation_tokens_total=request_generation_tokens_sum=590080`，在数值上与 576 个测量请求加八次 warmup、`576×1024+8×32` 相同；原版 warmup 输出上限为32。**这只是服务聚合计数与理论目标的一致性支持**：collector 从最后一格运行期间才开始，没有零基线和逐请求隔离，不能证明每条请求长度，也不能挽救十二条空正文。`length` 是本轮 ignore_eos/输出上限设置下的服务标签，不能与 smoke 所需的 stop 混用。
 
-## 8. 注意事项与交付缺项
+原版 sender 会合并 reasoning_content/content，usage 缺失时可使用请求长度 fallback，native JSONL 也不单独认证 SSE 终态。结合聚合计数仍不能把每请求 exact output token、raw usage/SSE 独立认证或正式性能验收改为 true。
 
-- 正式评测仍缺本模型固定数据、GPU 参考、判分器和适用口径；没有把认领回执或 digest 当作开工条件。
-- 开发矩阵最后一格仍未完整核验；正式精度、同口径六档两轮性能、完整可取镜像地址/tag、仓库最终同步与下载核验、干净镜像一键复跑仍待完成。现有相对脚本目录必须完整包含在独立提交件内。
-- 新启动应实际保存 `env.log`、`smoke.log`、完整服务日志与 `platform/` 证据；不要复制历史日志冒充干净复跑。八章报告最终数值必须与新产物一致。
-- 项目监督器不控制平台计费。checkpoint003 已实际确认三个 Notebook 全部关机；A 于03:48:43左右手动确认、03:49观察停止，早于03:55兜底期限。可见余额493.5055555555卡时可能包含延迟结算，不是最终账单。checkpoint002 只保留为历史快照。
-- 模型静态检查、Transformers 参考、vLLM 功能、正式精度和性能分别保存证据；目前只完成其中部分，不宣称整题验收通过。
-- 不在任务文件、日志或报告保存账号、密码、token 或 cookie。当前文档更新是对已下载实际结果的本地审计，不执行新的平台操作；赛事正式提交尚未进行。
+## 8. 注意事项
+
+- 模板允许披露没有完成的负载；11/12 不能写成完整通过，也不自动表示整题不许提交。旧末格受总预算截断，尚未证明显存 OOM 或天然不支持。
+- session004 最终为八格都正常退出、五格严格合格、三格共十二条空正文，c1 四格未跑；不能混入历史 003 拼成“12/12”，也不能把进程退出0改写为全部输出合格。中间原件与最终原件分别保留。
+- 用户选择保留版权范围说明和上游许可；模板没有强制全仓开源许可证，内部 `license_ready=false` 不是额外赛事障碍。
+- 原三仓库已由 [003 closure](evidence/final-delivery-closure-003.json) 核验保存；004 是否装配、同步和可供评审访问是另一次核验。
+- [本轮规则对照](docs/session004-requirements-and-gaps.md)、[CPU 汇总](evidence/session004-cpu-summary.json) 和 [analyzer 最新验证](evidence/session004/sglang-native-reanalysis-validation-20261023/validation-003.json) 只支持各自范围，不替代正式精度或镜像复现。官方材料、实际可取镜像、干净环境复跑和最终访问方式仍须补齐。
+- 后续最小补跑建议见 [离线计划](docs/recon-session004-minimal-next-run-plan.md)。该文件列尚缺的 c1 两轮和三个空输出格的诊断/选择性复查条件；本轮没有按此重新开卡。
+- 最终提交由用户手动完成；本报告不代写提交回执或当前平台已关机状态。
